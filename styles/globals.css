@@ -1,9 +1,14 @@
+:root{
+  --text-color: #555655;
+  --title-font: 'Abril Fatface', cursive;
+  --text-font: 'Noto Sans', sans-serif;
+  --hover-text-color:  #8b8b8b;
+}
 html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  padding: 0px;
+  margin: 0px; 
+  min-width: 100vh;
 }
 
 a {
@@ -13,4 +18,9 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+header{
+  position: fixed;
+  width: 100vw;
 }
