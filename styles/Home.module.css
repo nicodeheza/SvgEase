@@ -40,10 +40,13 @@
   position: sticky;
   height: 60px;
   width: calc(100 * var(--vw));
-  top: 100px;
+  top: 75px;
   background-color: white;
   box-shadow:  0 5px 5px rgba(0, 0, 0, .2);
   z-index: 30;
+  display: flex;
+  align-items: center;
+
 }
 
 .navUl{
@@ -51,6 +54,8 @@
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  align-items: center;
+  width: 100%;
 }
 .navLi{
   font-family: var(--title-font);
@@ -106,7 +111,10 @@
     z-index: -10;
     transition: 2s;
   }
-
+  .nav{
+    height: 50px;
+    top: 90px;
+  }
   .navLi{
     font-size: 30px;
   }
@@ -128,10 +136,10 @@
     min-width: 0px;
   }
   .nav{
-    height: 70px;
+    height: 50px;
   }
   .navLi{
-    font-size: 50px;
+    font-size: 25px;
   }
 }
 
