@@ -1,0 +1,94 @@
+.container{
+    position: relative;
+    height:calc(90 * var(--vh));
+    width: calc(100 * var(--vw));;
+    z-index: -20;
+    margin-top: 100px;
+    overflow: hidden;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.containerTow{
+    position: absolute;
+    top: 100px;
+    height:calc(90 * var(--vh));
+    width: calc(100 * var(--vw));
+    z-index: 0;
+}
+.fondoContainer{
+    position: absolute;
+    bottom: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+.fondo{
+   height: 100%;
+   min-height: 100%;
+   min-width: 100%;
+}
+
+.personajeContainer{
+    position: absolute;
+    bottom: 5%;
+    height: 70%;
+    width: 100%;
+}
+.personaje{
+    height: 100%;
+}
+.brandContainer{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 450px;
+    padding: 50px;
+}
+.logo{
+width: 100%;
+height: auto;
+}
+.epigraph{
+    font-family: var(--text-font);
+    color: #0800ad;
+    font-size: 1.5rem;
+    text-shadow:  -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
+}
+
+.btnContainer{
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    margin: 40px;
+}
+
+@media(max-width:1000px){
+    .brandContainer{
+        width: 350px;
+    }
+
+    .epigraph{
+        font-size: 1.5rem;
+    }
+}
+
+@media(max-width:350px){
+    .brandContainer{
+        width: 300px;
+    }
+
+    .epigraph{
+        font-size: 1.5rem;
+    }
+}
+
+@media(max-width:300px){
+    .brandContainer{
+        width: 500px;
+    }
+    .epigraph{
+        font-size: 1.5rem;
+    }
+}

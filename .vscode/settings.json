@@ -4,13 +4,18 @@
         "btns",
         "cart",
         "ease",
+        "epigraph",
         "icons",
         "logo",
+        "lottie",
         "svgs"
     ],
     "cSpell.language": ",es",
     "cSpell.ignoreWords": [
+        "brand",
+        "container",
         "initial",
+        "persojane",
         "props",
         "singup",
         "xlink",

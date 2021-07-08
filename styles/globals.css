@@ -22,5 +22,7 @@ a {
 
 header{
   position: fixed;
-  width: 100vw;
+  width: calc(100 * var(--vw));
+  top: 0px;
+  z-index: 10;
 }
