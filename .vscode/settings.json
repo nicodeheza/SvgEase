@@ -12,12 +12,18 @@
     ],
     "cSpell.language": ",es",
     "cSpell.ignoreWords": [
+        "animation",
         "brand",
         "container",
+        "gallery",
+        "ilus",
         "initial",
         "persojane",
         "props",
         "singup",
+        "spinner",
+        "title",
+        "trash",
         "xlink",
         "xmlnsa"
     ]

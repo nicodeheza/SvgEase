@@ -1,10 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import TextBtn from '../components/btns/TextBtn'
-import CartBtn from '../components/btns/CartBtn'
-import HeaderAnimation from '../components/homeAnimations/HeaderAnimation'
+import Head from 'next/head';
+import styles from '../styles/Home.module.css';
+import TextBtn from '../components/btns/TextBtn';
+import CartBtn from '../components/btns/CartBtn';
+import IconGallery from '../components/homeComponents/IconsGallery';
+import ParallaxAnimation from '../components/homeAnimations/ParallaxAnimation';
+import HeaderAnimation from '../components/homeAnimations/HeaderAnimation';
+import IlusAnimation from '../components/homeAnimations/IlusAnimation';
+import LluviaAnimation from '../components/homeAnimations/LluviaAniation';
+import LoadingGallery from '../components/homeComponents/LoadingGallery';
+import TiendaBtn from '../components/btns/TiendaBtn';
 import { useEffect, useState } from 'react'
 
 export default function Home() {
@@ -53,8 +58,40 @@ export default function Home() {
               <li className={styles.navLi}><a href="#">Como Comprar</a></li>
             </ul>
           </nav>
-          <div style={{height:'300vh', backgroundColor:'white', position:'relative', zIndex:-1}}>
-          </div>
+          <main>
+            <section className={styles.gallery}>
+              <div className={styles.titleGalleryContainer}>
+                <h1 className={styles.galleryTitle}>Todo tipo de animaciones</h1>
+                <div className={styles.galleryContainer}>
+                <div className={styles.parallax}>
+                  <ParallaxAnimation />
+                  <p className={styles.parallaxTitle}>Parallax</p>
+                </div>
+                <div className={styles.icons}>
+                  <IconGallery />
+                </div>
+                <div className={styles.illustrations}>
+                  <IlusAnimation />
+                  <p className={styles.ilusTitle}>Ilustraciones</p>
+                </div>
+                <div className={styles.cards}>
+                  <LluviaAnimation />
+                  <p className={styles.cardsTitle}>Tarjetas</p>
+                  <img src='/svgs/clima.svg' alt='image'  className={styles.climaImg}/>
+                </div>
+                <div className={styles.load}>
+                  <LoadingGallery />
+                </div>
+              </div>
+              <div className={styles.galleryBtn}>
+              <TiendaBtn/>
+              </div>
+              </div>
+            </section>
+            <section>
+              
+            </section>
+          </main>
     </>
   )
 }

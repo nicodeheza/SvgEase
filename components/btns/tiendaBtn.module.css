@@ -20,7 +20,7 @@
     font-size: 20px;
 }
 
-@media(max-width:450px){
+/* @media(max-width:450px){
     .btn{
         width: 300px;
         height: 100px;
@@ -29,4 +29,4 @@
     .btnA{
         font-size: 35px;
     }
-}
+} */
