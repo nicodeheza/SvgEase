@@ -1,7 +1,7 @@
 .container{
     position: relative;
-    height:calc(90 * var(--vh));
-    width: calc(100 * var(--vw));;
+    height:  90vh;
+    width: 100vw;
     z-index: -20;
     margin-top: 100px;
     overflow: hidden;
@@ -13,10 +13,11 @@
 .containerTow{
     position: absolute;
     top: 100px;
-    height:calc(90 * var(--vh));
-    width: calc(100 * var(--vw));
+    height: 90vh;
+    width: 100vw;
     z-index: 0;
 }
+
 .fondoContainer{
     position: absolute;
     bottom: 0px;
@@ -73,22 +74,35 @@ height: auto;
         font-size: 1.5rem;
     }
 }
-
-@media(max-width:350px){
+@media(max-width:700px){
     .brandContainer{
         width: 300px;
+        padding: 40px;
     }
-
     .epigraph{
-        font-size: 1.5rem;
+        font-size: 1rem;
     }
 }
-
-@media(max-width:300px){
+@media(max-width:600px){
     .brandContainer{
-        width: 500px;
+        width: 250px;
+        padding: 30px;
     }
-    .epigraph{
-        font-size: 1.5rem;
+  
+}
+@media(max-width:500px){
+    .brandContainer{
+        width: 200px;
+        padding: 30px;
     }
+  
+}
+@media(max-width:400px){
+   .container{
+    margin-top: 70px;
+   } 
+
+   .epigraph{
+    font-size: .7rem;
+}
 }

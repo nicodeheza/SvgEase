@@ -3,6 +3,7 @@ import LiebreAnimation from '../../animations/liebre.json';
 import LoadingText  from '../../animations/loading-text.json';
 import SpinnerAnimation from '../../animations/spinner.json'
 import LoadingAnimation from '../homeAnimations/LoadingAnimation';
+import styles from '../../styles/Home.module.css'
 
 const animations=[{data: LiebreAnimation, id:'liebreAnima'},
 {data:LoadingText, id:'loadingText'},
@@ -38,36 +39,16 @@ export default function LoadingGallery(){
                     )
                 }
             </div>
-            <div style={{
-                display:'flex',
-                flexDirection: 'row',
-                justifyContent:'space-around',
-                alignContent:'center',
-                position: 'absolute', 
-                width: '70%',
-                marginBottom: '15%',
-                bottom: '0px'
-            }}>
+            <div className={styles.iconsBtnsContainer}>
                 {
                     animations.map(({data, id}, i)=>(
                         <div key={i} onClick={()=> setActualAnimation(i)}  style={{
-                            borderRadius:'100%',
                             backgroundColor: i === actualAnimation ? '#729367' : 'white',
-                            width: '15px',
-                            height : '15px',
-                            cursor:'pointer'
-                        }}/>
+                        }} className={styles.iconsBtns}/>
                     ))
                 }
             </div>
-            <p style={{
-                position: 'absolute',
-                bottom: '0px',
-                right: '0px',
-                fontFamily: 'var(--text-font)',
-                color: '#729367',
-                marginRight:'20px'
-            }}>Animaciones de Carga</p>
+            <p className={styles.loadTitle}>Animaciones de Carga</p>
         </div>
      )
 

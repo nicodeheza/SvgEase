@@ -5,6 +5,7 @@ import animaEmail from '../../animations/email.json';
 import animaHome from '../../animations/home.json';
 import animaDelete  from '../../animations/trash.json';
 import IconAnimation from '../homeAnimations/IconAnimation';
+import styles from '../../styles/Home.module.css'
 
 const animations= [{ data: animaChat, id: 'chat'},
  {data:animaDownload, id:'download'},
@@ -40,36 +41,16 @@ export default function IconGallery(){
                 )
             }
             </div>
-            <div style={{
-                display:'flex',
-                flexDirection: 'row',
-                justifyContent:'space-around',
-                alignContent:'center',
-                position: 'absolute', 
-                width: '70%',
-                marginBottom: '15%',
-                bottom: '0px'
-            }}>
+            <div className={styles.iconsBtnsContainer}>
                 {
                     animations.map(({data, id}, i)=>(
                         <div key={i} onClick={()=> setActualAnimation(i)}  style={{
-                            borderRadius:'100%',
-                            backgroundColor: i === actualAnimation ? '#ff8080' : 'white',
-                            width: '15px',
-                            height : '15px',
-                            cursor:'pointer'
-                        }}/>
+                            backgroundColor: i === actualAnimation ? '#ff8080' : 'white'
+                        }} className={styles.iconsBtns}/>
                     ))
                 }
             </div>
-            <p style={{
-                position: 'absolute',
-                bottom: '0px',
-                right: '0px',
-                fontFamily: 'var(--text-font)',
-                color: '#e54c4c',
-                marginRight:'20px'
-            }}>Iconos y Botones</p>
+            <p className={styles.iconsTitle}>Iconos y Botones</p>
         </div>
     )
 }
