@@ -5,7 +5,7 @@ export default function TiendaBtn(){
     
     return(
         <div className={styles.btn}>
-        <Link href='#'>
+        <Link href='/tienda'>
             <a className={styles.btnA}>Ir a la Tienda</a>
         </Link>
         </div>

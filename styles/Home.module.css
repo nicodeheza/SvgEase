@@ -61,6 +61,7 @@
   font-family: var(--title-font);
   color: var(--text-color);
   font-size: 20px;
+  cursor: pointer;
 }
 .navLi:hover{
   color: var(--hover-text-color);
@@ -746,6 +747,7 @@
   font-family: var(--title-font);
   color: var(--text-color);
   font-size: 20px;
+  cursor: pointer;
 }
 .footer li:hover{
   color: var(--hover-text-color);

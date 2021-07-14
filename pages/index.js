@@ -12,10 +12,27 @@ import LoadingGallery from '../components/homeComponents/LoadingGallery';
 import Interactive from '../components/homeComponents/Interactive';
 import TiendaBtn from '../components/btns/TiendaBtn';
 import Device from '../components/homeAnimations/Devices';
+import LogIn from '../components/LogIn';
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 export default function Home() {
   const[showMenu, setShowMenu]= useState(false);
+  const[floatWin, setFloatWin]= useState('none');
+
+  useEffect(()=>{
+    if(floatWin !== 'none'){
+      setShowMenu(false)
+    }
+  },[floatWin]);
+
+  function scrollTo(id){
+    const ele= document.getElementById(id);
+    const offset= -150;
+    const y= ele.getBoundingClientRect().top + window.pageYOffset + offset;
+    window.scrollTo({top: y})
+    setShowMenu(false);
+  }
 
   return (
     <>
@@ -27,30 +44,39 @@ export default function Home() {
             <div className={styles.btnContainer}>
               <img src='/svgs/menu.svg' alt='menu' className={styles.menu} onClick={()=>setShowMenu(prev => !prev)}/>
               <img src='/svgs/logo0.svg' alt='Svg Ease' className={styles.topLogo}/>
-              <TextBtn text="Iniciar Sesión" icon="login" />
+              <TextBtn text="Iniciar Sesión" icon="login" setFloatWin={setFloatWin} target={'logIn'} />
               <TextBtn text="Crear Cuenta" icon="singup" />
             </div>
             <CartBtn />
           </div>
           <div className={showMenu ? styles.movilMenuShow : styles.movilMenuHidden}>
-            <TextBtn text="Iniciar Sesión" icon="login" movil={true}/>
+            <TextBtn text="Iniciar Sesión" icon="login" movil={true} setFloatWin={setFloatWin} target={'logIn'} />
             <TextBtn text="Crear Cuenta" icon="singup" movil={true} />
-            <a href='#' className={styles.movilMenuA}>Tienda</a>
-            <a href ='#' className={styles.movilMenuA}>Acerca de SvgEace</a>
-            <a href='#' className={styles.movilMenuA}>Como Compro</a>
+            <Link href="/tienda">
+            <a className={styles.movilMenuA}>Tienda</a>
+            </Link>
+            <a onClick={()=>scrollTo('acerca')} className={styles.movilMenuA}>Acerca de SvgEace</a>
+            <a onClick={()=>scrollTo('help')} className={styles.movilMenuA}>Como Compro</a>
           </div>
         </header>
           <HeaderAnimation />
           <nav className={styles.nav}>
             <ul className={styles.navUl}>
-              <li className={styles.navLi}><a href="#">Tienda</a></li>
-              <li className={styles.navLi}><a href="#">Acerca de SvgEase</a></li>
-              <li className={styles.navLi}><a href="#">Como Comprar</a></li>
+              <li className={styles.navLi}><Link href="/tienda"><a href="#">Tienda</a></Link></li>
+              <li className={styles.navLi} onClick={()=>scrollTo('acerca')}>Acerca de SvgEase</li>
+              <li className={styles.navLi} onClick={()=>scrollTo('help')}>Como Comprar</li>
             </ul>
           </nav>
+          {
+            floatWin === 'logIn' ?
+            (<LogIn setFloatWin={setFloatWin}/>) :
+            floatWin ==='subscribe' ?
+            (null) :
+            (null) 
+          }
           <main>
-            <section className={styles.gallery}>
-              <div className={styles.titleGalleryContainer}>
+            <section className={styles.gallery} id='acerca'>
+              <div className={styles.titleGalleryContainer} >
                 <h1 className={styles.galleryTitle}>Todo tipo de animaciones</h1>
                 <div className={styles.galleryContainer}>
                 <div className={styles.parallax}>
@@ -87,12 +113,15 @@ export default function Home() {
               </div>
               <h1>Multiplatafoma y faciles de implementar</h1>
               <p>Nuestas animaciones estan hechas con Lotti una tecnologia compatible con web, 
-                andorid y ios muy fácil de implementar en tus proyectos. <br/> Mas info <a href='#' className={styles.lottieLink}>aquí.</a> 
+                andorid y ios muy fácil de implementar en tus proyectos. <br/> Mas info <a href='https://airbnb.io/lottie/#/'
+                 target="_blank"
+                 rel="noreferrer"
+                className={styles.lottieLink}>aquí.</a> 
                 <span><TiendaBtn /></span>
                 </p>
             </section>
 
-            <section className={styles.helpSection}>
+            <section className={styles.helpSection} id='help'>
               <h1>¿Como Comprar?</h1>
               <ul>
                 <li>Agrega las animaciones que quieras en el carro</li>
@@ -109,9 +138,9 @@ export default function Home() {
           </main>
           <footer className={styles.footer}>
             <ul>
-              <li><a href="#">Tienda</a></li>
-              <li><a href="#">Acerca de SvgEase</a></li>
-              <li><a href="#">Como Comprar</a></li>
+              <li><Link href="/tienda"><a>Tienda</a></Link></li>
+              <li onClick={()=>scrollTo('acerca')}>Acerca de SvgEase</li>
+              <li onClick={()=>scrollTo('help')}>Como Comprar</li>
             </ul>
             <img src="/svgs/logo.svg" alt="Svg Ease" />
           </footer>

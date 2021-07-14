@@ -4,6 +4,7 @@
     align-items: center;
     width: fit-content;
     cursor: pointer;
+    margin-right: 1%;
 }
 .number{
     font-family: var(--title-font);
@@ -24,6 +25,9 @@
 }
 
 @media(max-width:400px){
+    .container{
+        margin-right: 0px;
+    }
     .number{
         font-size: 30px;
     }
