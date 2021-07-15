@@ -13,6 +13,8 @@ import Interactive from '../components/homeComponents/Interactive';
 import TiendaBtn from '../components/btns/TiendaBtn';
 import Device from '../components/homeAnimations/Devices';
 import LogIn from '../components/LogIn';
+import SingUp from '../components/SingUp';
+import Cart from '../components/Cart';
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
@@ -45,13 +47,13 @@ export default function Home() {
               <img src='/svgs/menu.svg' alt='menu' className={styles.menu} onClick={()=>setShowMenu(prev => !prev)}/>
               <img src='/svgs/logo0.svg' alt='Svg Ease' className={styles.topLogo}/>
               <TextBtn text="Iniciar Sesión" icon="login" setFloatWin={setFloatWin} target={'logIn'} />
-              <TextBtn text="Crear Cuenta" icon="singup" />
+              <TextBtn text="Crear Cuenta" icon="singup" setFloatWin={setFloatWin} target={'singUp'}/>
             </div>
-            <CartBtn />
+            <CartBtn setFloatWin={setFloatWin} />
           </div>
           <div className={showMenu ? styles.movilMenuShow : styles.movilMenuHidden}>
             <TextBtn text="Iniciar Sesión" icon="login" movil={true} setFloatWin={setFloatWin} target={'logIn'} />
-            <TextBtn text="Crear Cuenta" icon="singup" movil={true} />
+            <TextBtn text="Crear Cuenta" icon="singup" movil={true} setFloatWin={setFloatWin} target={'singUp'}/>
             <Link href="/tienda">
             <a className={styles.movilMenuA}>Tienda</a>
             </Link>
@@ -59,6 +61,10 @@ export default function Home() {
             <a onClick={()=>scrollTo('help')} className={styles.movilMenuA}>Como Compro</a>
           </div>
         </header>
+          {
+            floatWin === 'cart' ?
+            (<Cart setFloatWin={setFloatWin}  open={true}/>) : (<Cart setFloatWin={setFloatWin}  open={false}/>)
+          }
           <HeaderAnimation />
           <nav className={styles.nav}>
             <ul className={styles.navUl}>
@@ -70,8 +76,8 @@ export default function Home() {
           {
             floatWin === 'logIn' ?
             (<LogIn setFloatWin={setFloatWin}/>) :
-            floatWin ==='subscribe' ?
-            (null) :
+            floatWin ==='singUp' ?
+            (<SingUp setFloatWin={setFloatWin} />) :
             (null) 
           }
           <main>
@@ -112,13 +118,13 @@ export default function Home() {
               <Device/>
               </div>
               <h1>Multiplatafoma y faciles de implementar</h1>
-              <p>Nuestas animaciones estan hechas con Lotti una tecnologia compatible con web, 
+              <div className={styles.deviceText}>Nuestas animaciones estan hechas con Lotti una tecnologia compatible con web, 
                 andorid y ios muy fácil de implementar en tus proyectos. <br/> Mas info <a href='https://airbnb.io/lottie/#/'
                  target="_blank"
                  rel="noreferrer"
                 className={styles.lottieLink}>aquí.</a> 
                 <span><TiendaBtn /></span>
-                </p>
+                </div>
             </section>
 
             <section className={styles.helpSection} id='help'>

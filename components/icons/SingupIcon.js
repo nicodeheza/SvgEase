@@ -1,15 +1,15 @@
 import style from '../btns/textBtn.module.css'
 
 
-export default function SingupIcon(){
-    
+export default function SingupIcon({classN}){
+
     return(
 
 <svg version="1.1"
 	 xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       xmlnsa="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-        viewBox="0 0 37.8 37.3" className={style.icon} >
+        viewBox="0 0 37.8 37.3" className={classN ? classN : style.icon}>
 <g>
 	<g>
 		<path d="M22.2,37.3H5.8c-3.2,0-5.8-2.6-5.8-5.8V15.1c0-3.2,2.6-5.8,5.8-5.8h8.9c0.8,0,1.5,0.7,1.5,1.5

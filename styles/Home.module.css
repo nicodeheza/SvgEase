@@ -425,7 +425,7 @@
   margin: 0px;
 }
 
-.deviceContainer p{
+.deviceText{
   grid-column: 2 / 3;
   grid-row: 2 / 3;
   font-family: var(--text-font);
@@ -448,7 +448,7 @@
   .deviceContainer h1{
     font-size: 30px;
   }
-  .deviceContainer p{
+  .deviceText{
     font-size: 18px;
   }
 }
@@ -456,7 +456,7 @@
   .deviceContainer h1{
     font-size: 30px;
   }
-  .deviceContainer p{
+  .deviceText{
     font-size: 15px;
   }
 }
@@ -481,7 +481,7 @@
     font-size: 30px;
   }
   
-  .deviceContainer p{
+  .deviceText{
     grid-column: 2 / 3;
     grid-row: 2 / 3;
     font-size: 15px;
@@ -519,7 +519,7 @@
     margin-top: 50px;
     padding: 0px 20px;
   }
-  .deviceContainer p{
+  .deviceText{
     font-size: 10px;
   }
   .deviceContainer h1{
@@ -535,7 +535,7 @@
   .deviceAnimationContainer{
     display: none;
   }
-  .deviceContainer p{
+  .deviceText{
     font-size: 10px;
   }
   .deviceContainer h1{

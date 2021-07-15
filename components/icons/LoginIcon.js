@@ -1,16 +1,16 @@
 import style from '../btns/textBtn.module.css'
 
-export default function LoginIcon(){
+export default function LoginIcon({classN}){
 
     return(
 
 <svg version="1.1"
 	 xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
      xmlnsa="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
-     viewBox="0 0 41.8 31.4"  className={style.icon}>
+     viewBox="0 0 41.8 31.4"  className={classN ? classN : style.icon}>
 <g>
 	<g>
-		<path   d="M16.7,30.3c-0.2,0-0.5,0-0.7-0.1c-0.7-0.3-1.1-1-1.1-1.7v-6H4.3c-2.4,0-4.3-1.9-4.3-4.3v-6.1
+		<path  d="M16.7,30.3c-0.2,0-0.5,0-0.7-0.1c-0.7-0.3-1.1-1-1.1-1.7v-6H4.3c-2.4,0-4.3-1.9-4.3-4.3v-6.1
 			c0-2.4,1.9-4.3,4.3-4.3h10.6V2.9c0-0.7,0.4-1.4,1.1-1.7c0.7-0.3,1.5-0.1,2,0.4l12.8,12.8c0.3,0.3,0.5,0.8,0.5,1.2
 			s-0.2,0.9-0.5,1.2L18,29.8C17.6,30.1,17.2,30.3,16.7,30.3z M4.3,10.8c-0.7,0-1.3,0.6-1.3,1.3v6.1c0,0.7,0.6,1.3,1.3,1.3h11.8
 			c1,0,1.8,0.8,1.8,1.8v4.5l10-10l-10-10v3.4c0,1-0.8,1.8-1.8,1.8H4.3z M28.7,16.6C28.7,16.6,28.7,16.6,28.7,16.6L28.7,16.6z
