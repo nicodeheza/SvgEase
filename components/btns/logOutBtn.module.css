@@ -1,0 +1,45 @@
+.btn{
+    border: none;
+    width: fit-content;
+    height: fit-content;
+    background-color: #f9a0a0;
+    color: white;
+    font-family: var(--title-font);
+    font-size: 15px;
+    font-weight: lighter;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    padding: 5px 20px; 
+    cursor: pointer;
+}
+.icon{
+    width: 25px;
+    fill: white;
+    margin-left: 30px;
+    margin-top: 5px;
+}
+
+@media(max-width: 550px){
+    .icon{
+        margin-left: 10px;
+    }
+}
+
+@media(max-width: 400px){
+    .btn{
+        font-size: 12px;
+    }
+    .icon{
+        width: 15px;
+    }
+}
+
+@media(max-width: 400px){
+    .btn{
+        transform: scale(0.8);
+    }
+
+}

@@ -34,13 +34,13 @@ export default function SingUp({setFloatWin}){
                 </div>
             </div>
             <form className={styles.form}>
-                <input type='text' placeholder='Email' 
+                <input type='text' placeholder='Email' autoComplete='email'
                 onChange={(e)=>setFormFields({...formFields, email: e.target.value})}
                 value={formFields.email} />
-                <input type='password' placeholder='Contraseña'
+                <input type='password' placeholder='Contraseña' autoComplete='new-password'
                 onChange={(e)=>setFormFields({...formFields, password: e.target.value})}
                 value={formFields.password} />
-                <input type='password' placeholder='Repetir Contraseña'
+                <input type='password' placeholder='Repetir Contraseña'  autoComplete='new-password'
                 onChange={(e)=>setFormFields({...formFields, repeat: e.target.value})}
                 value={formFields.repeat} />
                 <button type='submit' onClick={(e)=>submit(e)}>Ingresar</button>

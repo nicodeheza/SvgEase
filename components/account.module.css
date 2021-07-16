@@ -1,0 +1,101 @@
+.mainContainer{
+    position: fixed;
+    top: 90px;
+    height: calc( 100vh - 90px);
+    width: 40%;
+    min-width: 500px;
+    background-color: white;
+    z-index: 100;
+    padding: 0px 10px;
+    box-shadow: 5px 10px 5px rgba(0, 0, 0, .3);
+    transition: 1s;
+}
+.mainContainerClose{
+    position: fixed;
+    top: 90px;
+    height: calc( 100vh - 90px);
+    width: 40%;
+    min-width: 500px;
+    background-color: white;
+    z-index: 100;
+    padding: 0px 10px;
+    box-shadow: 5px 10px 5px rgba(0, 0, 0, .3);
+    transition: 1s;
+    transform: translate(-800px, 0px);
+}
+.header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+.header h2 {
+    margin: 0px;
+    font-family: var(--title-font);
+    color: var(--text-color);
+    font-size: 30px;
+}
+.logOut{
+    margin-left: 25px;
+}
+.closeIcon{
+    width: 15px;
+    height: 15px;
+    fill: var(--text-color);
+    cursor: pointer;
+}
+
+.mainContainer hr{
+    width: 95%;
+}
+
+.MisAnimaciones{
+    font-family: var(--title-font);
+    color: var(--text-color);
+    font-size: 22px;
+    
+}
+
+@media(max-width: 750px){
+    .mainContainer, .mainContainerClose{
+        width: 100%;
+        z-index: 1;
+        padding: 0px 30px;
+    }
+    .header{
+        margin-top: 30px;
+        width: 100vw;
+        padding-right: 60px;
+    }
+}
+@media(max-width: 450px){
+    .header h2{
+        font-size: 25px;
+    }
+    .logOut{
+        margin-left: 0px;
+    }
+}
+@media(max-width: 400px){
+    .mainContainer, .mainContainerClose{
+        top: 60px;
+        height: calc( 100vh - 60px);
+        padding: 0px 10px;
+    }
+    .header{
+        padding-right: 30px;
+    }
+}
+@media(max-width: 320px){
+    .header h2{
+        font-size: 15px;
+    }
+
+    .MisAnimaciones{
+        font-size: 15px;
+        
+    }
+    
+}
+
