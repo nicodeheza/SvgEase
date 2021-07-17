@@ -4,13 +4,14 @@ import LoginIcon from "./icons/LoginIcon";
 import SingupIcon from "./icons/singupIcon";
 import styles from './cart.module.css';
 
-export default function Cart({setFloatWin, open }){
+export default function Cart({setFloatWin, open, store }){
     const [cartProducts, setCartProducts]=([]);
     const [total, setTotal]=useState(0);
     const[currency, setCurrency]= useState('');
 
     return(
-        <aside className={open ? styles.cartMainContainer : styles.cartMainContainerClose}>
+        <aside className={open && store ? styles.storeCartMainContainer : !open && store ? styles.storeCartMainContainerClose :
+             open && !store ? styles.cartMainContainer : styles.cartMainContainerClose}>
             <div className={styles.headerContainer}>
                 <h3>Carro de Compras</h3>
                 <div onClick={()=>setFloatWin('none')} className={styles.closeContainer}>

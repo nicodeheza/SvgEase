@@ -1,0 +1,222 @@
+.header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100vw;
+    background-color: white;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+    height: 80px;
+}
+.logoLogContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 20px;
+    width: 50%;
+    min-width: 500px;
+}
+.logoLogContainer img{
+    width: 100px;
+}
+.rightContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 50%;
+    padding-right: 20px;
+}
+.homeIcon, .helpIcon{
+    width: 50px;
+    height: 50px;
+    fill: var(--text-color);
+    margin-right: 50px;
+}
+.homeIcon:hover, .helpIcon:hover{
+    fill: var(--hover-text-color);
+}
+
+.select{
+    background-color: #e2e2e2;
+    border: none;
+    border-radius: 10px;
+    font-family: var(--title-font);
+    font-size: 30px;
+    color: var(--text-color);
+    padding: 0px 10px;
+    margin-right: 40px;
+}
+
+.textBtn{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 65%;
+    min-width: 400px;
+    height: fit-content;
+    padding: 0px 30px;
+}
+
+.movilContainer, .movilMenuWindow, .movilMenuWindowClose{
+    display: none;
+}
+@media(max-width: 1000px){
+    .homeIcon, .helpIcon{
+        margin-right: 20px;
+    }
+}
+@media(max-width: 950px){
+    .homeIcon, .helpIcon{
+        margin-right: 5px;
+    }
+    .select{
+        margin-right: 10px;
+    }
+    .textBtn{
+        min-width: 350px;
+        padding: 0px 0px;
+        margin: 0;
+    }
+
+    .logoLogContainer{
+        margin-left: 20px;
+        width: 80%;
+        min-width: 400px;
+    }
+    .rightContainer{
+        width: 60%;
+        padding-right: 20px;
+    }
+    .select{
+        padding: 0px 10px;
+        margin-right: 10px;
+    }
+
+}
+
+@media(max-width: 850px){
+.logoLogContainer, .helpIcon, .homeIcon, .select{
+    display: none;
+}
+.rightContainer{
+    width: fit-content;
+}
+.movilContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0px 40px 0px 20px;
+}
+.movilMenu{
+    width: 50px;
+}
+.movilLogo{
+    width: 200px;
+}
+.searchIcon{
+    width: 40px;
+    height: 40px;
+    fill: var(--text-color);
+}
+
+.movilMenuWindow{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: 80px;
+    width: 100vw;
+    background-color: white;
+    padding-top:  20px;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+    transition: 1s;
+}
+.movilMenuWindowClose{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    top: 80px;
+    width: 100vw;
+    background-color: white;
+    padding-top:  20px;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+    transition: 1s;
+    transform: translateY(-500px);
+
+}
+.selectMovil{
+    background-color: #e2e2e2;
+    border: none;
+    border-radius: 10px;
+    font-family: var(--title-font);
+    font-size: 30px;
+    color: var(--text-color);
+    padding: 0px 10px;
+}
+.movilMenuWindow ul, .movilMenuWindowClose ul{
+    list-style: none;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0px;
+    padding: 0px;
+}
+.movilMenuWindow li, .movilMenuWindowClose li{
+    font-family: var(--title-font);
+    color: var(--text-color);
+    font-size: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.homeMovil, .helpMovil{
+    width: 25px;
+    height: 25px;
+    fill: var(--text-color);
+    margin-left: 10px;
+}
+}
+
+@media(max-width: 500px){
+    .movilContainer{
+        padding: 0px 10px 0px 20px;
+    }
+}
+
+@media(max-width: 450px){
+    .header{
+        height: 60px;
+    }
+    .movilLogo{
+        width: 125px;
+    }
+    .movilMenu{
+        width: 30px;
+        margin-right: 10px;
+    }
+    .searchIcon{
+        width: 30px;
+        height: 30px;
+    }
+    .movilMenuWindow{
+        top: 60px;
+    }
+}
+@media(max-width: 300px){
+    .movilLogo{
+        width: 100px;
+    }
+    .searchIcon{
+        width: 25px;
+        height: 25px;
+    }
+  
+}

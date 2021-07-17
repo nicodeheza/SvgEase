@@ -45,6 +45,7 @@ export default function Home() {
       <Head>
         <title>SvgEase-Home</title>
       </Head>
+      
       <header>
         <div className={styles.headerContainerFirst}>
           <div className={styles.btnContainer}>
@@ -143,11 +144,14 @@ export default function Home() {
           </li>
         </ul>
       </nav>
+
+      {/* log in - sing up */}
       {floatWin === "logIn" ? (
         <LogIn setFloatWin={setFloatWin} />
       ) : floatWin === "singUp" ? (
         <SingUp setFloatWin={setFloatWin} />
       ) : null}
+
       <main>
         <section className={styles.gallery} id="acerca">
           <div className={styles.titleGalleryContainer}>

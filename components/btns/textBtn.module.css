@@ -26,7 +26,21 @@
  .container:hover .icon{
      fill: var(--hover-text-color);
  }
-
+ @media(max-width: 850px){
+     .containerMovilStore{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: fit-content;
+        cursor: pointer;
+        margin: 0px;
+     }
+     .containerMovilStore p{
+         margin: 0px 10px;
+     }
+ }
  @media (max-width: 750px){
      .container{
          display: none;

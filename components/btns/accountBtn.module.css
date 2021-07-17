@@ -45,6 +45,31 @@
     fill:  var(--text-color);
     align-self: center;
 }
+@media(max-width: 850px){
+    .containerMovilStore{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        cursor: pointer;
+    }
+    .containerMovilStore p{
+        font-family: var(--title-font);
+        color: var(--text-color);
+        font-size: 20px;
+        margin: 0px;
+        padding: 0px;
+        /* margin-top: 20p */
+    }
+    .storeMovilIcon{
+        width: 20px;
+        height: 20px;
+        fill:  var(--text-color);
+        align-self: center;
+    }
+    
+}
 
 @media(max-width: 750px){
     .container{
