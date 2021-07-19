@@ -1,0 +1,128 @@
+.mainContainer, .mainContainerClose{
+    margin-top: 80px;
+    width: 300px;
+    height: calc( 100vh - 80px);
+    overflow: scroll;
+    overflow-x: hidden;
+    padding: 20px;
+    transition: 1s;
+}
+
+.searchInput{
+    border: none;
+    border-bottom: solid 2px;
+    font-family: var(--title-font);
+    font-size: 20px;
+    color: var(--text-color);
+    width: 80%;
+}
+.searchBtn{
+    border: none;
+    background-color: white;
+    cursor: pointer;
+}
+
+.searchIcon{
+    fill: var(--text-color);
+    width: 20px;
+    height: 20px;
+}
+
+.title{
+    font-family: var(--title-font);
+    color: var(--text-color);
+    font-size: 18px;
+}
+.filterContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.filter{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.filterTag{
+    font-family: var(--text-font);
+    color: var(--text-color);
+    font-size: 12px;
+    margin: 0px;
+}
+.dropBtn, .openCloseBtn{
+    border: none;
+    background-color: white;
+    cursor: pointer;
+}
+.dropIcon{
+    fill: #ff8366;
+    width: 12px;
+    height: 12px;
+}
+
+.titleContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.tagTitle{
+    font-family: var(--text-font);
+    font-weight: bold;
+    color: var(--text-color);
+    margin: 0px;
+}
+
+.openCloseIcon{
+    width: 15px;
+    height: 15px;
+    fill: var(--text-color);
+    margin-top: 5px;
+
+}
+
+.tags{
+    font-family: var(--text-font);
+    color: var(--text-color);
+    list-style: none;
+    font-size: 15px;
+    cursor: pointer;
+}
+.tags:hover{
+    color: var(--hover-text-color);
+}
+.tagContainerClose{
+    height: 0px;
+    overflow: hidden;
+}
+.tagContainerOpen{
+    height: fit-content;
+}
+.closeContainer{
+    display: none;
+}
+
+@media(max-width: 850px){
+    .mainContainer, .mainContainerClose{
+        position: fixed;
+    }
+    .mainContainerClose{
+        transform: translateX(-300px);
+    }
+    .closeContainer{
+        display: block;
+        width: fit-content;
+        margin-left: 240px;
+    }
+    .closeIcon{
+        width: 15px;
+        height: 15px;
+        fill: var(--text-color);
+    }
+}
+@media(max-width: 450px){
+    .mainContainer, .mainContainerClose{
+        margin-top: 60px;
+        height: calc( 100vh - 60px);
+    }
+}

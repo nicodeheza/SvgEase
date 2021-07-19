@@ -15,6 +15,7 @@ import LogIn from '../components/LogIn';
 import SingUp from '../components/SingUp';
 import Cart from '../components/Cart';
 import Account from '../components/Acconut';
+import Search from '../components/Search';
 
 export default function Tienda(){
     const {auth}= useAuthContext();
@@ -36,7 +37,7 @@ export default function Tienda(){
             <div className={styles.movilContainer}>
                 <img src='/svgs/menu.svg' alt="menu" className={styles.movilMenu} onClick={()=>setShowMenu(prev=> !prev)} />
                 <img src='/svgs/logo0.svg' alt='SvgEase' className={styles.movilLogo}/>
-                <div>
+                <div onClick={()=>setFloatWin('search')}>
                     <SearchIcon  classN={styles.searchIcon}/>
                 </div>
             </div>
@@ -117,6 +118,14 @@ export default function Tienda(){
         ): (<Account setFloatWin={setFloatWin} close={true} store={true} />)
       }
 
+      {/* search*/}
+
+      {
+          floatWin === 'search' ?
+          (<Search setFloatWin={setFloatWin} open={true} />) : 
+          ((<Search setFloatWin={setFloatWin} open={false} />))
+      }
+        
 
         </>
     )
