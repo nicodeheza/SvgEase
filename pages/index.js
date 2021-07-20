@@ -81,7 +81,7 @@ export default function Home() {
           </div>
           <CartBtn setFloatWin={setFloatWin} />
         </div>
-        <div
+        <nav
           className={showMenu ? styles.movilMenuShow : styles.movilMenuHidden}
         >
           {auth ? (
@@ -113,7 +113,7 @@ export default function Home() {
           <a onClick={() => scrollTo("help")} className={styles.movilMenuA}>
             Como Compro
           </a>
-        </div>
+        </nav>
       </header>
 
 

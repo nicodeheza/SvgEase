@@ -5,6 +5,8 @@
     overflow: scroll;
     overflow-x: hidden;
     padding: 20px;
+    background-color: white;
+    top: 0px;
     transition: 1s;
 }
 

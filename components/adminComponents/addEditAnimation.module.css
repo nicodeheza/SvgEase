@@ -1,0 +1,131 @@
+
+.mainContainer{
+    position: fixed;
+    top: 80px;
+    right: 0px;
+    height: calc(100vh - 80px);
+    width: 30%;
+    padding: 20px;
+    background-color: white;
+    border: solid;
+}
+
+.header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.header h3{
+    font-family: var(--title-font);
+    color: var(--text-color);
+}
+.header button{
+    border: none;
+    background-color: white;
+}
+.closeIcon{
+    fill: var(--text-color);
+    width: 15px;
+    height: 15px;
+}
+
+.mainContainer form{
+    display: flex;
+    flex-direction: column; 
+    width: 80%;
+    margin: auto;
+}
+.input{
+     border: none;
+     border-bottom: solid 2px var(--text-color);
+     background-color: white;
+     font-family: var(--title-font);
+     color: var(--text-color);
+     margin-bottom: 20px;
+}
+
+.file{
+    color: transparent;
+}
+.file::-webkit-file-upload-button{
+    visibility: hidden;
+}
+
+.file::before{
+    content: 'Subir Archivo';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--title-font);
+    color: black;
+    width: 150px;
+    height: 150px;
+    border-radius: 20px;
+    background-color: #ededed;
+    margin: auto;
+    cursor: pointer;
+}
+
+.addTagBtn{
+    border: none;
+    font-family: var(--text-font);
+    font-size: 10px;
+    color: white;
+    background-color: #7c7c7c;
+    border-radius: 20px;
+    padding: 5px 20px;
+    cursor: pointer;
+    margin-left: 10px;
+} 
+.categoryBox{
+    margin-bottom: 20px;
+}
+.categoryBox h4{
+    margin: 0px;
+}
+.categoryBox ul{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0px;
+    padding: 0px;
+    height: 60px;
+}
+.categoryBox li{
+list-style: none;
+font-family: var(--text-font);
+color: var(--text-color);
+font-size: 12px;    
+vertical-align: middle;
+margin: 5px;
+}
+.categoryBox span{
+    cursor: pointer;
+}
+.dropIcon{
+    width: 12px;
+    height: 12px;
+    fill: #ff8366;
+}
+.currency{
+    font-family: var(--title-font);
+    color: var(--text-color);
+    border: none;
+    font-size: 30px;
+    background-color: white;
+}
+.currencyInput{
+    width: 100px;
+}
+.submitBtn{
+    background-color: #8cb6f4;
+    font-family: var(--title-font);
+    color: white;
+    border: none;
+    font-size: 30px;
+    padding: 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+    cursor: pointer;
+}

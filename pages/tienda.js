@@ -27,6 +27,11 @@ export default function Tienda(){
             setShowMenu(false);
         }
     },[floatWin]);
+    useEffect(()=>{
+        if(showMenu){
+            setFloatWin('none');
+        }
+    },[showMenu]);
 
     return(
         <>
@@ -77,7 +82,7 @@ export default function Tienda(){
             </div>
         </header>
         {/*movil menu*/}
-        <div className={showMenu ? styles.movilMenuWindow : styles.movilMenuWindowClose }>
+        <nav className={showMenu ? styles.movilMenuWindow : styles.movilMenuWindowClose }>
             <ul>
             {
                !auth ? 
@@ -96,7 +101,7 @@ export default function Tienda(){
                 <li><Link href='/#help' ><a>Ayuda{" "}<span><HelpIcon classN={styles.helpMovil}/></span></a></Link></li>
                 <li><CurrencySelector movil={true}/></li>
             </ul>
-        </div>
+        </nav>
 
         {/*float windows*/}
         {floatWin === "logIn" ? (
@@ -123,7 +128,7 @@ export default function Tienda(){
       {
           floatWin === 'search' ?
           (<Search setFloatWin={setFloatWin} open={true} />) : 
-          ((<Search setFloatWin={setFloatWin} open={false} />))
+          (<Search setFloatWin={setFloatWin} open={false} />)
       }
         
 
