@@ -1,18 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Close from "../icons/Close";
 import DropIcon from "../icons/DropIcon";
+import Lottie from "lottie-web";
 import styles from './addEditAnimation.module.css';
 
-export default function AddEditAnimation(){
+
+export default function AddEditAnimation({setFloatWin, open}){
 
     const [formData, setFormData]= useState({
         name:'',
         category:'',
         tags:[],
-        price: null    
+        price: '',
+        file: null,    
     });
 
     const [tag, setTag]=useState('');
+    const[fileLoaded, setFileLoaded]= useState(false);
+    //const[previewAnimation, setPreviewAnimation]= useState(undefined);
 
     function addTag(e){
         e.preventDefault();
@@ -35,16 +40,56 @@ export default function AddEditAnimation(){
         console.log(formData);
     }
 
+    function addFile(file){
+        setFormData({...formData, file });
+
+        let reader= new FileReader();
+        reader.readAsText(file);
+        reader.onload= playAnimation;
+        setFileLoaded(true);
+
+        function playAnimation(e){
+            const animation= JSON.parse(e.target.result);
+
+            Lottie.loadAnimation({
+                container: document.getElementById('animation-preview'),
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                animationData: animation,
+                rendererSettings: {
+                    className: 'prevAnimation'
+                }
+            });
+        }
+    }
+
+    function removeFile(){
+        Lottie.destroy('prevAnimation');
+        setFormData({...formData, file: null});
+        setFileLoaded(false);
+    }
+
+
     return(
-        <aside className={styles.mainContainer}>
+        <aside className={open ? styles.mainContainer : styles.mainContainerClose}>
             <div className={styles.header}>
                 <h3>Agregar Animación</h3>
-                <button>
+                <button onClick={()=>setFloatWin('none')}>
                     <Close classN={styles.closeIcon} />
                 </button>
             </div>
             <form>
-                <input type='file' placeholder='Subir Archivo' className={styles.file} />
+                {
+                    fileLoaded ? 
+                    (<div className={styles.animationPreview} onClick={()=>removeFile()}>
+                        <div id='animation-preview' className={styles.animation}/>
+                    </div>) :
+                    (
+                        <input type='file' placeholder='Subir Archivo' className={styles.file} 
+                        accept="application/JSON" onChange={(e)=>addFile(e.target.files[0])}/>
+                    )
+                }
                 <input type='text' placeholder='Nombre' maxLength='25' className={styles.input}
                 value={formData.name} onChange={(e)=>setFormData({...formData, name: e.target.value})} />
                 <select value={formData.category} className={styles.input}
@@ -56,8 +101,8 @@ export default function AddEditAnimation(){
                     <option value='botones'>Botones</option>
                     <option value='tarjetas'>Tarjetas</option>
                 </select>
-                <div>
-                <input type='text' placeholder='Categorías Optativas' maxLength='25' className={styles.input}
+                <div className={styles.opCategories}>
+                <input type='text' placeholder='Categoría Optativa' maxLength='25' className={styles.input}
                 value={tag} onChange={(e)=>setTag(e.target.value)} />
                 <button onClick={(e)=> addTag(e)} className={styles.addTagBtn}>Agregar</button>
                 </div>

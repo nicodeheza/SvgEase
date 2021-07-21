@@ -51,7 +51,7 @@ export default function Admin(){
             <button className={styles.searchBtn} onClick={()=>setFloatWin('search')}>
                 <SearchIcon  classN={styles.searchIcon}/>
             </button>
-            <button className={styles.addBtn}>
+            <button className={styles.addBtn} onClick={()=>setFloatWin('addEdit')}>
                 <AddIcon classN={styles.addIcon}/>
             </button>
             </div>
@@ -76,8 +76,11 @@ export default function Admin(){
             (<Search setFloatWin={setFloatWin} open={false} />)
         }
 
-
-        <AddEditAnimation />
+        {
+            floatWin === 'addEdit' ?
+            (<AddEditAnimation setFloatWin={setFloatWin} open={true} />):
+            (<AddEditAnimation setFloatWin={setFloatWin} open={false}/>)
+        }
 
         </>
     )

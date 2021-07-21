@@ -5,9 +5,28 @@
     right: 0px;
     height: calc(100vh - 80px);
     width: 30%;
+    min-width: 280px;
     padding: 20px;
     background-color: white;
-    border: solid;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    box-shadow: -5px 0px 5px rgba(0, 0, 0, 0.3);
+    transition: 1s;
+}
+.mainContainerClose{
+    position: fixed;
+    top: 80px;
+    right: 0px;
+    height: calc(100vh - 80px);
+    width: 30%;
+    min-width: 280px;
+    padding: 20px;
+    background-color: white;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    box-shadow: -5px 0px 5px rgba(0, 0, 0, 0.3);
+    transition: 1s;
+    transform: translateX(120%);
 }
 
 .header{
@@ -19,10 +38,12 @@
 .header h3{
     font-family: var(--title-font);
     color: var(--text-color);
+    margin: 0px;
 }
 .header button{
     border: none;
     background-color: white;
+    cursor: pointer;
 }
 .closeIcon{
     fill: var(--text-color);
@@ -35,6 +56,7 @@
     flex-direction: column; 
     width: 80%;
     margin: auto;
+    /* height: 100%; */
 }
 .input{
      border: none;
@@ -65,8 +87,33 @@
     background-color: #ededed;
     margin: auto;
     cursor: pointer;
+    margin-top: 10px;
 }
 
+.animationPreview{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+    border-radius: 20px;
+    background-color: #ededed;
+    margin: auto;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 22px;
+}
+.animation{
+    width: 100%;
+    height: 100%;
+}
+.opCategories{
+    white-space: nowrap;
+    width: 100%;
+}
+.opCategories input{
+    width: 70%;
+}
 .addTagBtn{
     border: none;
     font-family: var(--text-font);
@@ -74,12 +121,13 @@
     color: white;
     background-color: #7c7c7c;
     border-radius: 20px;
-    padding: 5px 20px;
+    padding: 5px 15px;
     cursor: pointer;
     margin-left: 10px;
 } 
 .categoryBox{
     margin-bottom: 20px;
+    
 }
 .categoryBox h4{
     margin: 0px;
@@ -90,7 +138,8 @@
     flex-wrap: wrap;
     margin: 0px;
     padding: 0px;
-    height: 60px;
+    min-height: 60px;
+    /* border: solid; */
 }
 .categoryBox li{
 list-style: none;
@@ -123,9 +172,21 @@ margin: 5px;
     font-family: var(--title-font);
     color: white;
     border: none;
-    font-size: 30px;
+    font-size: 20px;
     padding: 10px;
     border-radius: 20px;
     margin-top: 10px;
     cursor: pointer;
+}
+
+@media(max-width: 1020px){
+    .currency{
+        font-size: 20px;
+    }
+}
+@media(max-width: 450px){
+    .mainContainer,.mainContainerClose{
+        top: 60px;
+        height: calc(100vh - 60px);
+    }
 }
