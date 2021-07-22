@@ -17,7 +17,7 @@ export default function AddEditAnimation({setFloatWin, open}){
 
     const [tag, setTag]=useState('');
     const[fileLoaded, setFileLoaded]= useState(false);
-    //const[previewAnimation, setPreviewAnimation]= useState(undefined);
+    const [message, setMessage]= useState('');
 
     function addTag(e){
         e.preventDefault();
@@ -37,11 +37,49 @@ export default function AddEditAnimation({setFloatWin, open}){
 
     function submitFom(e){
         e.preventDefault();
-        console.log(formData);
+
+        if(formData.name && formData.category && formData.price && formData.file){
+
+            formatPrice();
+
+            fetch('/api/product', {
+                method: 'POST',
+                headers:{
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            }).then(res=> res.json())
+            .then(data=>{
+                if(data){
+                    console.log(data);
+                }
+            })
+            .catch(err=> console.log(err));
+
+            setTag('');
+            removeFile();
+            setFormData({
+                name:'',
+                category:'',
+                tags:[],
+                price: '',
+                file: null,    
+            });
+
+
+        }else{
+            setMessage('Nombre, categoría obligatoria y precio son requeridos');
+        }
+    }
+
+    function formatPrice(){
+       let num= formData.price;
+       num.replace(',','.');
+       setFormData({...formData, price: num});
     }
 
     function addFile(file){
-        setFormData({...formData, file });
 
         let reader= new FileReader();
         reader.readAsText(file);
@@ -61,6 +99,8 @@ export default function AddEditAnimation({setFloatWin, open}){
                     className: 'prevAnimation'
                 }
             });
+
+            setFormData({...formData, file: animation });
         }
     }
 
