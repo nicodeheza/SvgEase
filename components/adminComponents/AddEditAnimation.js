@@ -4,7 +4,7 @@ import DropIcon from "../icons/DropIcon";
 import Lottie from "lottie-web";
 import styles from './addEditAnimation.module.css';
 
-
+//agregar autocompletado a tags.
 export default function AddEditAnimation({setFloatWin, open}){
 
     const [formData, setFormData]= useState({
@@ -18,6 +18,14 @@ export default function AddEditAnimation({setFloatWin, open}){
     const [tag, setTag]=useState('');
     const[fileLoaded, setFileLoaded]= useState(false);
     const [message, setMessage]= useState('');
+
+    useEffect(()=>{
+        if(message){
+            setTimeout(()=>{
+                setMessage('')
+            },5000);
+        }
+    },[message]);
 
     function addTag(e){
         e.preventDefault();
@@ -38,6 +46,8 @@ export default function AddEditAnimation({setFloatWin, open}){
     function submitFom(e){
         e.preventDefault();
 
+        setMessage('Cargando...');
+
         if(formData.name && formData.category && formData.price && formData.file){
 
             formatPrice();
@@ -53,6 +63,7 @@ export default function AddEditAnimation({setFloatWin, open}){
             .then(data=>{
                 if(data){
                     console.log(data);
+                    setMessage(data.message);
                 }
             })
             .catch(err=> console.log(err));
@@ -168,6 +179,7 @@ export default function AddEditAnimation({setFloatWin, open}){
                 </div>
                 <button type='submit' onClick={(e)=>submitFom(e)} className={styles.submitBtn}>Agregar</button>
             </form>
+            <p className={styles.message}>{message}</p>
         </aside>
     )
 }

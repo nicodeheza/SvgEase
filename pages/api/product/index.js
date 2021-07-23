@@ -10,9 +10,11 @@ export default async function handler(req, res){
 
     switch(method){
         case 'POST':
-            console.log(body);
+            //console.log(body);
 
             // add product
+            let actualProduct;
+
             try {
                 const product= new Product({
                     name: body.name, 
@@ -21,8 +23,7 @@ export default async function handler(req, res){
                     price: parseFloat(body.price)
                 })
 
-                const actualProduct= await product.save();
-                console.log(actualProduct._id);
+                 actualProduct= await product.save();
             } catch (err) {
                 if(err){
                     console.log(err);
@@ -30,9 +31,10 @@ export default async function handler(req, res){
                 }
             }
 
-            //add categories and tags //probar!!!!!
+            //add categories and tags //
             try {
-                const actualCategory= await Category.find({name:body.category});
+                const actualCategory= await Category.findOne({name: body.category});
+                console.log(actualCategory);
                 if(!actualCategory){
                     const newCategory= new Category({
                         name: body.category,
@@ -40,15 +42,22 @@ export default async function handler(req, res){
                     });
                     await newCategory.save();
                 }else{
-                    let newTags=[];
                     if(body.tags.length > 0){
-                        body.tags.forEach(tag=>{
+                        
+                        if(actualCategory.tags.length > 0){
+                            let newTags=[];
+
+                            body.tags.forEach(tag=>{    
                             const result= actualCategory.tags.find(ele=> ele === tag);
                             if(!result){
                                 newTags.push(tag);
                             }
                         });
                         actualCategory.tags= actualCategory.tags.concat(newTags);
+                       }else{
+                           actualCategory.tags= body.tags
+                       }
+
                         await actualCategory.save();
                     }
                 }
@@ -73,7 +82,7 @@ export default async function handler(req, res){
                 console.log("JSON file has been saved.");
             });
        
-            res.json({message:'ok'});
+            res.json({message:'Producto Cargado Exitosamente'});
             break;
 
         default:

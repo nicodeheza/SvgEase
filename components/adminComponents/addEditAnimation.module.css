@@ -178,6 +178,12 @@ margin: 5px;
     margin-top: 10px;
     cursor: pointer;
 }
+.message{
+    color: red;
+    font-family: var(--text-font);
+    font-size: 10px;
+    text-align: center;
+}
 
 @media(max-width: 1020px){
     .currency{

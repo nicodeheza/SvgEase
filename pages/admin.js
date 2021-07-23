@@ -7,9 +7,36 @@ import styles from '../styles/Admin.module.css';
 import SearchIcon from "../components/icons/SearchIcon";
 import Search from "../components/Search";
 import AddEditAnimation from "../components/adminComponents/AddEditAnimation";
+import ProductGallery from "../components/ProductGallery";
 import { useEffect, useState } from "react";
 
-export default function Admin(){
+import dbConnect from "../lib/mongooseConect";
+import Product from "../models/productSchema";
+import Category from "../models/CategorySchema";
+
+export async function getServerSideProps(){
+    dbConnect();
+    const productsRes= await Product.find({});
+    const categoriesRes= await Category.find({});
+    //console.log(categoriesRes);
+
+    const products= productsRes.map(doc=>{
+        const product= doc.toObject();
+        product._id= product._id.toString()
+        return product;
+    });
+
+    const categories= categoriesRes.map(doc=>{
+        const category= doc.toObject();
+        category._id= category._id.toString()
+        return category;
+    });
+
+    return {props: {products, categories}}
+
+}
+
+export default function Admin({products, categories}){
 
     const [showMenu, setShowMenu]= useState(false);
     const [floatWin, setFloatWin]= useState('none');
@@ -17,6 +44,8 @@ export default function Admin(){
     useEffect(()=>{
         if(floatWin !== 'none'){
             setShowMenu(false);
+            //console.log( products)
+            //console.log( categories)
         }
     },[floatWin]);
     useEffect(()=>{
@@ -70,6 +99,9 @@ export default function Admin(){
             </li>
             </ul>
         </nav>
+
+        <ProductGallery products={products} store={false} />
+
         {
             floatWin === 'search' ?
             (<Search setFloatWin={setFloatWin} open={true} />) : 
@@ -81,7 +113,6 @@ export default function Admin(){
             (<AddEditAnimation setFloatWin={setFloatWin} open={true} />):
             (<AddEditAnimation setFloatWin={setFloatWin} open={false}/>)
         }
-
         </>
     )
 }
