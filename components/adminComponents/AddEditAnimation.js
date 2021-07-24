@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import Close from "../icons/Close";
 import DropIcon from "../icons/DropIcon";
 import Lottie from "lottie-web";
+import priceInPesos from "../../helpersFunctions/priceInPesos";
+import pesosToDolar from "../../helpersFunctions/pesosToDolar";
 import styles from './addEditAnimation.module.css';
 
 //agregar autocompletado a tags.
-export default function AddEditAnimation({setFloatWin, open}){
+export default function AddEditAnimation({setFloatWin, open, usaToArs, categories}){
 
     const [formData, setFormData]= useState({
         name:'',
@@ -18,6 +20,7 @@ export default function AddEditAnimation({setFloatWin, open}){
     const [tag, setTag]=useState('');
     const[fileLoaded, setFileLoaded]= useState(false);
     const [message, setMessage]= useState('');
+    const [currency, setCurrency]= useState('usa');
 
     useEffect(()=>{
         if(message){
@@ -26,6 +29,27 @@ export default function AddEditAnimation({setFloatWin, open}){
             },5000);
         }
     },[message]);
+
+    function changeCurrency(newCurrency){
+        if(formData.price){
+
+        const stringPrice= formData.price
+        const numberPrice= parseFloat(stringPrice);
+        if(currency === 'ars' && newCurrency ==='usa'){
+            const price= pesosToDolar(numberPrice, usaToArs);
+            const RoundPrice= Math.round(price * 100) / 100;
+            setFormData({...formData, price: RoundPrice.toString()});
+           // console.log('ars to usa');
+
+        }else if(currency === 'usa' && newCurrency ==='ars'){
+            const price= priceInPesos(numberPrice, usaToArs);
+            const RoundPrice= Math.round(price * 100) / 100;
+            setFormData({...formData, price: RoundPrice.toString()});
+        }
+      }
+
+        setCurrency(newCurrency);
+    }
 
     function addTag(e){
         e.preventDefault();
@@ -43,30 +67,34 @@ export default function AddEditAnimation({setFloatWin, open}){
         setFormData({...formData, tags: tagsArr});
     }
 
-    function submitFom(e){
+      function submitFom(e){
         e.preventDefault();
 
         setMessage('Cargando...');
 
         if(formData.name && formData.category && formData.price && formData.file){
+            //anda mal // mantener el price siempre en dolares y agregar otro state que muestre el importe. 
+            if(currency === 'ars'){
+                changeCurrency('usa');
+            }
 
-            formatPrice();
+            console.log(formData);
 
-            fetch('/api/product', {
-                method: 'POST',
-                headers:{
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            }).then(res=> res.json())
-            .then(data=>{
-                if(data){
-                    console.log(data);
-                    setMessage(data.message);
-                }
-            })
-            .catch(err=> console.log(err));
+            // fetch('/api/product', {
+            //     method: 'POST',
+            //     headers:{
+            //       'Accept': 'application/json',
+            //       'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify(formData)
+            // }).then(res=> res.json())
+            // .then(data=>{
+            //     if(data){
+            //         console.log(data);
+            //         setMessage(data.message);
+            //     }
+            // })
+            // .catch(err=> console.log(err));
 
             setTag('');
             removeFile();
@@ -78,16 +106,10 @@ export default function AddEditAnimation({setFloatWin, open}){
                 file: null,    
             });
 
-
+            
         }else{
             setMessage('Nombre, categoría obligatoria y precio son requeridos');
         }
-    }
-
-    function formatPrice(){
-       let num= formData.price;
-       num.replace(',','.');
-       setFormData({...formData, price: num});
     }
 
     function addFile(file){
@@ -172,7 +194,7 @@ export default function AddEditAnimation({setFloatWin, open}){
                 <div>
                 <input type='number' placeholder='Precio' value={formData.price} className={styles.input + ' '+ styles.currencyInput}
                 onChange={(e)=>setFormData({...formData, price: e.target.value})} />
-                <select className={styles.currency}>
+                <select className={styles.currency} value={currency} onChange={(e)=>changeCurrency(e.target.value)}>
                     <option value='usa'>USA$</option>
                     <option value='ars'>ARS$</option>
                 </select>

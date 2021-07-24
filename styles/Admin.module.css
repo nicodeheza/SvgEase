@@ -95,6 +95,7 @@
         margin-top: 80px;
         transition: 1s;
         box-shadow: 0px 5px 5px rgba(0, 0, 0, .3);
+        background-color: white;
     }
     .menuClose{
         transform: translateY(-120%);

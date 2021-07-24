@@ -15,10 +15,10 @@ import Product from "../models/productSchema";
 import Category from "../models/CategorySchema";
 
 export async function getServerSideProps(){
-    dbConnect();
+
+    await dbConnect();
     const productsRes= await Product.find({});
     const categoriesRes= await Category.find({});
-    //console.log(categoriesRes);
 
     const products= productsRes.map(doc=>{
         const product= doc.toObject();
@@ -32,22 +32,26 @@ export async function getServerSideProps(){
         return category;
     });
 
-    return {props: {products, categories}}
+    const exchangeRateRes= await fetch(`https://v6.exchangerate-api.com/v6/${process.env.EXCHANGE_RATE_API_KEY}/pair/USD/ARS`);
+    const exchangeRate= await exchangeRateRes.json();
+    const usaToArs= exchangeRate.conversion_rate;
+
+    return {props: {products, categories, usaToArs}}
 
 }
 
-export default function Admin({products, categories}){
+export default function Admin({products, categories, usaToArs}){
 
     const [showMenu, setShowMenu]= useState(false);
     const [floatWin, setFloatWin]= useState('none');
+    const [currency, setCurrency]= useState('ars');
     
     useEffect(()=>{
         if(floatWin !== 'none'){
             setShowMenu(false);
-            //console.log( products)
-            //console.log( categories)
         }
     },[floatWin]);
+
     useEffect(()=>{
         if(showMenu){
             setFloatWin('none');
@@ -76,7 +80,7 @@ export default function Admin({products, categories}){
             <div className={styles.logOutContainer}>
             <LogOutBtn />
             </div> 
-            <CurrencySelector />
+            <CurrencySelector currency={currency} setCurrency={setCurrency} />
             <button className={styles.searchBtn} onClick={()=>setFloatWin('search')}>
                 <SearchIcon  classN={styles.searchIcon}/>
             </button>
@@ -95,12 +99,12 @@ export default function Admin({products, categories}){
             <LogOutBtn />
             </li>
             <li>
-            <CurrencySelector movil={true} />
+            <CurrencySelector movil={true} currency={currency} setCurrency={setCurrency} />
             </li>
             </ul>
         </nav>
 
-        <ProductGallery products={products} store={false} />
+        <ProductGallery products={products} store={false} currency={currency} usaToArs={usaToArs} />
 
         {
             floatWin === 'search' ?
@@ -110,8 +114,8 @@ export default function Admin({products, categories}){
 
         {
             floatWin === 'addEdit' ?
-            (<AddEditAnimation setFloatWin={setFloatWin} open={true} />):
-            (<AddEditAnimation setFloatWin={setFloatWin} open={false}/>)
+            (<AddEditAnimation setFloatWin={setFloatWin} open={true} usaToArs={usaToArs} categories={categories} />):
+            (<AddEditAnimation setFloatWin={setFloatWin} open={false} usaToArs={usaToArs} categories={categories}/>)
         }
         </>
     )

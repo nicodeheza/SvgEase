@@ -4,9 +4,26 @@
     left: 300px;
     width: calc( 100% - 300px);
     height: calc( 100% - 80px);
-    background-color: red;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
+    background-color: white;
+    display:  grid;
+    grid-template-columns: repeat(auto-fit, 220px);
+    gap: 20px;
+    justify-content: center;
+    padding: 20px; 
+    overflow-y: scroll;
+    z-index: -1;
+}
+
+
+@media(max-width: 850px){
+    .container{
+        left: 0px;
+        width:  100%;
+    }
+}
+@media(max-width: 450px){
+    .container{
+        top: 60px;
+        height: calc( 100% - 60px);
+    }
 }
