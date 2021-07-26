@@ -51,7 +51,7 @@
     height: 15px;
 }
 
-.mainContainer form{
+.mainContainer form, .mainContainerClose form{
     display: flex;
     flex-direction: column; 
     width: 80%;

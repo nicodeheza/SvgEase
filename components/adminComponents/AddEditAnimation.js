@@ -17,6 +17,7 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
         file: null,    
     });
 
+    const [priceDisplay, setPriceDisplay]= useState('');
     const [tag, setTag]=useState('');
     const[fileLoaded, setFileLoaded]= useState(false);
     const [message, setMessage]= useState('');
@@ -30,25 +31,42 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
         }
     },[message]);
 
-    function changeCurrency(newCurrency){
-        if(formData.price){
 
-        const stringPrice= formData.price
+
+    function changeCurrency(newCurrency){
+        if(priceDisplay){
+
+        const stringPrice= priceDisplay;
         const numberPrice= parseFloat(stringPrice);
+        
         if(currency === 'ars' && newCurrency ==='usa'){
             const price= pesosToDolar(numberPrice, usaToArs);
             const RoundPrice= Math.round(price * 100) / 100;
+            setPriceDisplay(RoundPrice.toString());
             setFormData({...formData, price: RoundPrice.toString()});
-           // console.log('ars to usa');
 
         }else if(currency === 'usa' && newCurrency ==='ars'){
             const price= priceInPesos(numberPrice, usaToArs);
             const RoundPrice= Math.round(price * 100) / 100;
-            setFormData({...formData, price: RoundPrice.toString()});
+            setPriceDisplay(RoundPrice.toString());
+            setFormData({...formData, price: stringPrice});
         }
       }
 
         setCurrency(newCurrency);
+    }
+
+    function onPriceChange(price){
+        if(currency === 'ars'){
+            setPriceDisplay(price);
+            const numberPrice= parseFloat(price);
+            const newValue= pesosToDolar(numberPrice, usaToArs);
+            const RoundPrice= Math.round(newValue * 100) / 100;
+            setFormData({...formData, price: RoundPrice.toString()});
+        }else if(currency === 'usa'){
+            setPriceDisplay(price);
+            setFormData({...formData, price});
+        }
     }
 
     function addTag(e){
@@ -74,10 +92,7 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
 
         if(formData.name && formData.category && formData.price && formData.file){
             //anda mal // mantener el price siempre en dolares y agregar otro state que muestre el importe. 
-            if(currency === 'ars'){
-                changeCurrency('usa');
-            }
-
+          
             console.log(formData);
 
             // fetch('/api/product', {
@@ -192,8 +207,8 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
                     </ul>
                 </div>
                 <div>
-                <input type='number' placeholder='Precio' value={formData.price} className={styles.input + ' '+ styles.currencyInput}
-                onChange={(e)=>setFormData({...formData, price: e.target.value})} />
+                <input type='number' placeholder='Precio' value={priceDisplay} className={styles.input + ' '+ styles.currencyInput}
+                onChange={(e)=> onPriceChange(e.target.value)} />
                 <select className={styles.currency} value={currency} onChange={(e)=>changeCurrency(e.target.value)}>
                     <option value='usa'>USA$</option>
                     <option value='ars'>ARS$</option>
