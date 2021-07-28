@@ -8,6 +8,7 @@ import SearchIcon from "../components/icons/SearchIcon";
 import Search from "../components/Search";
 import AddEditAnimation from "../components/adminComponents/AddEditAnimation";
 import ProductGallery from "../components/ProductGallery";
+import {useRouter} from 'next/router';
 import { useEffect, useState } from "react";
 
 import dbConnect from "../lib/mongooseConect";
@@ -22,7 +23,8 @@ export async function getServerSideProps(){
 
     const products= productsRes.map(doc=>{
         const product= doc.toObject();
-        product._id= product._id.toString()
+        product._id= product._id.toString();
+        product.file= require(`../productsFiles/${product._id}.json`);
         return product;
     });
 
@@ -45,6 +47,18 @@ export default function Admin({products, categories, usaToArs}){
     const [showMenu, setShowMenu]= useState(false);
     const [floatWin, setFloatWin]= useState('none');
     const [currency, setCurrency]= useState('ars');
+    //const [products, setProducts]= useState(FetchProducts);
+    const [edit, setEdit]= useState({});
+
+
+    const router = useRouter();
+    const refreshData = () => {
+        router.replace(router.asPath);
+      }
+
+    // useEffect(()=>{
+    //     setProducts(FetchProducts);
+    // },[products])
     
     useEffect(()=>{
         if(floatWin !== 'none'){
@@ -57,6 +71,7 @@ export default function Admin({products, categories, usaToArs}){
             setFloatWin('none');
         }
     },[showMenu]);
+
 
     return(
         <>
@@ -104,7 +119,8 @@ export default function Admin({products, categories, usaToArs}){
             </ul>
         </nav>
 
-        <ProductGallery products={products} store={false} currency={currency} usaToArs={usaToArs} />
+        <ProductGallery products={products} store={false} currency={currency} usaToArs={usaToArs} 
+        setEdit={setEdit} edit={edit} />
 
         {
             floatWin === 'search' ?
@@ -114,8 +130,10 @@ export default function Admin({products, categories, usaToArs}){
 
         {
             floatWin === 'addEdit' ?
-            (<AddEditAnimation setFloatWin={setFloatWin} open={true} usaToArs={usaToArs} categories={categories} />):
-            (<AddEditAnimation setFloatWin={setFloatWin} open={false} usaToArs={usaToArs} categories={categories}/>)
+            (<AddEditAnimation setFloatWin={setFloatWin} open={true} usaToArs={usaToArs} refreshData={refreshData}
+                 categories={categories} edit={edit} setEdit={setEdit} products={products} />):
+            (<AddEditAnimation setFloatWin={setFloatWin} open={false} usaToArs={usaToArs} refreshData={refreshData}
+                 categories={categories} edit={edit} setEdit={setEdit} products={products} />)
         }
         </>
     )

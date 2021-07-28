@@ -167,7 +167,7 @@ margin: 5px;
 .currencyInput{
     width: 100px;
 }
-.submitBtn{
+.submitBtn, .editBtn{
     background-color: #8cb6f4;
     font-family: var(--title-font);
     color: white;
@@ -183,6 +183,29 @@ margin: 5px;
     font-family: var(--text-font);
     font-size: 10px;
     text-align: center;
+}
+
+.editBtn{
+    margin: 0px;
+}
+
+.dropBtn{
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+.dropBtnIcon{
+    fill: #ff8366;
+    width: 40px;
+    height: 40px;
+}
+.editDropContainer{ 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 @media(max-width: 1020px){

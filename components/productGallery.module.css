@@ -10,8 +10,9 @@
     gap: 20px;
     justify-content: center;
     padding: 20px; 
+    padding-top: 30px;
     overflow-y: scroll;
-    z-index: -1;
+    
 }
 
 
@@ -19,6 +20,7 @@
     .container{
         left: 0px;
         width:  100%;
+        z-index: -1;
     }
 }
 @media(max-width: 450px){

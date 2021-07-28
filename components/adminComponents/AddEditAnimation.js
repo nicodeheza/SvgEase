@@ -6,8 +6,8 @@ import priceInPesos from "../../helpersFunctions/priceInPesos";
 import pesosToDolar from "../../helpersFunctions/pesosToDolar";
 import styles from './addEditAnimation.module.css';
 
-//agregar autocompletado a tags.
-export default function AddEditAnimation({setFloatWin, open, usaToArs, categories}){
+
+export default function AddEditAnimation({setFloatWin, open, usaToArs, categories, edit, setEdit, products, refreshData }){
 
     const [formData, setFormData]= useState({
         name:'',
@@ -22,14 +22,81 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
     const[fileLoaded, setFileLoaded]= useState(false);
     const [message, setMessage]= useState('');
     const [currency, setCurrency]= useState('usa');
+    const [autocomplete, setAutocomplete]= useState([]);
+    const [newFile, setNewFile]= useState(false);
+    
 
+    //reset message
     useEffect(()=>{
         if(message){
             setTimeout(()=>{
                 setMessage('')
             },5000);
+
         }
     },[message]);
+
+    //Autocomplete
+    useEffect(()=>{
+        if(formData.category){
+            const tagsObj= categories.find(ele=> ele.name === formData.category);
+            if(tagsObj){
+                setAutocomplete(tagsObj.tags);
+            }
+        }
+
+    },[formData.category, categories]);
+
+    //add edit data 
+    useEffect(()=>{
+        if(Object.keys(edit).length > 0){
+
+            setNewFile(false);
+            setFileLoaded(true);
+            setFormData({...formData,
+                name: edit.name,
+                category: edit.category,
+                tags: edit.tags,
+                price: edit.price.toString()
+            });
+            setCurrency('usa');
+            setPriceDisplay(edit.price.toString());
+            setFloatWin('addEdit');
+
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[edit]);
+
+    //load edit preview
+    useEffect(()=>{
+         if(edit._id && fileLoaded && !newFile){
+            Lottie.destroy('prevAnimation');
+             editPreviewFile(edit.file);
+         }
+    },[fileLoaded, edit, newFile])
+
+    //clean on close
+    useEffect(()=>{
+        if(!open){
+            setEdit({});
+            setTag('');
+            removeFile();
+            setFormData({
+                name:'',
+                category:'',
+                tags:[],
+                price: '',
+                file: null,    
+            }); 
+            setPriceDisplay('');
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [open]);
+
+
+    // useEffect(()=>{
+    //     console.log(products);
+    // },[products]);
 
 
 
@@ -85,31 +152,30 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
         setFormData({...formData, tags: tagsArr});
     }
 
-      function submitFom(e){
+      function submitAdd(e){
         e.preventDefault();
 
         setMessage('Cargando...');
 
         if(formData.name && formData.category && formData.price && formData.file){
-            //anda mal // mantener el price siempre en dolares y agregar otro state que muestre el importe. 
           
-            console.log(formData);
+           // console.log(formData);
 
-            // fetch('/api/product', {
-            //     method: 'POST',
-            //     headers:{
-            //       'Accept': 'application/json',
-            //       'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify(formData)
-            // }).then(res=> res.json())
-            // .then(data=>{
-            //     if(data){
-            //         console.log(data);
-            //         setMessage(data.message);
-            //     }
-            // })
-            // .catch(err=> console.log(err));
+            fetch('/api/product', {
+                method: 'POST',
+                headers:{
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            }).then(res=> res.json())
+            .then(data=>{
+                if(data){
+                    setMessage(data.message);
+                    refreshData();
+                }
+            })
+            .catch(err=> console.log(err));
 
             setTag('');
             removeFile();
@@ -127,8 +193,51 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
         }
     }
 
-    function addFile(file){
+    function submitEdit(e){
+        e.preventDefault();
 
+        if(formData.name && formData.category && formData.price ){
+        const send= {...formData, id: edit._id}
+        console.log(send);
+        
+        fetch('/api/product', {
+            method: 'PUT',
+            headers:{
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(send)
+        }).then(res=> res.json())
+        .then(data=>{
+            if(data){
+                setMessage(data.message);
+                refreshData();
+            }
+        })
+        .catch(err=> console.log(err));
+
+        setEdit({});
+        removeFile();
+
+        setFormData({
+            name:'',
+            category:'',
+            tags:[],
+            price: '',
+            file: null,    
+        });
+        setPriceDisplay('');
+
+        //setRefresh(true);
+    }else{
+        setMessage('Nombre, categoría obligatoria y precio son requeridos');
+    }
+
+    }
+
+    function addFile(file){
+        
+        setNewFile('true');
         let reader= new FileReader();
         reader.readAsText(file);
         reader.onload= playAnimation;
@@ -143,14 +252,25 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
                 loop: true,
                 autoplay: true,
                 animationData: animation,
-                rendererSettings: {
-                    className: 'prevAnimation'
-                }
+                name:'prevAnimation'
             });
 
             setFormData({...formData, file: animation });
         }
     }
+    function editPreviewFile(file){
+      
+        Lottie.loadAnimation({
+            container: document.getElementById('animation-preview'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            animationData: file,
+            name:'prevAnimation'
+        });
+
+    }
+
 
     function removeFile(){
         Lottie.destroy('prevAnimation');
@@ -178,7 +298,7 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
                         accept="application/JSON" onChange={(e)=>addFile(e.target.files[0])}/>
                     )
                 }
-                <input type='text' placeholder='Nombre' maxLength='25' className={styles.input}
+                <input type='text' placeholder='Nombre' maxLength='20' className={styles.input}
                 value={formData.name} onChange={(e)=>setFormData({...formData, name: e.target.value})} />
                 <select value={formData.category} className={styles.input}
                 onChange={(e)=>setFormData({...formData, category: e.target.value})}>
@@ -191,7 +311,14 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
                 </select>
                 <div className={styles.opCategories}>
                 <input type='text' placeholder='Categoría Optativa' maxLength='25' className={styles.input}
-                value={tag} onChange={(e)=>setTag(e.target.value)} />
+                value={tag} onChange={(e)=>setTag(e.target.value)} list='categoryList'/>
+                <datalist id='categoryList'>
+              {
+                  autocomplete ? autocomplete.map((tag, i)=>(
+                      <option value={tag} key={i} />
+                  )) : (null)
+              }
+                </datalist>
                 <button onClick={(e)=> addTag(e)} className={styles.addTagBtn}>Agregar</button>
                 </div>
                 <div className={styles.categoryBox}>
@@ -214,7 +341,20 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
                     <option value='ars'>ARS$</option>
                 </select>
                 </div>
-                <button type='submit' onClick={(e)=>submitFom(e)} className={styles.submitBtn}>Agregar</button>
+                {
+                    Object.keys(edit).length > 0 ? (
+                        <div className={styles.editDropContainer}>
+                            <button type='submit' className={styles.editBtn}
+                            onClick={(e)=>submitEdit(e)}
+                            >Editar</button>
+                            <button className={styles.dropBtn}><DropIcon classN={styles.dropBtnIcon}/></button>
+                        </div>
+                    ): 
+                    (
+                        <button type='submit' onClick={(e)=>submitAdd(e)} className={styles.submitBtn}>Agregar</button>
+                    )
+                }
+                
             </form>
             <p className={styles.message}>{message}</p>
         </aside>
