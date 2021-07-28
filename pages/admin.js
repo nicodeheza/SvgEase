@@ -34,9 +34,12 @@ export async function getServerSideProps(){
         return category;
     });
 
+    
     const exchangeRateRes= await fetch(`https://v6.exchangerate-api.com/v6/${process.env.EXCHANGE_RATE_API_KEY}/pair/USD/ARS`);
     const exchangeRate= await exchangeRateRes.json();
     const usaToArs= exchangeRate.conversion_rate;
+    console.log('exchange');
+    
 
     return {props: {products, categories, usaToArs}}
 

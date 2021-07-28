@@ -102,7 +102,7 @@ export default async function handler(req, res){
                 if(body.file){
                     saveJson(product._id);
                 }
-                
+
                 res.json({message:'Producto actualizado exitosamente.'});
 
   
@@ -112,6 +112,25 @@ export default async function handler(req, res){
             }
 
         break;
+
+        case 'DELETE':
+                fs.unlink(`./productsFiles/${body.id}.json`,(err)=>{
+                    if(err){
+                        console.log(err);
+                        res.json({message: 'No se pudo eliminar el archivo.'});
+                    }
+                    console.log(`${body.id}.json deleted`);
+                    Product.findByIdAndDelete(body.id, (err)=>{
+                        if(err){
+                            console.log(err);
+                            res.json({message:'No se puedo eliminar el producto de la bace de datos'});
+                        }
+
+                        res.json({message:'Producto eliminado exitosamente.'});
+                    });
+                });
+           
+            break;
 
         case 'GET':
             try {

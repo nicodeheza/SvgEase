@@ -235,6 +235,40 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
 
     }
 
+    function submitDelete(e){
+        e.preventDefault();
+
+        if(edit._id){
+            fetch('/api/product', {
+                method: 'DELETE',
+                headers:{
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id: edit._id})
+            })
+            .then(res=> res.json())
+            .then(data=>{
+                setMessage(data.message);
+                refreshData();
+            })
+            .catch(err=> console.log(err));
+
+            setEdit({});
+            removeFile();
+
+            setFormData({
+                name:'',
+                category:'',
+                tags:[],
+                price: '',
+                file: null,    
+            });
+            setPriceDisplay('');
+            setFloatWin('none');
+        }
+    }
+
     function addFile(file){
         
         setNewFile('true');
@@ -347,7 +381,7 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
                             <button type='submit' className={styles.editBtn}
                             onClick={(e)=>submitEdit(e)}
                             >Editar</button>
-                            <button className={styles.dropBtn}><DropIcon classN={styles.dropBtnIcon}/></button>
+                            <button className={styles.dropBtn} onClick={(e)=> submitDelete(e)} ><DropIcon classN={styles.dropBtnIcon}/></button>
                         </div>
                     ): 
                     (
