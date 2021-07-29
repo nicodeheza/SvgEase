@@ -55,7 +55,7 @@ export async function getServerSideProps({req, res, query}){
 
         const now= new Date();
         cookie.set('exchangeRate', usaToArs.toString(),{
-            httpOnly: false,
+            httpOnly: true,
             expires: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 10, 0, 0, 0)
         });
         console.log('exchange');
