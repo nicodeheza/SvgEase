@@ -12,7 +12,27 @@
     padding: 20px; 
     padding-top: 30px;
     overflow-y: scroll;
+    overflow-x: hidden;
     
+}
+
+.index{
+    grid-column: 1 / -1;
+    list-style: none;
+    font-family: var(--title-font);
+    color: var(--text-color);
+    font-size: 20px;
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    padding: 10px;
+}
+.index li{
+    margin-right: 30px;
+    cursor: pointer;
 }
 
 

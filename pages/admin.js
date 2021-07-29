@@ -10,16 +10,25 @@ import AddEditAnimation from "../components/adminComponents/AddEditAnimation";
 import ProductGallery from "../components/ProductGallery";
 import {useRouter} from 'next/router';
 import { useEffect, useState } from "react";
+import Cookies from 'cookies';
 
 import dbConnect from "../lib/mongooseConect";
 import Product from "../models/productSchema";
 import Category from "../models/CategorySchema";
 
-export async function getServerSideProps(){
+
+export async function getServerSideProps({req, res, query}){
 
     await dbConnect();
-    const productsRes= await Product.find({});
+
+    const pageNum= query.page ? parseInt(query.page) : 1;
+
+    const queryDb={};
+    const productsRes= await Product.find({}).skip( (pageNum-1) * 10).limit(10).sort([['_id', -1]]).exec();
     const categoriesRes= await Category.find({});
+    const numOfDocuments= await Product.countDocuments(queryDb);
+
+   // console.log(query);
 
     const products= productsRes.map(doc=>{
         const product= doc.toObject();
@@ -34,23 +43,37 @@ export async function getServerSideProps(){
         return category;
     });
 
-    
-    const exchangeRateRes= await fetch(`https://v6.exchangerate-api.com/v6/${process.env.EXCHANGE_RATE_API_KEY}/pair/USD/ARS`);
-    const exchangeRate= await exchangeRateRes.json();
-    const usaToArs= exchangeRate.conversion_rate;
-    console.log('exchange');
+    const cookie= new Cookies(req, res);
+
+    const exchangeCookie= cookie.get('exchangeRate');
+    let usaToArs;
+
+    if(!exchangeCookie){
+        const exchangeRateRes= await fetch(`https://v6.exchangerate-api.com/v6/${process.env.EXCHANGE_RATE_API_KEY}/pair/USD/ARS`);
+        const exchangeRate= await exchangeRateRes.json();
+        usaToArs= exchangeRate.conversion_rate;
+
+        const now= new Date();
+        cookie.set('exchangeRate', usaToArs.toString(),{
+            httpOnly: false,
+            expires: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 10, 0, 0, 0)
+        });
+        console.log('exchange');
+    }else{
+        usaToArs= parseFloat(exchangeCookie);
+    }
+
     
 
-    return {props: {products, categories, usaToArs}}
+    return {props: {products, categories, usaToArs, numOfDocuments}}
 
 }
 
-export default function Admin({products, categories, usaToArs}){
+export default function Admin({products, categories, usaToArs, numOfDocuments}){
 
     const [showMenu, setShowMenu]= useState(false);
     const [floatWin, setFloatWin]= useState('none');
     const [currency, setCurrency]= useState('ars');
-    //const [products, setProducts]= useState(FetchProducts);
     const [edit, setEdit]= useState({});
 
 
@@ -58,10 +81,6 @@ export default function Admin({products, categories, usaToArs}){
     const refreshData = () => {
         router.replace(router.asPath);
       }
-
-    // useEffect(()=>{
-    //     setProducts(FetchProducts);
-    // },[products])
     
     useEffect(()=>{
         if(floatWin !== 'none'){
@@ -123,7 +142,7 @@ export default function Admin({products, categories, usaToArs}){
         </nav>
 
         <ProductGallery products={products} store={false} currency={currency} usaToArs={usaToArs} 
-        setEdit={setEdit} edit={edit} />
+        setEdit={setEdit} edit={edit} numOfDocuments={numOfDocuments} />
 
         {
             floatWin === 'search' ?
