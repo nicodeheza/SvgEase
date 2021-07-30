@@ -43,44 +43,7 @@ export default async function handler(req, res){
                 }
             }
 
-            //add categories and tags //
-            try {
-                const actualCategory= await Category.findOne({name: body.category});
-                console.log(actualCategory);
-                if(!actualCategory){
-                    const newCategory= new Category({
-                        name: body.category,
-                        tags: body.tags
-                    });
-                    await newCategory.save();
-                }else{
-                    if(body.tags.length > 0){
-                        
-                        if(actualCategory.tags.length > 0){
-                            let newTags=[];
-
-                            body.tags.forEach(tag=>{    
-                            const result= actualCategory.tags.find(ele=> ele === tag);
-                            if(!result){
-                                newTags.push(tag);
-                            }
-                        });
-                        actualCategory.tags= actualCategory.tags.concat(newTags);
-                       }else{
-                           actualCategory.tags= body.tags
-                       }
-
-                        await actualCategory.save();
-                    }
-                }
-                
-            } catch (err) {
-
-                console.log(err);
-                res.json({message:'no se puedo cargar categorías en la base de datos.'});
-                
-            }
-
+          
 
             //save animation file
             saveJson(actualProduct._id);

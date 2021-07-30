@@ -11,10 +11,10 @@ import ProductGallery from "../components/ProductGallery";
 import {useRouter} from 'next/router';
 import { useEffect, useState } from "react";
 import Cookies from 'cookies';
+import categoryAgregation from '../helpersFunctions/categorysAgregation';
 
 import dbConnect from "../lib/mongooseConect";
 import Product from "../models/productSchema";
-import Category from "../models/CategorySchema";
 
 
 export async function getServerSideProps({req, res, query}){
@@ -25,22 +25,16 @@ export async function getServerSideProps({req, res, query}){
 
     const queryDb={};
     const productsRes= await Product.find({}).skip( (pageNum-1) * 10).limit(10).sort([['_id', -1]]).exec();
-    const categoriesRes= await Category.find({});
     const numOfDocuments= await Product.countDocuments(queryDb);
+    const categoriesTags= await Product.aggregate(categoryAgregation);
 
-   // console.log(query);
+    console.log(categoriesTags);
 
     const products= productsRes.map(doc=>{
         const product= doc.toObject();
         product._id= product._id.toString();
         product.file= require(`../productsFiles/${product._id}.json`);
         return product;
-    });
-
-    const categories= categoriesRes.map(doc=>{
-        const category= doc.toObject();
-        category._id= category._id.toString()
-        return category;
     });
 
     const cookie= new Cookies(req, res);
@@ -63,13 +57,11 @@ export async function getServerSideProps({req, res, query}){
         usaToArs= parseFloat(exchangeCookie);
     }
 
-    
-
-    return {props: {products, categories, usaToArs, numOfDocuments}}
+    return {props: {products, usaToArs, numOfDocuments, categoriesTags}}
 
 }
 
-export default function Admin({products, categories, usaToArs, numOfDocuments}){
+export default function Admin({products, usaToArs, numOfDocuments, categoriesTags}){
 
     const [showMenu, setShowMenu]= useState(false);
     const [floatWin, setFloatWin]= useState('none');
@@ -153,9 +145,9 @@ export default function Admin({products, categories, usaToArs, numOfDocuments}){
         {
             floatWin === 'addEdit' ?
             (<AddEditAnimation setFloatWin={setFloatWin} open={true} usaToArs={usaToArs} refreshData={refreshData}
-                 categories={categories} edit={edit} setEdit={setEdit} products={products} />):
+                 categories={categoriesTags} edit={edit} setEdit={setEdit} products={products} />):
             (<AddEditAnimation setFloatWin={setFloatWin} open={false} usaToArs={usaToArs} refreshData={refreshData}
-                 categories={categories} edit={edit} setEdit={setEdit} products={products} />)
+                 categories={categoriesTags} edit={edit} setEdit={setEdit} products={products} />)
         }
         </>
     )

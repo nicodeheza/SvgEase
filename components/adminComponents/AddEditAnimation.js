@@ -39,7 +39,7 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
     //Autocomplete
     useEffect(()=>{
         if(formData.category){
-            const tagsObj= categories.find(ele=> ele.name === formData.category);
+            const tagsObj= categories.find(ele=> ele.category === formData.category);
             if(tagsObj){
                 setAutocomplete(tagsObj.tags);
             }
