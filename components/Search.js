@@ -54,6 +54,7 @@ export default function Search({setFloatWin, open, categories, searchQuery}){
         }
     }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[query]);
 
     
