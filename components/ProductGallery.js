@@ -31,9 +31,13 @@ export default function ProductGallery({products, store, currency, usaToArs, set
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
         if(params.page){
-            setActualPage(parseInt(params.page));
+            if(numOfDocuments <= 10){
+                setActualPage(1)
+            }else{
+                setActualPage(parseInt(params.page));
+            }
         }
-    },[]);
+    },[numOfDocuments]);
 
     const router = useRouter();
 

@@ -38,7 +38,11 @@ const project2={
     }
 };
 
+const sort={
+    $sort:{ category: 1}
+}
 
-const categoryAgregation= [group1, project1, unwind, unwind, group2, project2];
+
+const categoryAgregation= [group1, project1, unwind, unwind, group2, project2, sort];
 
 export default categoryAgregation;

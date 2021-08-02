@@ -186,6 +186,7 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
                 price: '',
                 file: null,    
             });
+            setPriceDisplay('');
 
             
         }else{
@@ -341,6 +342,7 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
                     <option value='ilustraciones'>Ilustraciones</option>
                     <option value='carga'>Carga</option>
                     <option value='botones'>Botones</option>
+                    <option value='iconos'>Iconos</option>
                     <option value='tarjetas'>Tarjetas</option>
                 </select>
                 <div className={styles.opCategories}>

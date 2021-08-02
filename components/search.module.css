@@ -99,6 +99,8 @@
 }
 .tagContainerOpen{
     height: fit-content;
+    margin: 0px;
+    margin-bottom: 20px;
 }
 .closeContainer{
     display: none;

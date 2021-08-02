@@ -12,6 +12,7 @@ import {useRouter} from 'next/router';
 import { useEffect, useState } from "react";
 import Cookies from 'cookies';
 import categoryAgregation from '../helpersFunctions/categorysAgregation';
+import getDbQuery from "../helpersFunctions/getDbQuery";
 
 import dbConnect from "../lib/mongooseConect";
 import Product from "../models/productSchema";
@@ -21,14 +22,28 @@ export async function getServerSideProps({req, res, query}){
 
     await dbConnect();
 
-    const pageNum= query.page ? parseInt(query.page) : 1;
+    let pageNum= query.page ? parseInt(query.page) : 1;
 
-    const queryDb={};
-    const productsRes= await Product.find({}).skip( (pageNum-1) * 10).limit(10).sort([['_id', -1]]).exec();
+    const searchQuery={
+        categories: query.categories ? query.categories.split(',') : [] ,
+        tags: query.tags ? query.tags.split(',') : [],
+        text: query.text ? query.text : ''
+    }
+
+    const queryDb= getDbQuery(searchQuery);
+
     const numOfDocuments= await Product.countDocuments(queryDb);
+    if(numOfDocuments <= 10){
+        pageNum= 1;
+    }
+    const productsRes= await Product.find(queryDb).skip( (pageNum-1) * 10).limit(10).sort([['_id', -1]]).exec();
     const categoriesTags= await Product.aggregate(categoryAgregation);
 
-    console.log(categoriesTags);
+    categoriesTags.forEach(ele=>{
+        ele.tags.sort();
+    });
+
+    //console.log(queryDb);
 
     const products= productsRes.map(doc=>{
         const product= doc.toObject();
@@ -57,11 +72,11 @@ export async function getServerSideProps({req, res, query}){
         usaToArs= parseFloat(exchangeCookie);
     }
 
-    return {props: {products, usaToArs, numOfDocuments, categoriesTags}}
+    return {props: {products, usaToArs, numOfDocuments, categoriesTags, searchQuery}}
 
 }
 
-export default function Admin({products, usaToArs, numOfDocuments, categoriesTags}){
+export default function Admin({products, usaToArs, numOfDocuments, categoriesTags, searchQuery}){
 
     const [showMenu, setShowMenu]= useState(false);
     const [floatWin, setFloatWin]= useState('none');
@@ -138,8 +153,8 @@ export default function Admin({products, usaToArs, numOfDocuments, categoriesTag
 
         {
             floatWin === 'search' ?
-            (<Search setFloatWin={setFloatWin} open={true} />) : 
-            (<Search setFloatWin={setFloatWin} open={false} />)
+            (<Search setFloatWin={setFloatWin} open={true} categories={categoriesTags} searchQuery={searchQuery}/>) : 
+            (<Search setFloatWin={setFloatWin} open={false} categories={categoriesTags} searchQuery={searchQuery} />)
         }
 
         {

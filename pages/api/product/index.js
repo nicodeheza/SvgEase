@@ -1,7 +1,14 @@
 import fs from 'fs';
 import dbConnect from "../../../lib/mongooseConect";
 import Product from "../../../models/productSchema";
-import Category from '../../../models/CategorySchema';
+
+export const config = {
+    api: {
+      bodyParser: {
+        sizeLimit: '2mb',
+      },
+    },
+  }
 
 export default async function handler(req, res){
     const {method, body} = req;
