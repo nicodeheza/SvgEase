@@ -33,10 +33,10 @@ export async function getServerSideProps({req, res, query}){
     const queryDb= getDbQuery(searchQuery);
 
     const numOfDocuments= await Product.countDocuments(queryDb);
-    if(numOfDocuments <= 10){
+    if(numOfDocuments <= 12){
         pageNum= 1;
     }
-    const productsRes= await Product.find(queryDb).skip( (pageNum-1) * 10).limit(10).sort([['_id', -1]]).exec();
+    const productsRes= await Product.find(queryDb).skip( (pageNum-1) * 12).limit(12).sort([['_id', -1]]).exec();
     const categoriesTags= await Product.aggregate(categoryAgregation);
 
     categoriesTags.forEach(ele=>{

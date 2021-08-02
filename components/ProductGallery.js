@@ -9,7 +9,7 @@ export default function ProductGallery({products, store, currency, usaToArs, set
     const [componentMount, setComponentMount]=useState(false);
     const [actualPage, setActualPage]= useState(1);
 
-    const numOfPages= Math.ceil(numOfDocuments / 10);
+    const numOfPages= Math.ceil(numOfDocuments /12);
     
     function index(){
         
@@ -31,7 +31,7 @@ export default function ProductGallery({products, store, currency, usaToArs, set
         const urlSearchParams = new URLSearchParams(window.location.search);
         const params = Object.fromEntries(urlSearchParams.entries());
         if(params.page){
-            if(numOfDocuments <= 10){
+            if(numOfDocuments <= 12){
                 setActualPage(1)
             }else{
                 setActualPage(parseInt(params.page));

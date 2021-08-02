@@ -6,7 +6,7 @@
     height: calc( 100% - 80px);
     background-color: white;
     display:  grid;
-    grid-template-columns: repeat(auto-fit, 220px);
+    grid-template-columns: repeat(3, 220px);
     gap: 20px;
     justify-content: center;
     padding: 20px; 
@@ -35,12 +35,22 @@
     cursor: pointer;
 }
 
-
+@media(max-width: 1070px){
+    .container{
+        grid-template-columns: repeat(2, 220px);
+    }
+}
 @media(max-width: 850px){
     .container{
         left: 0px;
         width:  100%;
         z-index: -1;
+    }
+}
+
+@media(max-width: 510px){
+    .container{
+        grid-template-columns: repeat(1, 220px);
     }
 }
 @media(max-width: 450px){
