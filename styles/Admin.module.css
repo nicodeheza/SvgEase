@@ -87,6 +87,7 @@
     }
 
     .menuOpen, .menuClose{
+        position: relative;
         width: 100vw;
         height: fit-content;
         display: flex;
@@ -96,6 +97,7 @@
         transition: 1s;
         box-shadow: 0px 5px 5px rgba(0, 0, 0, .3);
         background-color: white;
+        z-index: 2;
     }
     .menuClose{
         transform: translateY(-120%);
@@ -146,5 +148,9 @@
     .searchIcon{
         width: 20px;
         height: 20px;
+    }
+
+    .menuOpen, .menuClose{
+        margin-top: 59px;
     }
 }

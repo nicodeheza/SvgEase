@@ -1,6 +1,7 @@
 import ProductCard from "./productCard";
 import styles from './productGallery.module.css';
 import Link from 'next/link';
+import Preview from "./Preview";
 import { useEffect, useState } from "react";
 import {useRouter} from 'next/router';
 
@@ -8,6 +9,7 @@ export default function ProductGallery({products, store, currency, usaToArs, set
 
     const [componentMount, setComponentMount]=useState(false);
     const [actualPage, setActualPage]= useState(1);
+    const [previewProduct, setPreviewProduct]= useState(null);
 
     const numOfPages= Math.ceil(numOfDocuments /12);
     
@@ -85,7 +87,7 @@ export default function ProductGallery({products, store, currency, usaToArs, set
                     return(
                     <ProductCard product={product} currency={currency} 
                     store={store} key={product._id} usaToArs={usaToArs}
-                    setEdit={setEdit} edit={edit} />
+                    setEdit={setEdit} edit={edit} setPreviewProduct={setPreviewProduct} />
                     )
                 }
             }
@@ -122,6 +124,17 @@ export default function ProductGallery({products, store, currency, usaToArs, set
            }
            <li onClick={()=> changePage('+')}>{'>'}</li>
        </ul>
+
+       {
+           previewProduct ? 
+           (<Preview product={previewProduct}
+             setPreviewProduct={setPreviewProduct} 
+             currency={currency} 
+             usaToArs={usaToArs}
+             store={store}
+             setEdit={setEdit}/>):
+           (null)
+       }
         </div>
     )
 }

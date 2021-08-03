@@ -4,7 +4,7 @@ import styles from './productCard.module.css';
 import priceInPesos from "../helpersFunctions/priceInPesos";
 
 
-export default function ProductCard({product, currency, store, usaToArs, setEdit, edit }){
+export default function ProductCard({product, currency, store, usaToArs, setEdit, edit, setPreviewProduct }){
 
    const [activeBtn, setActiveBtn]= useState(false);
 
@@ -36,7 +36,7 @@ export default function ProductCard({product, currency, store, usaToArs, setEdit
 
       <div className={styles.mainContainer}>
             
-            <div className={styles.previewContainer}>
+            <div className={styles.previewContainer} onClick={()=> setPreviewProduct(product)}>
                 <div id={`cardAnimation${product._id}`} className={styles.animation}/>
             </div>
             <h2>{product.name}</h2>
