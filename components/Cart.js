@@ -1,13 +1,56 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Close from "./icons/Close";
 import LoginIcon from "./icons/LoginIcon";
 import SingupIcon from "./icons/singupIcon";
 import styles from './cart.module.css';
+import priceInPesos from "../helpersFunctions/priceInPesos";
+import CartPreview from "./CartPreview";
+import DropIcon from './icons/DropIcon';
+import Lottie from "lottie-web";
 
-export default function Cart({setFloatWin, open, store }){
-    const [cartProducts, setCartProducts]=([]);
+export default function Cart({setFloatWin, open, store, currency, updateCart, 
+    setUpdateCart, usaToArs, cartProducts, setCartProducts }){
+        
     const [total, setTotal]=useState(0);
-    const[currency, setCurrency]= useState('');
+
+    useEffect(()=>{
+        if(updateCart){
+
+        const localStorage= window.localStorage;
+
+        if(localStorage.getItem('cart')){
+
+            const cart= JSON.parse(localStorage.getItem('cart'));
+            setCartProducts(cart);
+           // console.log('update effect');
+        }
+            setUpdateCart(false);
+        }
+    },[updateCart, setUpdateCart, setCartProducts]);
+
+
+    useEffect(() => {
+        let total= 0;
+        cartProducts.forEach(ele=>{
+            total += ele.price
+        });
+        if(currency === 'ars'){
+            total= priceInPesos( total, usaToArs);
+        }
+        //console.log('getTotal');
+       setTotal(total);
+        
+    }, [currency, cartProducts, usaToArs]);
+
+    function deleteProduct(id){
+        const localStorage= window.localStorage;
+        const cart= JSON.parse(localStorage.getItem('cart'));
+        const newCart= cart.filter(ele=> ele._id !== id);
+        localStorage.setItem('cart', JSON.stringify(newCart));
+        Lottie.destroy(`cartPreview${id}`);
+        setUpdateCart(true);
+    }
+
 
     return(
         <aside className={open && store ? styles.storeCartMainContainer : !open && store ? styles.storeCartMainContainerClose :
@@ -18,20 +61,48 @@ export default function Cart({setFloatWin, open, store }){
                     <Close/>
                 </div>
             </div>
-            <div className={styles.table}>
-                <p className={styles.label}>Producto</p><p className={styles.label}>Precio</p>
-                <div className={styles.tempProductsContainer}></div>
-                <p className={styles.total}>Total:</p><p className={styles.total}>{`${total}$ ${currency}`}</p>
+            <table className={styles.table}>
+                <thead>
+                <tr>
+                <th>Producto</th>
+                <th>Precio</th>
+                </tr>
+                </thead>
+                <tbody>
                 {
-                    !cartProducts ?
-                    (<p className={styles.empty}>El Carro esta vacío</p>) : (null)
+                    cartProducts.map((product, i)=>(
+                        <tr key={i} className={styles.productsTr}>
+                        <td className={styles.priceTitle}>
+                            <div className={styles.preview}>
+                                <CartPreview file={product.file} id={product._id}/>
+                            </div>
+                            <h5>{product.name}</h5>
+                        </td>
+                        <td className={styles.priceContainer}>
+                            <h5>{`${currency === 'ars' ? priceInPesos(product.price, usaToArs) : product.price}$ ${currency.toUpperCase()}`}</h5>
+                        </td>
+                        <td>
+                            <div onClick={()=>deleteProduct(product._id)}>
+                            <DropIcon  classN={styles.dropIcon}/>
+                            </div>
+                        </td>
+                        </tr>
+                    ))
+                      
                 }
-            </div>
+                </tbody>
+                <tfoot>
+                <tr>
+                <th>Total:</th>
+                <td className={styles.totalPrice}>{`${total}$ ${currency.toUpperCase()}`}</td>
+                </tr>
+                </tfoot>
+            </table>
             <div className={styles.btnContainer}>
-                <button>
+                <button onClick={()=> setFloatWin('logIn')}>
                     Iniciar Sesión <span><LoginIcon classN={styles.iconBtn}/></span>
                 </button>
-                <button>
+                <button onClick={()=> setFloatWin('singUp')}>
                     Crear Cuenta <span><SingupIcon classN={styles.iconBtn}/></span>
                 </button>
             </div>

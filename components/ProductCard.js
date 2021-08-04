@@ -4,9 +4,11 @@ import styles from './productCard.module.css';
 import priceInPesos from "../helpersFunctions/priceInPesos";
 
 
-export default function ProductCard({product, currency, store, usaToArs, setEdit, edit, setPreviewProduct }){
+export default function ProductCard({product, currency, store, usaToArs, setEdit, 
+    edit, setPreviewProduct, setUpdateCart, cartProducts }){
 
    const [activeBtn, setActiveBtn]= useState(false);
+   
 
     useEffect(()=>{
         Lottie.destroy(product._id);
@@ -21,13 +23,57 @@ export default function ProductCard({product, currency, store, usaToArs, setEdit
                 animationData: animation
             });
           }
+
+          //product selected update
+          const localStorage= window.localStorage;
+          const cart= JSON.parse(localStorage.getItem('cart'));
+          if(cart){
+              if(cart.find(ele=> ele._id === product._id) !== undefined){
+                  setActiveBtn(true);
+              }
+          }
+
     },[product]);
+
+    useEffect(()=>{
+        const ele= cartProducts.find(ele=> ele._id === product._id);
+        if(ele === undefined){
+            setActiveBtn(false);
+        }else{
+            setActiveBtn(true);
+        }
+       // console.log(ele);
+    },[cartProducts, product]);
 
 
     function btnClick(){
         setActiveBtn(prev=> !prev);
         if(!store){
             setEdit(product);
+        }else{
+            const localStorage= window.localStorage;
+            if(!activeBtn){
+                const productToAdd={
+                    name: product.name,
+                    price: product.price,
+                    file: product.file,
+                    _id: product._id
+                }
+
+                if(localStorage.getItem('cart')){
+                    const cart= JSON.parse(localStorage.getItem('cart'));
+                    cart.push(productToAdd);
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                }else{
+                    const cart= [productToAdd];
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                }
+            }else{
+                const cart= JSON.parse(localStorage.getItem('cart'));
+                localStorage.setItem('cart', JSON.stringify(cart.filter(ele=> ele._id !== product._id)));
+            }
+            setUpdateCart(true);
+           // console.log(JSON.parse(localStorage.getItem('cart')).length);
         }
     }
 
@@ -57,13 +103,21 @@ export default function ProductCard({product, currency, store, usaToArs, setEdit
             </div>
             <div className={styles.priceBtn}>
             <p>{`${currency === 'ars' ? priceInPesos(product.price, usaToArs) : product.price}$ ${currency.toUpperCase()}`}</p>
-            <button onClick={()=> btnClick()} 
-            style={product._id === edit._id ? {backgroundColor: '#89d3a7'} : {}} >
-                {
-                   store && !activeBtn ? 'Agregar' : store && activeBtn ? 'Agregado':
-                   !store && !activeBtn ? 'Editar' : 'Editar' 
-                }
-            </button>
+            {
+                store ? 
+                (
+                    <button onClick={()=> btnClick()}
+                    style={activeBtn ? {backgroundColor: '#89d3a7'} : {}}>
+                        {!activeBtn ? 'Agregar' : 'Agregado'}
+                    </button>
+                ):
+                (
+                    <button onClick={()=> btnClick()}
+                    style={edit !== undefined && product._id === edit._id ? {backgroundColor: '#89d3a7'} : {}} >
+                        Editar
+                    </button>
+                )
+            }
             </div>
 
             </div>

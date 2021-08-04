@@ -5,7 +5,8 @@ import Preview from "./Preview";
 import { useEffect, useState } from "react";
 import {useRouter} from 'next/router';
 
-export default function ProductGallery({products, store, currency, usaToArs, setEdit, edit, numOfDocuments}){
+export default function ProductGallery({products, store, currency, usaToArs, 
+    setEdit, edit, numOfDocuments, setUpdateCart, cartProducts}){
 
     const [componentMount, setComponentMount]=useState(false);
     const [actualPage, setActualPage]= useState(1);
@@ -74,7 +75,11 @@ export default function ProductGallery({products, store, currency, usaToArs, set
             }
 
             const newParam= urlSearchParams.toString()
-            router.replace(`/admin?${newParam}`);
+            if(store){
+                router.replace(`/tienda?${newParam}`);
+            }else{
+                router.replace(`/admin?${newParam}`);
+            }
         }
     }
 
@@ -87,7 +92,8 @@ export default function ProductGallery({products, store, currency, usaToArs, set
                     return(
                     <ProductCard product={product} currency={currency} 
                     store={store} key={product._id} usaToArs={usaToArs}
-                    setEdit={setEdit} edit={edit} setPreviewProduct={setPreviewProduct} />
+                    setEdit={setEdit} edit={edit} setPreviewProduct={setPreviewProduct} 
+                    setUpdateCart={setUpdateCart} cartProducts={cartProducts}/>
                     )
                 }
             }
@@ -111,7 +117,7 @@ export default function ProductGallery({products, store, currency, usaToArs, set
 
                      return(
                       <li key={ele} style={ele !== actualPage ? {color:'#979797'} : {}}>
-                          <Link href={`/admin?${newParam}`}>
+                          <Link href={store ? `/tienda?${newParam}` : `/admin?${newParam}`}>
                               <a onClick={()=>setActualPage(ele)}>
                                   {ele}
                                 </a>
@@ -132,7 +138,9 @@ export default function ProductGallery({products, store, currency, usaToArs, set
              currency={currency} 
              usaToArs={usaToArs}
              store={store}
-             setEdit={setEdit}/>):
+             setEdit={setEdit}
+             setUpdateCart={setUpdateCart}
+             cartProducts={cartProducts}/>):
            (null)
        }
         </div>

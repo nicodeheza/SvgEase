@@ -16,11 +16,25 @@ import SingUp from '../components/SingUp';
 import Cart from '../components/Cart';
 import Account from '../components/Acconut';
 import Search from '../components/Search';
+import ProductGallery from '../components/ProductGallery';
+import serverProps from '../helpersFunctions/serverProps';
 
-export default function Tienda(){
+
+export async function getServerSideProps(context){
+
+    return await serverProps(context);
+
+}
+
+
+
+export default function Tienda({products, usaToArs, numOfDocuments, categoriesTags, searchQuery}){
     const {auth}= useAuthContext();
     const [showMenu, setShowMenu]= useState(false);
     const [floatWin, setFloatWin] = useState("none");
+    const [currency, setCurrency]= useState('ars');
+    const [updateCart, setUpdateCart]= useState(true);
+    const [cartProducts, setCartProducts]= useState([]);
 
     useEffect(()=>{
         if(floatWin !== 'none'){
@@ -75,9 +89,9 @@ export default function Tienda(){
                     </a>
                 </Link>
             </div>
-                <CurrencySelector/>
+                <CurrencySelector currency={currency} setCurrency={setCurrency}/>
             <div>
-                <CartBtn setFloatWin={setFloatWin}/>
+                <CartBtn floatWin={floatWin} setFloatWin={setFloatWin} number={cartProducts.length}/>
             </div>
             </div>
         </header>
@@ -99,9 +113,12 @@ export default function Tienda(){
             }
                 <li><Link href='/' ><a>Inicio{" "}<span><HomeIcon classN={styles.homeMovil}/></span></a></Link></li>
                 <li><Link href='/#help' ><a>Ayuda{" "}<span><HelpIcon classN={styles.helpMovil}/></span></a></Link></li>
-                <li><CurrencySelector movil={true}/></li>
+                <li><CurrencySelector movil={true} currency={currency} setCurrency={setCurrency}/></li>
             </ul>
         </nav>
+
+        <ProductGallery products={products} store={true} currency={currency} usaToArs={usaToArs} 
+        numOfDocuments={numOfDocuments} setUpdateCart={setUpdateCart} cartProducts={cartProducts} />
 
         {/*float windows*/}
         {floatWin === "logIn" ? (
@@ -111,9 +128,11 @@ export default function Tienda(){
       ) : null}
 
         {floatWin === "cart" ? (
-        <Cart setFloatWin={setFloatWin} open={true} store={true} />
+        <Cart setFloatWin={setFloatWin} open={true} store={true} currency={currency} updateCart={updateCart} 
+        setUpdateCart={setUpdateCart} usaToArs={usaToArs} cartProducts={cartProducts} setCartProducts={setCartProducts}/>
       ) : (
-        <Cart setFloatWin={setFloatWin} open={false} store={true}/>
+        <Cart setFloatWin={setFloatWin} open={false} store={true} currency={currency} updateCart={updateCart}
+        setUpdateCart={setUpdateCart} usaToArs={usaToArs} cartProducts={cartProducts} setCartProducts={setCartProducts}/>
       )}
 
      {
@@ -127,8 +146,8 @@ export default function Tienda(){
 
       {
           floatWin === 'search' ?
-          (<Search setFloatWin={setFloatWin} open={true} />) : 
-          (<Search setFloatWin={setFloatWin} open={false} />)
+          (<Search setFloatWin={setFloatWin} open={true} categories={categoriesTags} searchQuery={searchQuery}/>) : 
+          (<Search setFloatWin={setFloatWin} open={false} categories={categoriesTags} searchQuery={searchQuery}/>)
       }
         
 

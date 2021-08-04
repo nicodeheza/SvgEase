@@ -7,7 +7,7 @@ import styles from './preview.module.css';
 
 const colors=['#ffffff', '#ededed', '#000000', '#f46c6c', '#5cf75c', '#6c7aff'];
 
-export default function Preview({product, setPreviewProduct, currency, usaToArs, store, setEdit}){
+export default function Preview({product, setPreviewProduct, currency, usaToArs, store, setEdit, setUpdateCart, cartProducts}){
 
     const[bkColor, setBkColor]= useState(colors[1]);
     const[play, setPlay]= useState(true);
@@ -26,7 +26,26 @@ export default function Preview({product, setPreviewProduct, currency, usaToArs,
             name: `productPreviewAnimation${product._id}`
         });
 
+
+        //product selected update
+        const localStorage= window.localStorage;
+        const cart= JSON.parse(localStorage.getItem('cart'));
+        if(cart){
+            if(cart.find(ele=> ele._id === product._id) !== undefined){
+                setActiveBtn(true);
+            }
+        }
+
     },[product]);
+
+    useEffect(()=>{
+        const ele= cartProducts.find(ele=> ele._id === product._id);
+        if(ele === undefined){
+            setActiveBtn(false);
+        }else{
+            setActiveBtn(true);
+        }
+    },[cartProducts, product]);
 
     useEffect(()=>{
         if(play){
@@ -42,7 +61,30 @@ export default function Preview({product, setPreviewProduct, currency, usaToArs,
     }
 
     function addToCart(){
-        console.log(product);
+        const localStorage= window.localStorage;
+        if(!activeBtn){
+            const productToAdd={
+                name: product.name,
+                price: product.price,
+                file: product.file,
+                _id: product._id
+            }
+
+            if(localStorage.getItem('cart')){
+                const cart= JSON.parse(localStorage.getItem('cart'));
+                cart.push(productToAdd);
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }else{
+                const cart= [productToAdd];
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+            setActiveBtn(true);
+        }else{
+            const cart= JSON.parse(localStorage.getItem('cart'));
+            localStorage.setItem('cart', JSON.stringify(cart.filter(ele=> ele._id !== product._id)));
+            setActiveBtn(false)
+        }
+        setUpdateCart(true);
     }
 
     function addEdit(){
@@ -101,7 +143,8 @@ export default function Preview({product, setPreviewProduct, currency, usaToArs,
 
             <div className={styles.priceBtn}>
                 <p>{`${currency === 'ars' ? priceInPesos(product.price, usaToArs) : product.price}$ ${currency.toUpperCase()}`}</p>
-                <button onClick={()=> store ? addToCart() : addEdit()}>
+                <button onClick={()=> store ? addToCart() : addEdit()}
+                style={activeBtn && store ? {backgroundColor:'#89d3a7'} : {}}>
                 {
                    store && !activeBtn ? 'Agregar' : store && activeBtn ? 'Agregado':
                    !store && !activeBtn ? 'Editar' : 'Editar' 

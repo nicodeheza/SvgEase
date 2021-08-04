@@ -47,9 +47,9 @@ export default function Search({setFloatWin, open, categories, searchQuery}){
         if(update){
             const newParam= urlSearchParams.toString();
             if(newParam){
-                router.replace(`/admin?${newParam}`);
+                router.replace(`${window.location.pathname}?${newParam}`);
             }else{
-                router.replace('/admin');
+                router.replace(window.location.pathname);
             }
         }
     }
@@ -77,9 +77,9 @@ export default function Search({setFloatWin, open, categories, searchQuery}){
 
         const newParam= urlSearchParams.toString();
         if(newParam){
-            router.replace(`/admin?${newParam}`);
+            router.replace(`${window.location.pathname}?${newParam}`);
         }else{
-            router.replace('/admin');
+            router.replace(window.location.pathname);
         }
       }
     }

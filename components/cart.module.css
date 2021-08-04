@@ -6,9 +6,10 @@
     width: 80%;
     max-width: 350px;
     background-color: white;
-    z-index: 100;
+    /* z-index: 100; */
     box-shadow: -5px 10px 5px rgba(0, 0, 0, .3);
     transition: 1s;
+    
 }
 .storeCartMainContainer{
     position: fixed;
@@ -18,8 +19,10 @@
     width: 80%;
     max-width: 350px;
     background-color: white;
-    z-index: 100;
+    /* z-index: 100; */
     box-shadow: -5px 10px 5px rgba(0, 0, 0, .3);
+    overflow-y: scroll;
+    overflow-x: hidden;
     transition: 1s;
 }
 .cartMainContainerClose{
@@ -30,7 +33,7 @@
     width: 80%;
     max-width: 350px;
     background-color: white;
-    z-index: 100;
+    /* z-index: 100; */
     box-shadow: -5px 5px 5px rgba(0, 0, 0, .3);
     transform: translateX(400px);
     transition: 1s;
@@ -43,11 +46,15 @@
     width: 80%;
     max-width: 350px;
     background-color: white;
-    z-index: 100;
+    /* z-index: 100; */
     box-shadow: -5px 5px 5px rgba(0, 0, 0, .3);
+    overflow-y: scroll;
+    overflow-x: hidden;
     transform: translateX(400px);
     transition: 1s;
 }
+
+/*---------------header-------------------------*/
 
 .headerContainer{
     display: flex;
@@ -67,42 +74,88 @@
     fill: var(--text-color);
     cursor: pointer;
 }
+
+/*---------------table-------------------------*/
+/* .table, .table td, .table th{
+    border: solid 1px;
+} */
 .table{
-    display:  grid;
-    grid-template-columns: 3fr 2fr 1fr;
-    width: 80%;
-    height: calc(100% - 215px);
     margin: auto;
-    margin-top: 10px;
-    /* border: solid; */
-} 
-.tempProductsContainer{
-    height: 100%;
-    grid-column: 1/4;
+    width: 80%;
+    /* height: 500px; */
 }
-.label{
+.table thead, .table tfoot{
+    text-align: left;
+}
+.table thead{
     font-family: var(--text-font);
     color: var(--text-color);
-    font-weight: bold;
-    margin: 0px;
-    font-size: 10px;
+    font-size: 12px;
 }
-.total{
+.dropIcon{
+    width: 20px;
+    height: 20px;
+    fill: red;
+    cursor: pointer;
+}
+.priceTitle{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 5px 5px 5px 0px ;
+    vertical-align: middle;
+    max-width: 180px;
+    height: 100%;
     font-family: var(--title-font);
     color: var(--text-color);
-    margin: 0px;
-    align-self: flex-end;
+    font-weight: lighter;
+    font-size: 15px;
 }
-.empty{
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.priceContainer{
     font-family: var(--title-font);
     color: var(--text-color);
-    font-size: 20px;
+    font-size: 15px;
+}
+.preview{
+    --size: 60px;
+    width: var(--size);
+    height:var(--size);
+    min-width: var(--size);
+    min-height:var(--size);
+    background-color: #ededed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    margin-right: 5px;
+}
+
+.table tfoot{
+    font-family: var(--title-font);
+    color: var(--text-color);
+}
+.totalPrice{
     white-space: nowrap;
+    font-size: 20px;
 }
+
+@media(max-width: 400px){
+    .totalPrice{
+        font-size: 15px;
+    }
+}
+@media(max-width: 350px){
+    .table{
+        transform: scale(.9);
+    }
+}
+@media(max-width: 300px){
+    .table{
+        transform: scale(.8) translateX(-20px);
+    }
+}
+
+/*---------------btns-------------------------*/
 .btnContainer{
     display: flex;
     flex-direction: column;
@@ -110,9 +163,7 @@
     justify-content: space-evenly;
     height: 22%;
     max-height: 150px;
-    position: absolute;
-    bottom: 0px;
-    width: 100%;
+    margin-top:  20px;
 }
 .btnContainer button{
     border: none;
@@ -140,6 +191,8 @@
     width: 30px;
     height: 30px;
 }
+
+
 @media(max-width: 450px){
     .storeCartMainContainer, .storeCartMainContainerClose{
         top: 59px;

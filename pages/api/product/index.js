@@ -102,15 +102,6 @@ export default async function handler(req, res){
            
             break;
 
-        case 'GET':
-            try {
-                const products= await Product.find({});
-                res.json(products);
-            } catch (err) {
-                console.log(err);
-            }
-            break;
-
         default:
             break;
     }
