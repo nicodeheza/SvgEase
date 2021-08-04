@@ -24,6 +24,10 @@ export default function ProductCard({product, currency, store, usaToArs, setEdit
             });
           }
 
+    },[product]);
+
+    useEffect(()=>{
+   
           //product selected update
           if(store){
           const localStorage= window.localStorage;
