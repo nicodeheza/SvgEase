@@ -25,6 +25,7 @@ export default function ProductCard({product, currency, store, usaToArs, setEdit
           }
 
           //product selected update
+          if(store){
           const localStorage= window.localStorage;
           const cart= JSON.parse(localStorage.getItem('cart'));
           if(cart){
@@ -32,10 +33,12 @@ export default function ProductCard({product, currency, store, usaToArs, setEdit
                   setActiveBtn(true);
               }
           }
+         }
 
-    },[product]);
+    },[product, store]);
 
     useEffect(()=>{
+        if(store){
         const ele= cartProducts.find(ele=> ele._id === product._id);
         if(ele === undefined){
             setActiveBtn(false);
@@ -43,7 +46,8 @@ export default function ProductCard({product, currency, store, usaToArs, setEdit
             setActiveBtn(true);
         }
        // console.log(ele);
-    },[cartProducts, product]);
+      }
+    },[cartProducts, product, store]);
 
 
     function btnClick(){

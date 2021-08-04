@@ -28,6 +28,7 @@ export default function Preview({product, setPreviewProduct, currency, usaToArs,
 
 
         //product selected update
+        if(store){
         const localStorage= window.localStorage;
         const cart= JSON.parse(localStorage.getItem('cart'));
         if(cart){
@@ -35,17 +36,20 @@ export default function Preview({product, setPreviewProduct, currency, usaToArs,
                 setActiveBtn(true);
             }
         }
+      }
 
-    },[product]);
+    },[product, store]);
 
     useEffect(()=>{
+        if(store){
         const ele= cartProducts.find(ele=> ele._id === product._id);
         if(ele === undefined){
             setActiveBtn(false);
         }else{
             setActiveBtn(true);
         }
-    },[cartProducts, product]);
+      }
+    },[cartProducts, product, store]);
 
     useEffect(()=>{
         if(play){
