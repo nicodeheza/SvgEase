@@ -1,9 +1,22 @@
 import Close from "./icons/Close";
-import LogOutIcon from "./icons/LogOutIcon";
 import styles from './account.module.css';
 import LogOutBtn from "./btns/LogOutBtn";
+import { useAuthContext } from "../contexts/authContext";
 
 export default function Account({setFloatWin, close, store}){
+    const {setAuth}= useAuthContext();
+
+    function logout(){
+        console.log('logout');
+        fetch('/api/user/logout')
+        .then(res=> res.json())
+        .then(data=>{
+            console.log(data);
+            setAuth(data.auth);
+            setFloatWin('none');
+        })
+        .catch(err=>console.log(err));
+    }
 
     return(
         <div className={!close && store ? styles.storeMainContainer : close && store? styles.storeMainContainerClose :
@@ -11,7 +24,7 @@ export default function Account({setFloatWin, close, store}){
             <div className={styles.header}>
                 <h2>Mi Cuenta</h2>
                 <div className={styles.logOut}>
-                <LogOutBtn />
+                <LogOutBtn logoutFunction={logout} />
                 </div>
                 <div onClick={()=>setFloatWin('none')}>
                     <Close classN={styles.closeIcon}/>
