@@ -1,7 +1,7 @@
 import dbConnect from "../lib/mongooseConect";
 import Product from "../models/productSchema";
 import getDbQuery from "../helpersFunctions/getDbQuery";
-import Cookies from 'cookies';
+import { serialize, parse } from 'cookie';
 import categoryAgregation from '../helpersFunctions/categorysAgregation';
 
 export default async function serverProps({req, res, query}){
@@ -38,10 +38,11 @@ export default async function serverProps({req, res, query}){
         return product;
     });
 
-    const cookie= new Cookies(req, res);
-
-    const exchangeCookie= cookie.get('exchangeRate');
+    const cookie= req.headers?.cookie;
+    const parseCookie= parse(cookie || '');
+    const exchangeCookie= parseCookie['exchangeRate'];
     let usaToArs;
+    //console.log('cookie: ' + exchangeCookie);
 
     if(!exchangeCookie){
         const exchangeRateRes= await fetch(`https://v6.exchangerate-api.com/v6/${process.env.EXCHANGE_RATE_API_KEY}/pair/USD/ARS`);
@@ -49,11 +50,15 @@ export default async function serverProps({req, res, query}){
         usaToArs= exchangeRate.conversion_rate;
 
         const now= new Date();
-        cookie.set('exchangeRate', usaToArs.toString(),{
+        const newCookie= serialize('exchangeRate', usaToArs,{
+            expires:new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 10, 0, 0, 0),
             httpOnly: true,
-            expires: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 10, 0, 0, 0)
+            path:'/',
+            sameSite:'lax',
+            secure: process.env.NODE_ENV === 'production',
         });
         console.log('exchange');
+        res.setHeader('Set-Cookie', newCookie);
     }else{
         usaToArs= parseFloat(exchangeCookie);
        // console.log(exchangeCookie)

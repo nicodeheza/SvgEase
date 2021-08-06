@@ -2,8 +2,12 @@ import { useState } from 'react';
 import Close from './icons/Close';
 import Image from 'next/image';
 import styles from './logIn.module.css';
+import { useAuthContext } from '../contexts/authContext';
 
 export default function LogIn({setFloatWin}){
+
+    const {setAuth}= useAuthContext();
+
     const [formFields, setFormFields]= useState({
         email:'',
         password:''
@@ -12,11 +16,43 @@ export default function LogIn({setFloatWin}){
 
     function submit(e){
         e.preventDefault();
-        console.log(formFields);
-        setFormFields({
-            email:'',
-            password:''
-        });
+        if(formFields.email && formFields.password){
+            if( /\w+@[\w.]+/i.test(formFields.email)){
+                //console.log(formFields);
+
+                fetch('/api/user/login',{
+                    method: 'POST',
+                    headers:{
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formFields)
+                })
+                .then(res=>{
+                    if(res.status === 401){
+                        setMessage('Nombre de usuario o contraseña incorrectos');
+                    } else{
+                        return res.json();
+                    }
+                })
+                .then(data=>{
+                    if(data){
+                        setAuth(data.auth);
+                        setFloatWin('none');
+                        console.log(data);
+                    }
+                })
+                .catch(err => console.log(err));
+                setFormFields({
+                    email:'',
+                    password:''
+                });
+            }else{
+                setMessage('Por favor ingrese una dirección de email valida')
+            }
+        }else{
+            setMessage('Todos los campos son obligatorios')
+        }
     }
 
     return(
@@ -28,7 +64,7 @@ export default function LogIn({setFloatWin}){
                 </div>
             </div>
             <form className={styles.form}>
-                <input type='text' placeholder='Email' autoComplete='email'
+                <input type='email' placeholder='Email' autoComplete='email'
                 onChange={(e)=>setFormFields({...formFields, email: e.target.value})}
                 value={formFields.email} />
                 <input type='password' placeholder='Contraseña' autoComplete='current-password'

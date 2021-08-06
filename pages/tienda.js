@@ -19,22 +19,45 @@ import Search from '../components/Search';
 import ProductGallery from '../components/ProductGallery';
 import serverProps from '../helpersFunctions/serverProps';
 
+import getSession from '../lib/getSession';
 
 export async function getServerSideProps(context){
 
-    return await serverProps(context);
+    const {req, res}= context;
+    await getSession(req, res);
+    const sendProps= await serverProps(context);
+    console.log(req.session);
+    const session= req.session;
+    let serverAuth;
+    if(session.passport?.user){
+        serverAuth= true;
+    }else{
+        serverAuth= false;
+    }
+    
+    sendProps.props.serverAuth= serverAuth;
+
+    return sendProps;
 
 }
 
 
 
-export default function Tienda({products, usaToArs, numOfDocuments, categoriesTags, searchQuery}){
-    const {auth}= useAuthContext();
+export default function Tienda({products, usaToArs, numOfDocuments, categoriesTags, searchQuery, serverAuth}){
+    const {auth, setAuth}= useAuthContext();
     const [showMenu, setShowMenu]= useState(false);
     const [floatWin, setFloatWin] = useState("none");
     const [currency, setCurrency]= useState('ars');
     const [updateCart, setUpdateCart]= useState(true);
     const [cartProducts, setCartProducts]= useState([]);
+    const [firstRender, setFirstRender]= useState(true);
+
+    useEffect(()=>{
+        if(firstRender){
+            setAuth(serverAuth);
+            setFirstRender(false);
+        }
+    },[firstRender, serverAuth, setAuth]);
 
     useEffect(()=>{
         if(floatWin !== 'none'){
