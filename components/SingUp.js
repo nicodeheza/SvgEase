@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Close from './icons/Close';
 import Image from 'next/image';
 import styles from './logIn.module.css';
+import Link from 'next/link';
 
 export default function SingUp({setFloatWin}){
     const [formFields, setFormFields]= useState({
@@ -71,10 +72,14 @@ export default function SingUp({setFloatWin}){
             {
                 message ? (<p className={styles.message}>{message}</p>) : (null)
             }
+            <Link href='/api/user/github'>
+            <a>
             <button className={styles.googleBtn}>
-            <Image src='/svgs/google.svg' alt='google' width={30} height={30} />
-            <p>Iniciar Sesión con Google</p>
+            <Image src='/svgs/gitHub.svg' alt='github' width={40} height={40} />
+            <p>Iniciar Sesión con GitHub</p>
             </button>
+            </a>
+            </Link>
         </div>
     )
 }

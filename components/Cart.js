@@ -7,10 +7,11 @@ import priceInPesos from "../helpersFunctions/priceInPesos";
 import CartPreview from "./CartPreview";
 import DropIcon from './icons/DropIcon';
 import Lottie from "lottie-web";
+import { useAuthContext } from "../contexts/authContext";
 
 export default function Cart({setFloatWin, open, store, currency, updateCart, 
     setUpdateCart, usaToArs, cartProducts, setCartProducts }){
-        
+    const {auth}= useAuthContext();
     const [total, setTotal]=useState(0);
 
     useEffect(()=>{
@@ -98,6 +99,8 @@ export default function Cart({setFloatWin, open, store, currency, updateCart,
                 </tr>
                 </tfoot>
             </table>
+            {
+                !auth ? (
             <div className={styles.btnContainer}>
                 <button onClick={()=> setFloatWin('logIn')}>
                     Iniciar Sesión <span><LoginIcon classN={styles.iconBtn}/></span>
@@ -106,6 +109,16 @@ export default function Cart({setFloatWin, open, store, currency, updateCart,
                     Crear Cuenta <span><SingupIcon classN={styles.iconBtn}/></span>
                 </button>
             </div>
+                ) : total > 0 ? (
+                    <div className={styles.btnContainer}>
+                        <button>Paga</button>
+                    </div>
+                ) : (
+                    <div className={styles.btnContainer}>
+                        <p>Carro vacío</p>
+                    </div>
+                )
+            }
         </aside>
     )
 }

@@ -48,6 +48,8 @@ export default async function serverProps({req, res, query}){
         const exchangeRateRes= await fetch(`https://v6.exchangerate-api.com/v6/${process.env.EXCHANGE_RATE_API_KEY}/pair/USD/ARS`);
         const exchangeRate= await exchangeRateRes.json();
         usaToArs= exchangeRate.conversion_rate;
+    //    usaToArs= 100;
+    //    usaToArs= usaToArs.toString();
 
         const now= new Date();
         const newCookie= serialize('exchangeRate', usaToArs,{
@@ -58,7 +60,15 @@ export default async function serverProps({req, res, query}){
             secure: process.env.NODE_ENV === 'production',
         });
         console.log('exchange');
-        res.setHeader('Set-Cookie', newCookie);
+
+        const oldEnd= res.end;
+        res.end= async function resEndProxy(...args){
+            if(res.finished || res.writableEnded || res.headersSent) return;
+            res.setHeader('Set-Cookie', newCookie);
+            oldEnd.apply(this, args);
+            res.end();
+        }
+
     }else{
         usaToArs= parseFloat(exchangeCookie);
        // console.log(exchangeCookie)

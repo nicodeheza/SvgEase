@@ -3,6 +3,7 @@ import Close from './icons/Close';
 import Image from 'next/image';
 import styles from './logIn.module.css';
 import { useAuthContext } from '../contexts/authContext';
+import Link from 'next/link';
 
 export default function LogIn({setFloatWin}){
 
@@ -55,6 +56,15 @@ export default function LogIn({setFloatWin}){
         }
     }
 
+    function githubLogin(){
+        fetch('/api/user/github')
+        .then(res=> res.json())
+        .then(data=>{
+            console.log(data);
+        })
+        .catch(err=> console.log(err));
+    }
+
     return(
         <div className={styles.logInMainContainer}>
             <div className={styles.headerContainer}>
@@ -75,10 +85,14 @@ export default function LogIn({setFloatWin}){
             {
                 message ? (<p className={styles.message}>{message}</p>) : (null)
             }
+            <Link  href='/api/user/github'>
+            <a>
             <button className={styles.googleBtn}>
-            <Image src='/svgs/google.svg' alt='google' width={30} height={30} />
-            <p>Iniciar Sesión con Google</p>
+            <Image src='/svgs/gitHub.svg' alt='github' width={40} height={40} />
+            <p>Iniciar Sesión con GitHub</p>
             </button>
+            </a>
+            </Link>
             <p className={styles.footer}>Olvidaste tu contraseña? Hace click <span 
             onClick={()=>setMessage('Aun no disponible, lo sentimos 😢')}>aquí</span></p>
         </div>

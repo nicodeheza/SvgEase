@@ -22,10 +22,11 @@ import serverProps from '../helpersFunctions/serverProps';
 import getSession from '../lib/getSession';
 
 export async function getServerSideProps(context){
+    
+    const sendProps= await serverProps(context);
 
     const {req, res}= context;
     await getSession(req, res);
-    const sendProps= await serverProps(context);
     console.log(req.session);
     const session= req.session;
     let serverAuth;
