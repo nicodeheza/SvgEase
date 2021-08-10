@@ -35,7 +35,7 @@ export async function getServerSideProps(context){
     }else{
         serverAuth= false;
     }
-    
+
     sendProps.props.serverAuth= serverAuth;
 
     return sendProps;

@@ -11,20 +11,51 @@ import ProductGallery from "../components/ProductGallery";
 import {useRouter} from 'next/router';
 import { useEffect, useState } from "react";
 import serverProps from "../helpersFunctions/serverProps";
+import getSession from "../lib/getSession";
+import Link from "next/link";
+
 
 
 export async function getServerSideProps(context){
 
-    return await serverProps(context);
+    const sendProps= await serverProps(context);
+
+    const {req, res}= context;
+    await getSession(req, res);
+    console.log(req.session);
+    const session= req.session;
+    let adminAuth;
+    let isLogin;
+    if(session.passport?.user){
+        isLogin= true;
+        if(session.passport?.user.admin){
+            adminAuth= true;
+        }else{
+            adminAuth= false;
+        }
+    }else{
+        isLogin=false;
+        adminAuth= false
+    }
+    
+    sendProps.props.adminAuth= adminAuth;
+    sendProps.props.isLogin= isLogin;
+
+    return sendProps;
 
 }
 
-export default function Admin({products, usaToArs, numOfDocuments, categoriesTags, searchQuery}){
+export default function Admin({products, usaToArs, numOfDocuments, categoriesTags, searchQuery, adminAuth, isLogin}){
 
     const [showMenu, setShowMenu]= useState(false);
     const [floatWin, setFloatWin]= useState('none');
     const [currency, setCurrency]= useState('ars');
     const [edit, setEdit]= useState({});
+    const [message, setMessage]= useState('');
+    const [loginFields, setLoginFields]= useState({
+        email:'',
+        password:''
+    });
 
 
     const router = useRouter();
@@ -44,12 +75,104 @@ export default function Admin({products, usaToArs, numOfDocuments, categoriesTag
         }
     },[showMenu]);
 
+    function login(e){
+        e.preventDefault();
+        if(loginFields.email && loginFields.password){
+            if( /\w+@[\w.]+/i.test(loginFields.email)){
+
+                fetch('/api/user/login',{
+                    method: 'POST',
+                    headers:{
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginFields)
+                })
+                .then(res=>{
+                    if(res.status === 401){
+                        setMessage('Nombre de usuario o contraseña incorrectos');
+                    } else{
+                        return res.json();
+                    }
+                })
+                .then(data=>{
+                    if(data){
+                        //setAuth(data.auth);
+                       // setFloatWin('none');
+                        console.log(data);
+                        router.replace(router.asPath);
+                    }
+                })
+                .catch(err => console.log(err));
+                setLoginFields({
+                    email:'',
+                    password:''
+                });
+                setMessage('');
+            }else{
+                setMessage('introduzca una dirección de email valida.')
+            }
+
+        }else{
+            setMessage('Todos los campos son obligatorios.')
+        }
+    }
+
+    function logout(){
+        fetch('/api/user/logout')
+        .then(res=>res.json())
+        .then(data=>{
+            if(data){
+                router.replace(router.asPath);
+            }
+        })
+        .catch(err=>console.log(err));
+    }
+
 
     return(
         <>
         <Head>
             <title>SvgEase-Modo Administración</title>
         </Head>
+        {
+            !adminAuth && !isLogin ? (
+                <>
+                <div className={styles.loginContainer}>
+                    <h1>SvgEase modo Administración</h1>
+                    <p>Por favor inicie session con una cuenta de administrador</p>
+                    <form>
+                        <label from='email'>Email: </label>
+                        <input type='email' name='email'
+                        value={loginFields.email} 
+                        onChange={(e)=> setLoginFields({...loginFields, email: e.target.value})} /><br/><br/>
+                        <label from='password'>Password: </label>
+                        <input type='password' name='password' 
+                        value={loginFields.password}
+                        onChange={(e)=> setLoginFields({...loginFields, password: e.target.value})}/><br/><br/>
+                        <button onClick={(e)=>login(e)}>ingresar</button><br/>
+                        <p className={styles.formMessage}>{message}</p>
+                    </form>
+                </div>
+                </>
+            ) : !adminAuth && isLogin ? (
+                <>
+                <div className={styles.loginContainer}>
+                    <h1>SvgEase modo Administración</h1>
+                    <p>No tiene permiso de administrador</p>
+                    <button onClick={()=> logout()}>Intentar con otra cuenta</button> <br/><br/>
+                    <Link href='/tienda'>
+                    <a>
+                    <button>Ir a la tienda</button>
+                    </a>
+                    </Link>
+                </div>
+                </>
+
+            ) :
+            
+            (
+        <>
         <header className={styles.header}>
 
             <div className={styles.titleContainer}>
@@ -65,7 +188,7 @@ export default function Admin({products, usaToArs, numOfDocuments, categoriesTag
 
             <div className={styles.btnsContainer}>
             <div className={styles.logOutContainer}>
-            <LogOutBtn />
+            <LogOutBtn logoutFunction={logout}/>
             </div> 
             <CurrencySelector currency={currency} setCurrency={setCurrency} />
             <button className={styles.searchBtn} onClick={()=>setFloatWin('search')}>
@@ -107,6 +230,10 @@ export default function Admin({products, usaToArs, numOfDocuments, categoriesTag
             (<AddEditAnimation setFloatWin={setFloatWin} open={false} usaToArs={usaToArs} refreshData={refreshData}
                  categories={categoriesTags} edit={edit} setEdit={setEdit} products={products} />)
         }
+         </>
+            )
+        }
+       
         </>
     )
 }
