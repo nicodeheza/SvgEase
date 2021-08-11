@@ -29,6 +29,11 @@ export default function ProductGallery({products, store, currency, usaToArs,
     }
 
     useEffect(()=>{
+        const gallery= document.getElementById('productGallery');
+        gallery.scrollTo(0, 0);
+    },[products]);
+
+    useEffect(()=>{
         setComponentMount(true);
 
         const urlSearchParams = new URLSearchParams(window.location.search);
@@ -85,7 +90,7 @@ export default function ProductGallery({products, store, currency, usaToArs,
 
 
     return(
-        <div className={styles.container}>
+        <div className={styles.container} id='productGallery'>
         {
             products.map((product)=>{
                 if(product._id){

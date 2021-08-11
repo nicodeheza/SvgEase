@@ -60,15 +60,8 @@ export default async function serverProps({req, res, query}){
             secure: process.env.NODE_ENV === 'production',
         });
         console.log('exchange');
-
-        const oldEnd= res.end;
-        res.end= async function resEndProxy(...args){
-            if(res.finished || res.writableEnded || res.headersSent) return;
-            res.setHeader('Set-Cookie', newCookie);
-            oldEnd.apply(this, args);
-            res.end();
-        }
-
+      
+        res.setHeader('Set-Cookie', [newCookie]);
     }else{
         usaToArs= parseFloat(exchangeCookie);
        // console.log(exchangeCookie)

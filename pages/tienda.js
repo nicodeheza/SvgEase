@@ -19,18 +19,30 @@ import Search from '../components/Search';
 import ProductGallery from '../components/ProductGallery';
 import serverProps from '../helpersFunctions/serverProps';
 
-import getSession from '../lib/getSession';
+import runMiddleware from '../middleware/runMiddleware';
+import Session from '../lib/session';
 
 export async function getServerSideProps(context){
-    
-    const sendProps= await serverProps(context);
-
     const {req, res}= context;
-    await getSession(req, res);
+    const session= Session({
+        name:'sess',
+        secret: process.env.TOKEN_SECRET,
+        cookie: {
+            maxAge:60 * 60 * 8, // 8hours
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            path: '/',
+            sameSite: 'lax',
+        }
+    });
+
+    await runMiddleware(req, res, session);
+
+    const sendProps= await serverProps(context);
     console.log(req.session);
-    const session= req.session;
+    const ses= req.session;
     let serverAuth;
-    if(session.passport?.user){
+    if(ses.passport?.user){
         serverAuth= true;
     }else{
         serverAuth= false;
@@ -42,13 +54,10 @@ export async function getServerSideProps(context){
 
 }
 
-
-
-export default function Tienda({products, usaToArs, numOfDocuments, categoriesTags, searchQuery, serverAuth}){
+export default function Tienda({products, usaToArs, numOfDocuments, categoriesTags, searchQuery, serverAuth, currency, setCurrency}){
     const {auth, setAuth}= useAuthContext();
     const [showMenu, setShowMenu]= useState(false);
     const [floatWin, setFloatWin] = useState("none");
-    const [currency, setCurrency]= useState('ars');
     const [updateCart, setUpdateCart]= useState(true);
     const [cartProducts, setCartProducts]= useState([]);
     const [firstRender, setFirstRender]= useState(true);

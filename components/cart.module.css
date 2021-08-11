@@ -6,7 +6,7 @@
     width: 80%;
     max-width: 350px;
     background-color: white;
-    /* z-index: 100; */
+    z-index: 40;
     box-shadow: -5px 10px 5px rgba(0, 0, 0, .3);
     transition: 1s;
     
@@ -33,7 +33,7 @@
     width: 80%;
     max-width: 350px;
     background-color: white;
-    /* z-index: 100; */
+    z-index: 40;
     box-shadow: -5px 5px 5px rgba(0, 0, 0, .3);
     transform: translateX(400px);
     transition: 1s;

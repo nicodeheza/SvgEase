@@ -21,10 +21,23 @@ import Link from "next/link";
 import { useAuthContext } from "../contexts/authContext";
 import Account from "../components/Acconut";
 
-export default function Home() {
+export default function Home({currency}) {
   const [showMenu, setShowMenu] = useState(false);
   const [floatWin, setFloatWin] = useState("none");
   const { auth, setAuth } = useAuthContext();
+  const [updateCart, setUpdateCart]= useState(true);
+  const [usaToArs, setUsaToArs]= useState(0);
+  const [cartProducts, setCartProducts]= useState([]);
+
+  useEffect(()=>{
+    fetch('/api/home')
+    .then(res=> res.json())
+    .then(data=>{
+      setAuth(data.auth);
+      setUsaToArs(data.usaToArs);
+    })
+    .catch(err=>console.log(err));
+  },[]);
 
   useEffect(() => {
     if (floatWin !== "none") {
@@ -79,7 +92,7 @@ export default function Home() {
               </>
             )}
           </div>
-          <CartBtn setFloatWin={setFloatWin} />
+          <CartBtn  floatWin={floatWin} setFloatWin={setFloatWin} number={cartProducts.length}/>
         </div>
         <nav
           className={showMenu ? styles.movilMenuShow : styles.movilMenuHidden}
@@ -116,12 +129,6 @@ export default function Home() {
         </nav>
       </header>
 
-
-      {floatWin === "cart" ? (
-        <Cart setFloatWin={setFloatWin} open={true} />
-      ) : (
-        <Cart setFloatWin={setFloatWin} open={false} />
-      )}
       {
         floatWin ==='account' ?
         (
@@ -245,6 +252,14 @@ export default function Home() {
         </ul>
         <img src="/svgs/logo.svg" alt="Svg Ease" />
       </footer>
+
+      {floatWin === "cart" ? (
+        <Cart setFloatWin={setFloatWin} open={true} currency={currency} updateCart={updateCart} 
+        setUpdateCart={setUpdateCart} usaToArs={usaToArs} cartProducts={cartProducts} setCartProducts={setCartProducts}/>
+      ) : (
+        <Cart setFloatWin={setFloatWin} open={false} currency={currency} updateCart={updateCart}
+        setUpdateCart={setUpdateCart} usaToArs={usaToArs} cartProducts={cartProducts} setCartProducts={setCartProducts}/>
+      )}
     </>
   );
 }

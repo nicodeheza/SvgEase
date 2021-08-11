@@ -11,24 +11,36 @@ import ProductGallery from "../components/ProductGallery";
 import {useRouter} from 'next/router';
 import { useEffect, useState } from "react";
 import serverProps from "../helpersFunctions/serverProps";
-import getSession from "../lib/getSession";
 import Link from "next/link";
 
+import Session from "../lib/session";
+import runMiddleware from "../middleware/runMiddleware";
 
 
 export async function getServerSideProps(context){
+    const {req, res}= context;
+    const session= Session({
+        name:'sess',
+        secret: process.env.TOKEN_SECRET,
+        cookie: {
+            maxAge:60 * 60 * 8, // 8hours
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            path: '/',
+            sameSite: 'lax',
+        }
+    });
 
+    await runMiddleware(req, res, session);
     const sendProps= await serverProps(context);
 
-    const {req, res}= context;
-    await getSession(req, res);
     console.log(req.session);
-    const session= req.session;
+    const sess= req.session;
     let adminAuth;
     let isLogin;
-    if(session.passport?.user){
+    if(sess.passport?.user){
         isLogin= true;
-        if(session.passport?.user.admin){
+        if(sess.passport?.user.admin){
             adminAuth= true;
         }else{
             adminAuth= false;
@@ -57,7 +69,6 @@ export default function Admin({products, usaToArs, numOfDocuments, categoriesTag
         password:''
     });
 
-
     const router = useRouter();
     const refreshData = () => {
         router.replace(router.asPath);
@@ -74,6 +85,14 @@ export default function Admin({products, usaToArs, numOfDocuments, categoriesTag
             setFloatWin('none');
         }
     },[showMenu]);
+
+    useEffect(()=>{
+        setLoginFields({
+            email:'',
+            password:''
+        });
+        setMessage('');
+    },[adminAuth]);
 
     function login(e){
         e.preventDefault();
@@ -104,11 +123,8 @@ export default function Admin({products, usaToArs, numOfDocuments, categoriesTag
                     }
                 })
                 .catch(err => console.log(err));
-                setLoginFields({
-                    email:'',
-                    password:''
-                });
-                setMessage('');
+                setMessage('Iniciando session');
+
             }else{
                 setMessage('introduzca una dirección de email valida.')
             }
