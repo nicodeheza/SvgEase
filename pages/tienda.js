@@ -18,9 +18,11 @@ import Account from '../components/Acconut';
 import Search from '../components/Search';
 import ProductGallery from '../components/ProductGallery';
 import serverProps from '../helpersFunctions/serverProps';
+import Script from 'next/script';
 
 import runMiddleware from '../middleware/runMiddleware';
 import Session from '../lib/session';
+import { getUserProducts } from '../lib/users';
 
 export async function getServerSideProps(context){
     const {req, res}= context;
@@ -42,19 +44,24 @@ export async function getServerSideProps(context){
     console.log(req.session);
     const ses= req.session;
     let serverAuth;
+    let userProducts;
     if(ses.passport?.user){
         serverAuth= true;
+        userProducts= await getUserProducts(ses.passport.user.email);
     }else{
         serverAuth= false;
+        userProducts= [];
     }
 
     sendProps.props.serverAuth= serverAuth;
+    sendProps.props.userProducts= userProducts;
 
     return sendProps;
 
 }
 
-export default function Tienda({products, usaToArs, numOfDocuments, categoriesTags, searchQuery, serverAuth, currency, setCurrency}){
+export default function Tienda({products, usaToArs, numOfDocuments, categoriesTags,
+     searchQuery, serverAuth, currency, setCurrency, userProducts}){
     const {auth, setAuth}= useAuthContext();
     const [showMenu, setShowMenu]= useState(false);
     const [floatWin, setFloatWin] = useState("none");
@@ -85,6 +92,7 @@ export default function Tienda({products, usaToArs, numOfDocuments, categoriesTa
         <Head>
             <title>SvgEase-Tienda</title>
         </Head>
+        <Script src="https://sdk.mercadopago.com/js/v2" strategy='afterInteractive' />
         <header className={styles.header}>
             <div className={styles.movilContainer}>
                 <img src='/svgs/menu.svg' alt="menu" className={styles.movilMenu} onClick={()=>setShowMenu(prev=> !prev)} />
@@ -162,10 +170,12 @@ export default function Tienda({products, usaToArs, numOfDocuments, categoriesTa
 
         {floatWin === "cart" ? (
         <Cart setFloatWin={setFloatWin} open={true} store={true} currency={currency} updateCart={updateCart} 
-        setUpdateCart={setUpdateCart} usaToArs={usaToArs} cartProducts={cartProducts} setCartProducts={setCartProducts}/>
+        setUpdateCart={setUpdateCart} usaToArs={usaToArs} cartProducts={cartProducts} setCartProducts={setCartProducts}
+        userProducts={userProducts}/>
       ) : (
         <Cart setFloatWin={setFloatWin} open={false} store={true} currency={currency} updateCart={updateCart}
-        setUpdateCart={setUpdateCart} usaToArs={usaToArs} cartProducts={cartProducts} setCartProducts={setCartProducts}/>
+        setUpdateCart={setUpdateCart} usaToArs={usaToArs} cartProducts={cartProducts} setCartProducts={setCartProducts}
+        userProducts={userProducts}/>
       )}
 
      {

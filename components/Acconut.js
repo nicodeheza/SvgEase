@@ -2,9 +2,11 @@ import Close from "./icons/Close";
 import styles from './account.module.css';
 import LogOutBtn from "./btns/LogOutBtn";
 import { useAuthContext } from "../contexts/authContext";
+import { useRouter } from "next/router";
 
 export default function Account({setFloatWin, close, store}){
     const {setAuth}= useAuthContext();
+    const router= useRouter();
 
     function logout(){
         console.log('logout');
@@ -14,6 +16,7 @@ export default function Account({setFloatWin, close, store}){
             console.log(data);
             setAuth(data.auth);
             setFloatWin('none');
+            router.replace(router.asPath);
         })
         .catch(err=>console.log(err));
     }

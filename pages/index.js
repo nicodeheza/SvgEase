@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuthContext } from "../contexts/authContext";
 import Account from "../components/Acconut";
+import Script from 'next/script';
 
 export default function Home({currency}) {
   const [showMenu, setShowMenu] = useState(false);
@@ -28,6 +29,7 @@ export default function Home({currency}) {
   const [updateCart, setUpdateCart]= useState(true);
   const [usaToArs, setUsaToArs]= useState(0);
   const [cartProducts, setCartProducts]= useState([]);
+  const [userProducts, setUserProducts]= useState([]);
 
   useEffect(()=>{
     fetch('/api/home')
@@ -35,9 +37,21 @@ export default function Home({currency}) {
     .then(data=>{
       setAuth(data.auth);
       setUsaToArs(data.usaToArs);
+      setUserProducts(data.userProducts);
     })
     .catch(err=>console.log(err));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
+
+  useEffect(()=>{
+    fetch('/api/home')
+    .then(res=> res.json())
+    .then(data=>{
+      setUserProducts(data.userProducts);
+    })
+    .catch(err=>console.log(err));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[auth]);
 
   useEffect(() => {
     if (floatWin !== "none") {
@@ -58,7 +72,7 @@ export default function Home({currency}) {
       <Head>
         <title>SvgEase-Home</title>
       </Head>
-      
+      <Script src="https://sdk.mercadopago.com/js/v2" strategy='afterInteractive' />
       <header>
         <div className={styles.headerContainerFirst}>
           <div className={styles.btnContainer}>
@@ -255,10 +269,12 @@ export default function Home({currency}) {
 
       {floatWin === "cart" ? (
         <Cart setFloatWin={setFloatWin} open={true} currency={currency} updateCart={updateCart} 
-        setUpdateCart={setUpdateCart} usaToArs={usaToArs} cartProducts={cartProducts} setCartProducts={setCartProducts}/>
+        setUpdateCart={setUpdateCart} usaToArs={usaToArs} cartProducts={cartProducts} setCartProducts={setCartProducts}
+        userProducts={userProducts}/>
       ) : (
         <Cart setFloatWin={setFloatWin} open={false} currency={currency} updateCart={updateCart}
-        setUpdateCart={setUpdateCart} usaToArs={usaToArs} cartProducts={cartProducts} setCartProducts={setCartProducts}/>
+        setUpdateCart={setUpdateCart} usaToArs={usaToArs} cartProducts={cartProducts} setCartProducts={setCartProducts}
+        userProducts={userProducts}/>
       )}
     </>
   );

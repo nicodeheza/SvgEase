@@ -12,6 +12,7 @@
     "@hapi/iron": "^6.0.0",
     "cookie": "^0.4.1",
     "lottie-web": "^5.7.11",
+    "mercadopago": "^1.5.8",
     "mongoose": "^5.13.3",
     "next": "11.0.1",
     "next-connect": "^0.10.2",

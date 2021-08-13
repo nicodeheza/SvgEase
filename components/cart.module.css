@@ -138,6 +138,15 @@
     white-space: nowrap;
     font-size: 20px;
 }
+.table{
+    border-collapse: collapse;
+}
+.productRepeat{ 
+   background-color: lightgray;
+}
+.productRepeat td{
+ padding: 5px;
+}
 
 @media(max-width: 400px){
     .totalPrice{
@@ -192,6 +201,28 @@
     height: 30px;
 }
 
+.payBtnContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 20px;
+    padding: 0px 30px;
+}
+.payBtnContainer button{
+    border: none;
+    background-color: #8cb6f4;
+    border-radius: 20px;
+    font-family: var(--title-font);
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 10px 50px;
+}
+.payBtnContainer button:hover{
+    background-color: hsl(204, 60%, 60%);
+}
+
 
 @media(max-width: 450px){
     .storeCartMainContainer, .storeCartMainContainerClose{
@@ -208,5 +239,12 @@
     .cartMainContainerClose{
         top: 65px;
         height: calc( 100vh - 65px);
+    }
+
+    .payBtnContainer{
+        flex-direction: column;
+    }
+    .payBtnContainer button{
+        margin-top: 20px;
     }
 }

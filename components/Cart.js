@@ -8,11 +8,13 @@ import CartPreview from "./CartPreview";
 import DropIcon from './icons/DropIcon';
 import Lottie from "lottie-web";
 import { useAuthContext } from "../contexts/authContext";
+import Image from 'next/image';
 
 export default function Cart({setFloatWin, open, store, currency, updateCart, 
-    setUpdateCart, usaToArs, cartProducts, setCartProducts }){
+    setUpdateCart, usaToArs, cartProducts, setCartProducts, userProducts }){
     const {auth}= useAuthContext();
     const [total, setTotal]=useState(0);
+    const [repeat, setRepeat]= useState(checkRepeat());
 
     useEffect(()=>{
         if(updateCart){
@@ -29,6 +31,11 @@ export default function Cart({setFloatWin, open, store, currency, updateCart,
         }
     },[updateCart, setUpdateCart, setCartProducts]);
 
+    useEffect(()=>{
+        setRepeat(checkRepeat());
+        console.log('oh')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[cartProducts,userProducts]);
 
     useEffect(() => {
         let total= 0;
@@ -52,6 +59,66 @@ export default function Cart({setFloatWin, open, store, currency, updateCart,
         setUpdateCart(true);
     }
 
+    function clearCart(){
+        const localStorage= window.localStorage;
+        const cart= JSON.parse(localStorage.getItem('cart'));
+        localStorage.setItem('cart', JSON.stringify([]));
+        cart.forEach(ele=>{
+            Lottie.destroy(`cartPreview${ele._id}`);
+        });
+        setUpdateCart(true);
+    }
+
+    function checkRepeat(){
+        for(let i= 0; i < cartProducts.length; i++){
+            const ele= cartProducts[i];
+            if(userProducts?.includes(ele._id)){
+                return true;
+            }else if( i === cartProducts.length -1){
+                return false;
+            }
+        }
+    }
+
+
+    function mpPay(){
+        const mp= new MercadoPago('TEST-b6e0406f-2696-481b-b367-1ac83e93b342', {locale: 'es-AR'});
+
+        let products= [];
+        cartProducts.forEach(ele=>{
+            const obj={
+                id: ele._id,
+                title: ele.name,
+                unit_price: priceInPesos(ele.price, usaToArs),
+                quantity: 1
+            }
+            products.push(obj);
+        });
+
+       // console.log(cartProducts);
+
+        fetch('/api/mp/create_preference',{
+            method: 'POST',
+            headers:{
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({products})
+        })
+        .then(res=> res.json())
+        .then(data=>{
+            mp.checkout({
+                preference:{id: data.id},
+                autoOpen: true
+            });
+            
+           // console.log(data);
+           setFloatWin('none');
+           clearCart();
+        })
+        .catch(err=> console.log(err));
+    }
+
 
     return(
         <aside className={open && store ? styles.storeCartMainContainer : !open && store ? styles.storeCartMainContainerClose :
@@ -72,7 +139,7 @@ export default function Cart({setFloatWin, open, store, currency, updateCart,
                 <tbody>
                 {
                     cartProducts.map((product, i)=>(
-                        <tr key={i} className={styles.productsTr}>
+                        <tr key={i} className={userProducts?.includes(product._id) ? styles.productRepeat : styles.productsTr}>
                         <td className={styles.priceTitle}>
                             <div className={styles.preview}>
                                 <CartPreview file={product.file} id={product._id}/>
@@ -109,13 +176,37 @@ export default function Cart({setFloatWin, open, store, currency, updateCart,
                     Crear Cuenta <span><SingupIcon classN={styles.iconBtn}/></span>
                 </button>
             </div>
-                ) : total > 0 ? (
+                ) : repeat ? (
                     <div className={styles.btnContainer}>
-                        <button>Paga</button>
+                        <p style={{fontFamily:'var(--text-font)',
+                    color:'red',
+                    width:'80%'}}>Ya tienes uno o mas productos en tu cuenta, quita los del carro para poder pagar.</p>
+                    </div>
+
+                ) : total > 0 ? (
+                    <div className={styles.payBtnContainer}>
+                        {
+                            currency === 'ars' ? (
+                                <>
+                        <Image src='/svgs/mercadoPago.svg' alt='mercado pago' width={60} height={60} />
+                        <button onClick={()=>mpPay()}>
+                            Pagar
+                        </button>
+                                </>
+                            ) : (
+                                <>
+                                <Image src='/svgs/paypal.svg' alt='mercado pago' width={80} height={20} />
+                                <button>
+                                    Pagar
+                                </button>
+                                </>
+                            )
+                        }
                     </div>
                 ) : (
                     <div className={styles.btnContainer}>
-                        <p>Carro vacío</p>
+                        <p style={{fontFamily:'var(--text-font)',
+                    color:'red'}}>Carro vacío</p>
                     </div>
                 )
             }

@@ -1,6 +1,7 @@
 import nextConnect from "next-connect";
 import auth from "../../middleware/auth";
 import {serialize} from 'cookie';
+import { getUserProducts } from "../../lib/users";
 
 const handler= nextConnect();
 
@@ -36,9 +37,10 @@ handler
     }
 
     if(req.isAuthenticated()){
-        res.json({auth: true, usaToArs});
+        const userProducts= await getUserProducts(req.user.email);
+        res.json({auth: true, usaToArs, userProducts});
     }else{
-        res.json({auth: false, usaToArs});
+        res.json({auth: false, usaToArs, userProducts: []});
     }
 });
 

@@ -4,10 +4,12 @@ import Image from 'next/image';
 import styles from './logIn.module.css';
 import { useAuthContext } from '../contexts/authContext';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 export default function LogIn({setFloatWin}){
 
     const {setAuth}= useAuthContext();
+    const router= useRouter();
 
     const [formFields, setFormFields]= useState({
         email:'',
@@ -40,6 +42,7 @@ export default function LogIn({setFloatWin}){
                     if(data){
                         setAuth(data.auth);
                         setFloatWin('none');
+                        router.replace(router.asPath);
                         console.log(data);
                     }
                 })
