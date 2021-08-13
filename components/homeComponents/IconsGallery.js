@@ -18,11 +18,11 @@ export default function IconGallery(){
 
         useEffect(()=>{
            const interval= setInterval(()=> {
-               setActualAnimation(pev=> (pev + 1) % (animations.length  ));
+               setActualAnimation(pev=> (pev + 1) % (animations.length));
             },5000);
             return()=>clearInterval(interval)
 
-        },[]);
+        },[actualAnimation]);
 
     return(
         <div style={{

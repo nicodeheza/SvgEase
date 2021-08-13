@@ -19,7 +19,7 @@ export default function LoadingGallery(){
          },5000);
          return()=>clearInterval(interval)
 
-     },[]);
+     },[actualAnimation]);
 
      return(
 
