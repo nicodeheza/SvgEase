@@ -11,6 +11,7 @@ export default function ProductGallery({products, store, currency, usaToArs,
     const [componentMount, setComponentMount]=useState(false);
     const [actualPage, setActualPage]= useState(1);
     const [previewProduct, setPreviewProduct]= useState(null);
+    const [scrollUp, setScrollUp]= useState(false);
 
     const numOfPages= Math.ceil(numOfDocuments /12);
     
@@ -29,8 +30,12 @@ export default function ProductGallery({products, store, currency, usaToArs,
     }
 
     useEffect(()=>{
-        const gallery= document.getElementById('productGallery');
-        gallery.scrollTo(0, 0);
+        if(scrollUp){
+            const gallery= document.getElementById('productGallery');
+            gallery.scrollTo(0, 0);
+            setScrollUp(false);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[products]);
 
     useEffect(()=>{
@@ -85,6 +90,7 @@ export default function ProductGallery({products, store, currency, usaToArs,
             }else{
                 router.replace(`/admin?${newParam}`);
             }
+            setScrollUp(true);
         }
     }
 
@@ -123,7 +129,10 @@ export default function ProductGallery({products, store, currency, usaToArs,
                      return(
                       <li key={ele} style={ele !== actualPage ? {color:'#979797'} : {}}>
                           <Link href={store ? `/tienda?${newParam}` : `/admin?${newParam}`}>
-                              <a onClick={()=>setActualPage(ele)}>
+                              <a onClick={()=>{
+                                  setActualPage(ele);
+                                  setScrollUp(true);
+                                  }}>
                                   {ele}
                                 </a>
                             </Link>

@@ -9,12 +9,15 @@ import DropIcon from './icons/DropIcon';
 import Lottie from "lottie-web";
 import { useAuthContext } from "../contexts/authContext";
 import Image from 'next/image';
+import {useRouter} from 'next/router'
+import PayPal from "./PayPal";
 
 export default function Cart({setFloatWin, open, store, currency, updateCart, 
     setUpdateCart, usaToArs, cartProducts, setCartProducts, userProducts }){
     const {auth}= useAuthContext();
     const [total, setTotal]=useState(0);
     const [repeat, setRepeat]= useState(checkRepeat());
+    const router= useRouter();
 
     useEffect(()=>{
         if(updateCart){
@@ -46,9 +49,10 @@ export default function Cart({setFloatWin, open, store, currency, updateCart,
             total= priceInPesos( total, usaToArs);
         }
         //console.log('getTotal');
-       setTotal(total);
+       setTotal(Math.round(total * 100) / 100);
         
     }, [currency, cartProducts, usaToArs]);
+
 
     function deleteProduct(id){
         const localStorage= window.localStorage;
@@ -118,6 +122,7 @@ export default function Cart({setFloatWin, open, store, currency, updateCart,
         })
         .catch(err=> console.log(err));
     }
+
 
 
     return(
@@ -195,10 +200,11 @@ export default function Cart({setFloatWin, open, store, currency, updateCart,
                                 </>
                             ) : (
                                 <>
-                                <Image src='/svgs/paypal.svg' alt='mercado pago' width={80} height={20} />
-                                <button>
-                                    Pagar
-                                </button>
+                                <PayPal 
+                                cartProducts={cartProducts}
+                                setFloatWin={setFloatWin}
+                                clearCart={clearCart}
+                                router={router}/>
                                 </>
                             )
                         }

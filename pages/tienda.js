@@ -192,7 +192,6 @@ export default function Tienda({products, usaToArs, numOfDocuments, categoriesTa
           (<Search setFloatWin={setFloatWin} open={true} categories={categoriesTags} searchQuery={searchQuery}/>) : 
           (<Search setFloatWin={setFloatWin} open={false} categories={categoriesTags} searchQuery={searchQuery}/>)
       }
-        
 
         </>
     )
