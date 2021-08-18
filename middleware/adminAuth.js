@@ -5,9 +5,9 @@ export default  function adminAuth (req, res, next){
         if(req.user.admin){
             next();
         }else{
-            res.json({message: 'usuario no autorizado'});
+            res.status(401).json({message: 'usuario no autorizado'});
         }
     }else{
-        res.json({message: 'debes estar logeado como administrador para realizar esta acción'});
+        res.status(401).json({message: 'debes estar logeado como administrador para realizar esta acción'});
     }
 }

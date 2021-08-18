@@ -30,7 +30,7 @@ export default function PayPal({cartProducts, setFloatWin, clearCart, router}){
             details.purchase_units.forEach(ele=>{
                 productsId.push(ele.reference_id);
             });
-            fetch('/api/user/addproducts',{
+            fetch('/api/user/products/add',{
                 method:'PUT',
                 headers:{
                     'Accept': 'application/json',

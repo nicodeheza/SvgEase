@@ -1,8 +1,8 @@
 import nextConnect from "next-connect";
-import auth from "../../../middleware/auth";
-import authenticated from "../../../middleware/authenticated";
-import dbConnect from "../../../lib/mongooseConect";
-import User from "../../../models/UserSchema";
+import auth from "../../../../middleware/auth";
+import authenticated from "../../../../middleware/authenticated";
+import dbConnect from "../../../../lib/mongooseConect";
+import User from "../../../../models/UserSchema";
 
 
 const handler= nextConnect();

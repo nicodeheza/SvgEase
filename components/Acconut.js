@@ -3,10 +3,19 @@ import styles from './account.module.css';
 import LogOutBtn from "./btns/LogOutBtn";
 import { useAuthContext } from "../contexts/authContext";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import AccountPreview from "./AcconutPreview";
 
-export default function Account({setFloatWin, close, store}){
+export default function Account({setFloatWin, close, store, userProducts}){
     const {setAuth}= useAuthContext();
     const router= useRouter();
+    const [products, setProducts]= useState([]);
+
+    useEffect(()=>{
+        if(userProducts.length > 0){
+            getProductsData();
+        }
+    },[userProducts]);
 
     function logout(){
         console.log('logout');
@@ -19,6 +28,16 @@ export default function Account({setFloatWin, close, store}){
             router.replace(router.asPath);
         })
         .catch(err=>console.log(err));
+    }
+
+    function getProductsData(){
+        const search= new URLSearchParams(userProducts.map(p=>['id', p]));
+        fetch(`api/user/products/get?${search.toString()}`)
+        .then(res=> res.json())
+        .then(data=> {
+            setProducts(data.products);
+        })
+        .catch(err=> console.log(err));
     }
 
     return(
@@ -35,8 +54,24 @@ export default function Account({setFloatWin, close, store}){
             </div>
             <hr/>
             <h3 className={styles.MisAnimaciones}>Mis Animaciones</h3>
-            <div>
-
+            <div className={store ?  styles.itemsMainContainer : styles.itemsMainContainerHome}>
+                {
+                    products.length > 0 ? 
+                    products.map((ele, i)=>(
+                        <div key={i} className={styles.itemsContainer}>
+                            <div className={styles.preview}>
+                            <AccountPreview id={ele._id} file={ele.file} classN={styles.animation}/>
+                            </div>
+                            <div className={styles.textContainer}>
+                            <h2>{ele.name}</h2>
+                            <a href={`/api/user/products/download/${ele._id}`} download={`${ele.name}.json`}>Descargar</a>
+                            </div>
+                        </div>
+                    )) :
+                    (
+                        <p>Cargando...</p>
+                    )
+                }
             </div>
         </div>
     )

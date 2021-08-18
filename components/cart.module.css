@@ -8,7 +8,7 @@
     background-color: white;
     z-index: 40;
     box-shadow: -5px 10px 5px rgba(0, 0, 0, .3);
-    transition: 1s;
+    transition: transform 1s;
     
 }
 .storeCartMainContainer{
@@ -23,7 +23,7 @@
     box-shadow: -5px 10px 5px rgba(0, 0, 0, .3);
     overflow-y: scroll;
     overflow-x: hidden;
-    transition: 1s;
+    transition: transform 1s;
 }
 .cartMainContainerClose{
     position: fixed;
@@ -36,7 +36,7 @@
     z-index: 40;
     box-shadow: -5px 5px 5px rgba(0, 0, 0, .3);
     transform: translateX(400px);
-    transition: 1s;
+    transition: transform 1s;
 }
 .storeCartMainContainerClose{
     position: fixed;
@@ -51,7 +51,7 @@
     overflow-y: scroll;
     overflow-x: hidden;
     transform: translateX(400px);
-    transition: 1s;
+    transition: transform 1s;
 }
 
 /*---------------header-------------------------*/

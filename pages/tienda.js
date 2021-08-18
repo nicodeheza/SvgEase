@@ -181,8 +181,8 @@ export default function Tienda({products, usaToArs, numOfDocuments, categoriesTa
      {
         floatWin ==='account' ?
         (
-          <Account setFloatWin={setFloatWin} store={true}/>
-        ): (<Account setFloatWin={setFloatWin} close={true} store={true} />)
+          <Account setFloatWin={setFloatWin} store={true} userProducts={userProducts}/>
+        ): (<Account setFloatWin={setFloatWin} close={true} store={true} userProducts={userProducts} />)
       }
 
       {/* search*/}

@@ -146,8 +146,8 @@ export default function Home({currency}) {
       {
         floatWin ==='account' ?
         (
-          <Account setFloatWin={setFloatWin} />
-        ): (<Account setFloatWin={setFloatWin} close={true} />)
+          <Account setFloatWin={setFloatWin} userProducts={userProducts} />
+        ): (<Account setFloatWin={setFloatWin} close={true} userProducts={userProducts} />)
       }
       <HeaderAnimation />
       <nav className={styles.nav}>
