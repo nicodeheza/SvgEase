@@ -15,6 +15,7 @@ export default function Account({setFloatWin, close, store, userProducts}){
         if(userProducts.length > 0){
             getProductsData();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[userProducts]);
 
     function logout(){
