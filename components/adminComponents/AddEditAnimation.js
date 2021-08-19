@@ -53,19 +53,27 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
 
             setNewFile(false);
             setFileLoaded(true);
-            setFormData({...formData,
-                name: edit.name,
-                category: edit.category,
-                tags: edit.tags,
-                price: edit.price.toString()
+            // setFormData({...formData,
+            //     name: edit.name,
+            //     category: edit.category,
+            //     tags: edit.tags,
+            //     price: edit.price.toString()
+            // });
+            setFormData(prev=> {
+                return {
+                    ...prev,
+                    name: edit.name,
+                    category: edit.category,
+                    tags: edit.tags,
+                    price: edit.price.toString()
+                }
             });
             setCurrency('usa');
             setPriceDisplay(edit.price.toString());
             setFloatWin('addEdit');
 
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[edit]);
+    },[edit, setFloatWin]);
 
     //load edit preview
     useEffect(()=>{
@@ -90,15 +98,7 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
             }); 
             setPriceDisplay('');
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [open]);
-
-
-    // useEffect(()=>{
-    //     console.log(products);
-    // },[products]);
-
-
+    }, [open, setEdit]);
 
     function changeCurrency(newCurrency){
         if(priceDisplay){
@@ -309,7 +309,9 @@ export default function AddEditAnimation({setFloatWin, open, usaToArs, categorie
 
     function removeFile(){
         Lottie.destroy('prevAnimation');
-        setFormData({...formData, file: null});
+        setFormData(prev=>{
+            return {...prev, file: null}
+        });
         setFileLoaded(false);
     }
 

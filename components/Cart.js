@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Close from "./icons/Close";
 import LoginIcon from "./icons/LoginIcon";
 import SingupIcon from "./icons/singupIcon";
@@ -16,7 +16,7 @@ export default function Cart({setFloatWin, open, store, currency, updateCart,
     setUpdateCart, usaToArs, cartProducts, setCartProducts, userProducts }){
     const {auth}= useAuthContext();
     const [total, setTotal]=useState(0);
-    const [repeat, setRepeat]= useState(checkRepeat());
+    const [repeat, setRepeat]= useState();
     const router= useRouter();
 
     useEffect(()=>{
@@ -35,9 +35,17 @@ export default function Cart({setFloatWin, open, store, currency, updateCart,
     },[updateCart, setUpdateCart, setCartProducts]);
 
     useEffect(()=>{
-        setRepeat(checkRepeat());
+        for(let i= 0; i < cartProducts.length; i++){
+            const ele= cartProducts[i];
+            if(userProducts?.includes(ele._id)){
+                setRepeat(true);
+                break;
+            }else if( i === cartProducts.length -1){
+                setRepeat(false);
+                break;
+            }
+        }
         console.log('oh')
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[cartProducts,userProducts]);
 
     useEffect(() => {
@@ -72,18 +80,6 @@ export default function Cart({setFloatWin, open, store, currency, updateCart,
         });
         setUpdateCart(true);
     }
-
-    function checkRepeat(){
-        for(let i= 0; i < cartProducts.length; i++){
-            const ele= cartProducts[i];
-            if(userProducts?.includes(ele._id)){
-                return true;
-            }else if( i === cartProducts.length -1){
-                return false;
-            }
-        }
-    }
-
 
     function mpPay(){
         const mp= new MercadoPago('TEST-b6e0406f-2696-481b-b367-1ac83e93b342', {locale: 'es-AR'});
@@ -172,7 +168,8 @@ export default function Cart({setFloatWin, open, store, currency, updateCart,
                 </tfoot>
             </table>
             {
-                !auth ? (
+                !auth ? 
+                (
             <div className={styles.btnContainer}>
                 <button onClick={()=> setFloatWin('logIn')}>
                     Iniciar Sesión <span><LoginIcon classN={styles.iconBtn}/></span>
@@ -181,14 +178,25 @@ export default function Cart({setFloatWin, open, store, currency, updateCart,
                     Crear Cuenta <span><SingupIcon classN={styles.iconBtn}/></span>
                 </button>
             </div>
-                ) : repeat ? (
+                ) 
+                : total <= 0 ? 
+                (
+                    <div className={styles.btnContainer}>
+                        <p style={{fontFamily:'var(--text-font)',
+                    color:'red'}}>Carro vacío</p>
+                    </div>
+                )
+                : repeat ? 
+                (
                     <div className={styles.btnContainer}>
                         <p style={{fontFamily:'var(--text-font)',
                     color:'red',
                     width:'80%'}}>Ya tienes uno o mas productos en tu cuenta, quita los del carro para poder pagar.</p>
                     </div>
 
-                ) : total > 0 ? (
+                ) 
+                :
+                (
                     <div className={styles.payBtnContainer}>
                         {
                             currency === 'ars' ? (
@@ -209,12 +217,7 @@ export default function Cart({setFloatWin, open, store, currency, updateCart,
                             )
                         }
                     </div>
-                ) : (
-                    <div className={styles.btnContainer}>
-                        <p style={{fontFamily:'var(--text-font)',
-                    color:'red'}}>Carro vacío</p>
-                    </div>
-                )
+                ) 
             }
         </aside>
     )

@@ -50,7 +50,6 @@ export default function Home({currency}) {
       setUserProducts(data.userProducts);
     })
     .catch(err=>console.log(err));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[auth]);
 
   useEffect(() => {

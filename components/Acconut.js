@@ -13,9 +13,14 @@ export default function Account({setFloatWin, close, store, userProducts}){
 
     useEffect(()=>{
         if(userProducts.length > 0){
-            getProductsData();
+            const search= new URLSearchParams(userProducts.map(p=>['id', p]));
+            fetch(`api/user/products/get?${search.toString()}`)
+            .then(res=> res.json())
+            .then(data=> {
+            setProducts(data.products);
+            })
+            .catch(err=> console.log(err));
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[userProducts]);
 
     function logout(){
@@ -29,16 +34,6 @@ export default function Account({setFloatWin, close, store, userProducts}){
             router.replace(router.asPath);
         })
         .catch(err=>console.log(err));
-    }
-
-    function getProductsData(){
-        const search= new URLSearchParams(userProducts.map(p=>['id', p]));
-        fetch(`api/user/products/get?${search.toString()}`)
-        .then(res=> res.json())
-        .then(data=> {
-            setProducts(data.products);
-        })
-        .catch(err=> console.log(err));
     }
 
     return(
