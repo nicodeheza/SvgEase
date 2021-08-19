@@ -1,19 +1,29 @@
 export default function getDbQuery(searchQuery){
-
-    if(searchQuery.categories.length > 0 ||  searchQuery.tags.length > 0 || searchQuery.text){
+    
+    const query= {...searchQuery};
+    
+    if(query.categories.length > 0 ||  query.tags.length > 0 || query.text){
 
         let obj= {};
-        if(searchQuery.categories.length > 0){
-            obj.category= {$in: searchQuery.categories};
+        
+        if(query.categories.length > 0){
+            obj.category= {$in: query.categories};
         }
-        if(searchQuery.tags.length > 0){
-            obj.tags= {$in: searchQuery.tags};
+        if(query.tags.length > 0){
+            obj.tags= {$in: query.tags};
         }
-        if(searchQuery.text){
-            const regEx= new RegExp(searchQuery.text, 'i');
-            obj.name= regEx,
-            obj.category?.$in.push(regEx);
-            obj.tags?.$in.push(regEx);
+        if(query.text){
+            const regEx= new RegExp(query.text, 'i');
+            let orObj={$or:[
+                {name: regEx},
+                {category: regEx},
+                {tags: regEx}
+            ]};
+           if(Object.keys(obj).length > 0){
+               orObj.$or.push(obj);
+           }
+
+           return orObj;
         }
 
         return obj;

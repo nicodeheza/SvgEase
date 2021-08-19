@@ -16,7 +16,9 @@ export default async function serverProps({req, res, query}){
         text: query.text ? query.text : ''
     }
 
+
     const queryDb= getDbQuery(searchQuery);
+   // console.log(queryDb);
 
     const numOfDocuments= await Product.countDocuments(queryDb);
     if(numOfDocuments <= 12){
