@@ -63,7 +63,7 @@ export default function Account({setFloatWin, close, store, userProducts}){
                             <a href={`/api/user/products/download/${ele._id}`} download={`${ele.name}.json`}>Descargar</a>
                             </div>
                         </div>
-                    )) :
+                    )) : userProducts.length === 0 ? (null) :
                     (
                         <p>Cargando...</p>
                     )

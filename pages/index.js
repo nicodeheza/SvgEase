@@ -153,7 +153,7 @@ export default function Home({currency}) {
         <ul className={styles.navUl}>
           <li className={styles.navLi}>
             <Link href="/tienda">
-              <a href="#">Tienda</a>
+              <a>Tienda</a>
             </Link>
           </li>
           <li className={styles.navLi} onClick={() => scrollTo("acerca")}>
