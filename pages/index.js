@@ -213,10 +213,10 @@ export default function Home({currency}) {
           <div className={styles.deviceAnimationContainer}>
             <Device />
           </div>
-          <h1>Multiplatafoma y faciles de implementar</h1>
+          <h1>Multiplataforma y fáciles de implementar</h1>
           <div className={styles.deviceText}>
-            Nuestas animaciones estan hechas con Lotti una tecnologia compatible
-            con web, andorid y ios muy fácil de implementar en tus proyectos.{" "}
+           Nuestras animaciones están hechas con Lotti una tecnología compatible
+            con web, android y ios muy fácil de implementar en tus proyectos.{" "}
             <br /> Mas info{" "}
             <a
               href="https://airbnb.io/lottie/#/"
@@ -240,10 +240,10 @@ export default function Home({currency}) {
               Una vez que hayas seleccionado todas las animaciones que quieras
               anda al carro
             </li>
-            <li>Logueate o registrate si todavia no lo hiciste</li>
-            <li>Elegi tu medio de pago</li>
+            <li>Loguéate o regístrate si todavía no lo hiciste</li>
+            <li>Elegí tu medio de pago</li>
             <li>
-              Las animaciones quedan gurdadas en en tu perfil para que las
+              Las animaciones quedan guardadas en en tu perfil para que las
               descargues cuando y las veces que quieras
             </li>
           </ul>
