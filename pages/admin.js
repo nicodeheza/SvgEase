@@ -34,7 +34,7 @@ export async function getServerSideProps(context){
     await runMiddleware(req, res, session);
     const sendProps= await serverProps(context);
 
-    console.log(req.session);
+    //console.log(req.session);
     const sess= req.session;
     let adminAuth;
     let isLogin;
@@ -116,9 +116,7 @@ export default function Admin({products, usaToArs, numOfDocuments, categoriesTag
                 })
                 .then(data=>{
                     if(data){
-                        //setAuth(data.auth);
-                       // setFloatWin('none');
-                        console.log(data);
+                        //console.log(data);
                         router.replace(router.asPath);
                     }
                 })

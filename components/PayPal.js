@@ -15,7 +15,7 @@ export default function PayPal({cartProducts, setFloatWin, clearCart, router}){
             products.push(obj);
         });
         
-        console.log(products);
+       // console.log(products);
         return actions.order.create({
             purchase_units: products
         });
@@ -23,9 +23,9 @@ export default function PayPal({cartProducts, setFloatWin, clearCart, router}){
     }
 
     function onApprove(data, actions){
-        console.log('approve');
+        //console.log('approve');
         return actions.order.capture().then((details)=>{
-            console.log(details);
+            //console.log(details);
             let productsId= [];
             details.purchase_units.forEach(ele=>{
                 productsId.push(ele.reference_id);
@@ -39,7 +39,6 @@ export default function PayPal({cartProducts, setFloatWin, clearCart, router}){
                   body: JSON.stringify({productsId})
             })
             .then(res=> {
-                console.log(res);
                 if(res.status === 200){
                     setFloatWin('none');
                     clearCart();

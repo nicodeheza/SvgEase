@@ -41,7 +41,7 @@ export async function getServerSideProps(context){
     await runMiddleware(req, res, session);
 
     const sendProps= await serverProps(context);
-    console.log(req.session);
+    //console.log(req.session);
     const ses= req.session;
     let serverAuth;
     let userProducts;

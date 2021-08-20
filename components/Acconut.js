@@ -24,11 +24,11 @@ export default function Account({setFloatWin, close, store, userProducts}){
     },[userProducts]);
 
     function logout(){
-        console.log('logout');
+       // console.log('logout');
         fetch('/api/user/logout')
         .then(res=> res.json())
         .then(data=>{
-            console.log(data);
+            //console.log(data);
             setAuth(data.auth);
             setFloatWin('none');
             router.replace(router.asPath);

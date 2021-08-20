@@ -11,12 +11,11 @@ export default async function singup(req, res){
     await dbConnect();
 
     if(method === 'POST'){
-        console.log(body);
+        //console.log(body);
         try {
             
         const userExist= await User.findOne({email: body.email});
         if(userExist){
-            console.log(userExist);
             res.json({message:'Ya hay un usuario registrado con esta email'});
         }else{
             const salt= crypto.randomBytes(16).toString('hex');

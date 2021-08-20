@@ -11,7 +11,7 @@ handler
 .get((req, res)=>{
 
     const fileId= req.query.id;
-    console.log(fileId);
+
     if(req.user.userProducts.includes(fileId)){
         const filePath= `./productsFiles/${fileId}.json`;
     

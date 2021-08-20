@@ -27,7 +27,7 @@ export default function SingUp({setFloatWin}){
                 body: JSON.stringify({email: formFields.email, password: formFields.password})
             }).then(res=> res.json())
             .then(data=>{
-                console.log(data);
+               // console.log(data);
                 setMessage(data.message);
             }).catch(err=> console.log(err));
 

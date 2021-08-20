@@ -43,7 +43,7 @@ export default function LogIn({setFloatWin}){
                         setAuth(data.auth);
                         setFloatWin('none');
                         router.replace(router.asPath);
-                        console.log(data);
+                       // console.log(data);
                     }
                 })
                 .catch(err => console.log(err));
@@ -57,15 +57,6 @@ export default function LogIn({setFloatWin}){
         }else{
             setMessage('Todos los campos son obligatorios')
         }
-    }
-
-    function githubLogin(){
-        fetch('/api/user/github')
-        .then(res=> res.json())
-        .then(data=>{
-            console.log(data);
-        })
-        .catch(err=> console.log(err));
     }
 
     return(

@@ -28,7 +28,6 @@ export default function Cart({setFloatWin, open, store, currency, updateCart,
 
             const cart= JSON.parse(localStorage.getItem('cart'));
             setCartProducts(cart);
-           // console.log('update effect');
         }
             setUpdateCart(false);
         }
@@ -45,7 +44,6 @@ export default function Cart({setFloatWin, open, store, currency, updateCart,
                 break;
             }
         }
-        console.log('oh')
     },[cartProducts,userProducts]);
 
     useEffect(() => {
@@ -94,8 +92,6 @@ export default function Cart({setFloatWin, open, store, currency, updateCart,
             }
             products.push(obj);
         });
-
-       // console.log(cartProducts);
 
         fetch('/api/mp/create_preference',{
             method: 'POST',

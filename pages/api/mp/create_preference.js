@@ -15,7 +15,7 @@ mercadoPago.configure({
   .post((req, res)=>{
     const {products}= req.body;
     
-    console.log(products);
+    //console.log(products);
     const preference={
         items: products,
         back_urls: {
