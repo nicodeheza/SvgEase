@@ -1,34 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# SvgEase
 
-## Getting Started
+Lottie animations store
 
-First, run the development server:
+## About this project
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+Svg Ease is a ecommerce app that I did for practice, so you can't actually buy nothing. All the payment method are in developer mode and I don't have plans to put them in production mode.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This dummy store sells Lottie animations, which are json files that contain all the data to play svg animation with this library.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Find more information about Lottie [here](https://github.com/airbnb/lottie)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+The site is in Spanish.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Here you can visit the live demo:</br>
+todo...
 
-## Learn More
+Alsow you can use this test user:</br>
+**User:** test@test.com<br>
+**Password:** 1234
 
-To learn more about Next.js, take a look at the following resources:
+**Some feature of the app:**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Lottie integration
+- Landing page
+- Log In
+- Sing up
+- Sessions
+- Shop cart
+- Mercado Pago integration
+- Pay Pal integration
+- Currency conversion daily update via a public currency API
+- Download purchased files
+- Search by tags or words
+- Animations preview
+- Admin dashboard
+- Add, edit and delete products
+- Etc
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Built With
 
-## Deploy on Vercel
+Here are some of the technologys I use to build this project:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Next js
+- Lottie
+- Mongoose
+- Passport
