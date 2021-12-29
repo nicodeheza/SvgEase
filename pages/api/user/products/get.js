@@ -13,13 +13,14 @@ handler
 	.use(authenticated)
 	.get(async (req, res) => {
 		//console.log(req.query);
-		const productsId = req.query.id;
-		console.log(typeof productsId, productsId);
+		let productsId = req.query.id;
+		//console.log(typeof productsId, productsId);
+		if (typeof productsId !== "object") {
+			productsId = productsId.split(", ");
+		}
 		try {
 			await dbConnect();
-			const products = await Product.find({
-				_id: {$in: productsId.map((s) => Mongoose.Types.ObjectId(s))}
-			});
+			const products = await Product.find({_id: {$in: productsId}});
 			let userProducts = [];
 			products.forEach((ele) => {
 				const obj = {
