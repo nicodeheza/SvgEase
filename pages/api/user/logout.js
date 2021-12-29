@@ -3,7 +3,7 @@ import auth from "../../../middleware/auth";
 
 const handler = nextConnect();
 
-handler.use(auth).get((req, res) => {
+handler.use(auth).delete((req, res) => {
 	console.log("logOut");
 	req.logout();
 	res.json({auth: false});
