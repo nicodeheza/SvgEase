@@ -1,11 +1,12 @@
 import nextConnect from "next-connect";
-import auth from '../../../middleware/auth';
+import auth from "../../../middleware/auth";
 
-const handler = nextConnect()
+const handler = nextConnect();
 
 handler.use(auth).get((req, res) => {
-  req.logOut();
-  res.json({auth: false});
+	console.log("logOut");
+	req.logOut();
+	res.json({auth: false});
 });
 
 export default handler;
