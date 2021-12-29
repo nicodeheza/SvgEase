@@ -15,7 +15,7 @@ handler
 		//console.log(req.query);
 		let productsId = req.query.id;
 		//console.log(typeof productsId, productsId);
-		if (typeof productsId !== "object") {
+		if (typeof productsId === "string") {
 			productsId = productsId.split(", ");
 		}
 		try {
