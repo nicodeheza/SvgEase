@@ -2,7 +2,6 @@ import dbConnect from "../lib/mongooseConect";
 import Product from "../models/productSchema";
 import Exchange from "../models/Exchange";
 import getDbQuery from "../helpersFunctions/getDbQuery";
-import {serialize, parse} from "cookie";
 import categoryAgregation from "../helpersFunctions/categorysAgregation";
 
 export default async function serverProps({req, res, query}) {
@@ -44,14 +43,19 @@ export default async function serverProps({req, res, query}) {
 			return product;
 		});
 
-		const cookie = req.headers?.cookie;
-		const parseCookie = parse(cookie || "");
-		const exchangeCookie = parseCookie["exchangeRate"];
 		let usaToArs;
-		//console.log('cookie: ' + exchangeCookie);
 
-		if (!exchangeCookie) {
-			const now = new Date();
+		const now = new Date();
+		const dbExchange = await Exchange.find({});
+		if (!dbExchange[0] || dbExchange[0].expires <= now) {
+			await Exchange.remove({});
+
+			const exchangeRateRes = await fetch(
+				`https://v6.exchangerate-api.com/v6/${process.env.EXCHANGE_RATE_API_KEY}/pair/USD/ARS`
+			);
+			const exchangeRate = await exchangeRateRes.json();
+			usaToArs = exchangeRate.conversion_rate;
+
 			const expire = new Date(
 				now.getFullYear(),
 				now.getMonth(),
@@ -61,40 +65,15 @@ export default async function serverProps({req, res, query}) {
 				0,
 				0
 			);
-			const dbExchange = await Exchange.find({});
-			if (!dbExchange[0] || dbExchange[0].expires <= now) {
-				await Exchange.remove({});
-
-				const exchangeRateRes = await fetch(
-					`https://v6.exchangerate-api.com/v6/${process.env.EXCHANGE_RATE_API_KEY}/pair/USD/ARS`
-				);
-				const exchangeRate = await exchangeRateRes.json();
-				usaToArs = exchangeRate.conversion_rate;
-
-				const newExchange = new Exchange({
-					exchange: usaToArs,
-					expires: expire
-				});
-				await newExchange.save();
-				console.log("api");
-			} else {
-				console.log("db");
-				usaToArs = dbExchange[0].exchange;
-			}
-
-			const newCookie = serialize("exchangeRate", usaToArs, {
-				expires: expire,
-				httpOnly: true,
-				path: "/",
-				sameSite: "lax",
-				secure: process.env.NODE_ENV === "production"
+			const newExchange = new Exchange({
+				exchange: usaToArs,
+				expires: expire
 			});
-			console.log("exchange");
-
-			res.setHeader("Set-Cookie", [newCookie]);
+			await newExchange.save();
+			console.log("api");
 		} else {
-			usaToArs = parseFloat(exchangeCookie);
-			// console.log(exchangeCookie)
+			console.log("db");
+			usaToArs = dbExchange[0].exchange;
 		}
 
 		return {props: {products, usaToArs, numOfDocuments, categoriesTags, searchQuery}};
