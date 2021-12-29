@@ -14,6 +14,7 @@ handler
 	.get(async (req, res) => {
 		//console.log(req.query);
 		const productsId = req.query.id;
+		console.log(productsId);
 		try {
 			await dbConnect();
 			const products = await Product.find({
