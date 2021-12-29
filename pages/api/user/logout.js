@@ -5,7 +5,7 @@ const handler = nextConnect();
 
 handler.use(auth).get((req, res) => {
 	console.log("logOut");
-	req.logOut();
+	req.logout();
 	res.json({auth: false});
 });
 
