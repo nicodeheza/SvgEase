@@ -3,6 +3,7 @@ import Product from "../models/productSchema";
 import Exchange from "../models/Exchange";
 import getDbQuery from "../helpersFunctions/getDbQuery";
 import categoryAgregation from "../helpersFunctions/categorysAgregation";
+import {PROD_PER_PAGE} from "../constantes/constantes";
 
 export default async function serverProps({req, res, query}) {
 	try {
@@ -19,13 +20,15 @@ export default async function serverProps({req, res, query}) {
 		const queryDb = getDbQuery(searchQuery);
 		// console.log(queryDb);
 
+		const prodPerPage = PROD_PER_PAGE;
+
 		const numOfDocuments = await Product.countDocuments(queryDb);
-		if (numOfDocuments <= 12) {
+		if (numOfDocuments <= prodPerPage) {
 			pageNum = 1;
 		}
 		const productsRes = await Product.find(queryDb)
-			.skip((pageNum - 1) * 12)
-			.limit(12)
+			.skip((pageNum - 1) * prodPerPage)
+			.limit(prodPerPage)
 			.sort([["_id", -1]])
 			.exec();
 		const categoriesTags = await Product.aggregate(categoryAgregation);

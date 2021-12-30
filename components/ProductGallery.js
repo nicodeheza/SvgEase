@@ -4,6 +4,7 @@ import Link from "next/link";
 import Preview from "./Preview";
 import {useEffect, useState} from "react";
 import {useRouter} from "next/router";
+import {PROD_PER_PAGE} from "../constantes/constantes";
 
 export default function ProductGallery({
 	products,
@@ -20,7 +21,7 @@ export default function ProductGallery({
 	const [actualPage, setActualPage] = useState(1);
 	const [previewProduct, setPreviewProduct] = useState(null);
 
-	const numOfPages = Math.ceil(numOfDocuments / 12);
+	const numOfPages = Math.ceil(numOfDocuments / PROD_PER_PAGE);
 
 	function index() {
 		let arr = [];
@@ -55,7 +56,7 @@ export default function ProductGallery({
 		const urlSearchParams = new URLSearchParams(window.location.search);
 		const params = Object.fromEntries(urlSearchParams.entries());
 		if (params.page) {
-			if (numOfDocuments <= 12) {
+			if (numOfDocuments <= PROD_PER_PAGE) {
 				setActualPage(1);
 			} else {
 				setActualPage(parseInt(params.page));
