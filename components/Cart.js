@@ -160,7 +160,7 @@ export default function Cart({
 						>
 							<td className={styles.priceTitle}>
 								<div className={styles.preview}>
-									<CartPreview file={product.file} id={product._id} />
+									<CartPreview file={product.data} id={product._id} />
 								</div>
 								<h5>{product.name}</h5>
 							</td>

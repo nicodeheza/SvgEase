@@ -66,7 +66,11 @@ export default function Account({setFloatWin, close, store, userProducts}) {
 					products.map((ele, i) => (
 						<div key={i} className={styles.itemsContainer}>
 							<div className={styles.preview}>
-								<AccountPreview id={ele._id} file={ele.file} classN={styles.animation} />
+								<AccountPreview
+									id={ele._id}
+									file={JSON.parse(ele.data)}
+									classN={styles.animation}
+								/>
 							</div>
 							<div className={styles.textContainer}>
 								<h2>{ele.name}</h2>

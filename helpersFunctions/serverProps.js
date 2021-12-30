@@ -39,7 +39,7 @@ export default async function serverProps({req, res, query}) {
 		const products = productsRes.map((doc) => {
 			const product = doc.toObject();
 			product._id = product._id.toString();
-			product.file = require(`../productsFiles/${product._id}.json`);
+			product.data = JSON.parse(product.data);
 			return product;
 		});
 

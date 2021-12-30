@@ -26,7 +26,7 @@ handler
 				const obj = {
 					_id: ele._id.toString(),
 					name: ele.name,
-					file: require(`../../../../productsFiles/${ele._id.toString()}.json`)
+					data: ele.data
 				};
 				userProducts.push(obj);
 			});

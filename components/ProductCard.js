@@ -17,8 +17,7 @@ export default function ProductCard({
 	const [activeBtn, setActiveBtn] = useState(false);
 
 	useEffect(() => {
-		Lottie.destroy(product._id);
-		const animation = product.file;
+		const animation = product.data;
 		if (animation) {
 			Lottie.loadAnimation({
 				container: document.getElementById(`cardAnimation${product._id}`),
@@ -29,6 +28,7 @@ export default function ProductCard({
 				animationData: animation
 			});
 		}
+		return () => Lottie.destroy(product._id);
 	}, [product]);
 
 	useEffect(() => {
@@ -66,7 +66,7 @@ export default function ProductCard({
 				const productToAdd = {
 					name: product.name,
 					price: product.price,
-					file: product.file,
+					data: product.data,
 					_id: product._id
 				};
 

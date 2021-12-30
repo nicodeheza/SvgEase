@@ -1,33 +1,33 @@
 import nextConnect from "next-connect";
-import auth from '../../../../../middleware/auth';
+import auth from "../../../../../middleware/auth";
 import authenticated from "../../../../../middleware/authenticated";
-import fs from 'fs';
+import Product from "../../../../../models/productSchema";
 
-const handler= nextConnect();
+const handler = nextConnect();
 
 handler
-.use(auth)
-.use(authenticated)
-.get((req, res)=>{
+	.use(auth)
+	.use(authenticated)
+	.get(async (req, res) => {
+		const fileId = req.query.id;
 
-    const fileId= req.query.id;
-
-    if(req.user.userProducts.includes(fileId)){
-        const filePath= `./productsFiles/${fileId}.json`;
-    
-        fs.readFile(filePath, (err, data)=>{
-            if(err){
-                console.log(err);
-                res.end();
-            }else{
-                res.setHeader('Content-Type', 'application/json');
-                res.send(data);
-            }
-        });
-
-    }else{
-        res.status(403).json({message: 'Aun no has comprado este producto, compralo para poder descargarlo'});
-    }
-});
+		if (req.user.userProducts.includes(fileId)) {
+			try {
+				const product = await Product.findById(fileId);
+				const file = Buffer.from(product.data);
+				res.setHeader("Content-Type", "application/json");
+				res.send(file);
+			} catch (err) {
+				if (err) {
+					console.log(err);
+					res.status(500).json({message: "server error"});
+				}
+			}
+		} else {
+			res.status(403).json({
+				message: "Aun no has comprado este producto, compralo para poder descargarlo"
+			});
+		}
+	});
 
 export default handler;
