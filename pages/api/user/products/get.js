@@ -4,8 +4,6 @@ import auth from "../../../../middleware/auth";
 import dbConnect from "../../../../lib/mongooseConect";
 import Product from "../../../../models/productSchema";
 
-import Mongoose from "mongoose";
-
 const handler = nextConnect();
 
 handler
