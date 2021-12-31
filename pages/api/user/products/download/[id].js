@@ -2,6 +2,7 @@ import nextConnect from "next-connect";
 import auth from "../../../../../middleware/auth";
 import authenticated from "../../../../../middleware/authenticated";
 import Product from "../../../../../models/productSchema";
+import dbConnect from "../../../../../lib/mongooseConect";
 
 const handler = nextConnect();
 
@@ -13,6 +14,7 @@ handler
 
 		if (req.user.userProducts.includes(fileId)) {
 			try {
+				await dbConnect();
 				const product = await Product.findById(fileId);
 				const file = Buffer.from(product.data);
 				res.setHeader("Content-Type", "application/json");

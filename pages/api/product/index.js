@@ -1,4 +1,3 @@
-import fs from "fs";
 import dbConnect from "../../../lib/mongooseConect";
 import Product from "../../../models/productSchema";
 import nextConnect from "next-connect";
