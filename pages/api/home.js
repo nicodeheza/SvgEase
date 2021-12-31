@@ -2,11 +2,13 @@ import nextConnect from "next-connect";
 import auth from "../../middleware/auth";
 import Exchange from "../../models/Exchange";
 import {getUserProducts} from "../../lib/users";
+import dbConnect from "../../lib/mongooseConect";
 
 const handler = nextConnect();
 
 handler.use(auth).get(async (req, res) => {
 	try {
+		await dbConnect();
 		let usaToArs;
 		const now = new Date();
 		console.log("db exchange query");
