@@ -33,7 +33,6 @@ export default function Account({setFloatWin, close, store, userProducts}) {
 				//console.log(data);
 				setAuth(data.auth);
 				setFloatWin("none");
-				router.replace(router.asPath);
 			})
 			.catch((err) => console.log(err));
 	}

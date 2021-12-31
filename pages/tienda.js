@@ -95,6 +95,11 @@ export default function Tienda({
 			setFloatWin("none");
 		}
 	}, [showMenu]);
+	useEffect(() => {
+		if (!auth) {
+			setUserProducts([]);
+		}
+	}, [auth]);
 
 	return (
 		<>
