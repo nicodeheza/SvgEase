@@ -43,12 +43,9 @@ export default function Home({currency}) {
 	}, [setAuth]);
 
 	useEffect(() => {
-		fetch("/api/home")
-			.then((res) => res.json())
-			.then((data) => {
-				setUserProducts(data.userProducts);
-			})
-			.catch((err) => console.log(err));
+		if (!auth) {
+			setUserProducts([]);
+		}
 	}, [auth]);
 
 	useEffect(() => {
@@ -163,7 +160,7 @@ export default function Home({currency}) {
 
 			{/* log in - sing up */}
 			{floatWin === "logIn" ? (
-				<LogIn setFloatWin={setFloatWin} />
+				<LogIn setFloatWin={setFloatWin} setUserProducts={setUserProducts} />
 			) : floatWin === "singUp" ? (
 				<SingUp setFloatWin={setFloatWin} />
 			) : null}

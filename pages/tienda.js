@@ -54,7 +54,7 @@ export async function getServerSideProps(context) {
 	}
 
 	sendProps.props.serverAuth = serverAuth;
-	sendProps.props.userProducts = userProducts;
+	sendProps.props.uProducts = userProducts;
 
 	return sendProps;
 }
@@ -68,7 +68,7 @@ export default function Tienda({
 	serverAuth,
 	currency,
 	setCurrency,
-	userProducts
+	uProducts
 }) {
 	const {auth, setAuth} = useAuthContext();
 	const [showMenu, setShowMenu] = useState(false);
@@ -76,6 +76,7 @@ export default function Tienda({
 	const [updateCart, setUpdateCart] = useState(true);
 	const [cartProducts, setCartProducts] = useState([]);
 	const [firstRender, setFirstRender] = useState(true);
+	const [userProducts, setUserProducts] = useState(uProducts);
 
 	useEffect(() => {
 		if (firstRender) {
@@ -233,7 +234,7 @@ export default function Tienda({
 
 			{/*float windows*/}
 			{floatWin === "logIn" ? (
-				<LogIn setFloatWin={setFloatWin} />
+				<LogIn setFloatWin={setFloatWin} setUserProducts={setUserProducts} />
 			) : floatWin === "singUp" ? (
 				<SingUp setFloatWin={setFloatWin} />
 			) : null}
