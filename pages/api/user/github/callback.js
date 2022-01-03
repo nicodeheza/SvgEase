@@ -1,8 +1,8 @@
 import nextConnect from "next-connect";
 import auth from "../../../../middleware/auth";
 import passport from "../../../../lib/passaport";
-import {createLoginSession} from "../../../../lib/auth";
-import {serialize} from "cookie";
+//import {createLoginSession} from "../../../../lib/auth";
+//import {serialize} from "cookie";
 
 const handler = nextConnect();
 
