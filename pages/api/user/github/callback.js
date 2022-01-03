@@ -25,10 +25,9 @@ const handler = nextConnect();
 // 	}
 // });
 handler.use(auth).get(passport.authenticate("github"), (req, res) => {
-	res.redirect(307, "/tienda");
+	res.redirect(307, "/");
 	//res.status(200).json({message: "ok"});
 	//res.writeHead(307, {Location: "/tienda"});
-	console.log(res);
 	//res.end();
 });
 
