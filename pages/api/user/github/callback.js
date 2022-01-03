@@ -25,8 +25,8 @@ const handler = nextConnect();
 // 	}
 // });
 handler.use(auth).get(passport.authenticate("github"), (req, res) => {
-	//res.redirect(307, "/");
-	res.status(200).json({message: "ok"});
+	res.redirect(307, "https://svg.nicolasdeheza.com");
+	//res.status(200).json({message: "ok"});
 	//res.writeHead(302, {Location: "/tienda"}).end();
 });
 
