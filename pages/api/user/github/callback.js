@@ -27,7 +27,8 @@ const handler = nextConnect();
 handler.use(auth).get(passport.authenticate("github"), (req, res) => {
 	//res.redirect(307, "/tienda");
 	//res.status(200).json({message: "ok"});
-	res.writeHead(200, {Location: "https://svg.nicolasdeheza.com"}).end();
+	res.writeHead(307, {Location: "https://svg.nicolasdeheza.com"});
+	res.end();
 });
 
 export default handler;
