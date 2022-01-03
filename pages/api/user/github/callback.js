@@ -6,7 +6,7 @@ import {serialize} from "cookie";
 
 const handler = nextConnect();
 
-handler.use(auth).get(passport.authenticate("github"), async (req, res) => {
+handler.use(auth).get(passport.authenticate("github"), (req, res) => {
 	//console.log(req.session);
 	//try {
 	// const cookieOpts = {
