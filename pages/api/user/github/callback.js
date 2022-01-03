@@ -19,7 +19,7 @@ handler.use(auth).get(passport.authenticate("github"), async (req, res) => {
 		const token = await createLoginSession(req.session, process.env.TOKEN_SECRET);
 		res.setHeader("Set-Cookie", serialize("sess", token, cookieOpts));
 		//res.redirect(307, "/tienda");
-		res.writeHead(302, {Location: "/tienda"}).end();
+		res.writeHead(302, {Location: "https://svg.nicolasdeheza.com/tienda"}).end();
 	} catch (err) {
 		res.status(500).send({error: "failed to login with github"});
 	}
