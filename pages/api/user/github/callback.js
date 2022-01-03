@@ -17,7 +17,7 @@ handler.use(auth).get(passport.authenticate("github"), async (req, res) => {
 	};
 	const token = await createLoginSession(req.session, process.env.TOKEN_SECRET);
 	res.setHeader("Set-Cookie", serialize("sess", token, cookieOpts));
-	res.redirect(301, "/tienda");
+	res.redirect(302, "/tienda");
 });
 
 export default handler;
