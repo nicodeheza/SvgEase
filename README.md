@@ -4,7 +4,7 @@ Lottie animations store
 
 ## About this project
 
-Svg Ease is a ecommerce app that I did for practice, so you can't actually buy nothing. All the payment method are in developer mode and I don't have plans to put them in production mode.
+Svg Ease is an ecommerce app that I did for practice, so you can't actually buy anything. All the payment methods are in developer mode and I don't have plans to put them in production mode.
 
 This dummy store sells Lottie animations, which are json files that contain all the data to play svg animation with this library.
 
@@ -15,7 +15,7 @@ The site is in Spanish.
 Here you can visit the live demo:</br>
 [https://svg.nicolasdeheza.com](https://svg.nicolasdeheza.com)
 
-Alsow you can use this test user:</br>
+Also you can use this test user::</br>
 **User:** test@test.com<br>
 **Password:** 1234
 
