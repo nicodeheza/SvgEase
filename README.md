@@ -15,7 +15,7 @@ The site is in Spanish.
 Here you can visit the live demo:</br>
 [https://svg.nicolasdeheza.com](https://svg.nicolasdeheza.com)
 
-Also you can use this test user::</br>
+Also you can use this test user:</br>
 **User:** test@test.com<br>
 **Password:** 1234
 
@@ -28,7 +28,7 @@ Also you can use this test user::</br>
 - Sessions
 - Shop cart
 - Mercado Pago integration
-- Pay Pal integration
+- PayPal integration
 - Currency conversion daily update via a public currency API
 - Download purchased files
 - Search by tags or words
